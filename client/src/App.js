@@ -1,7 +1,10 @@
+// *Pages
+import Ohwunwan from "./pages/Ohwunwan";
+
 function App() {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <Ohwunwan />
     </div>
   );
 }
