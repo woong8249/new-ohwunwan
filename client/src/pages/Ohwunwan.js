@@ -1,4 +1,5 @@
-import { Fragment } from "react"
+import { Fragment } from "react";
+import userImage from "../assets/icons/circle-user-solid.svg";
 
 function Ohwunwan() {
   return (
@@ -47,7 +48,55 @@ function Ohwunwan() {
         </div>
 
         <div className="sidebar">
-          <h3>sidebar</h3>
+          <h2>접속중인 유저</h2>
+          <div className="sidebar__user">
+            <div className="sidebar__user--column">
+              <div className="sidebar__user--column-left">
+                <img src={userImage} alt="user" />
+                <span className="sidebar__user--column-state"> </span>
+              </div>
+              <div className="sidebar__user--column-right">
+                <span>손흥민</span>
+              </div>
+            </div>
+          </div>
+          <div className="sidebar__user">
+            <div className="sidebar__user--column">
+              <div className="sidebar__user--column-left">
+                <img src={userImage} alt="user" />
+                <span className="sidebar__user--column-state"> </span>
+              </div>
+              <div className="sidebar__user--column-right">
+                <span>손흥민</span>
+              </div>
+            </div>
+          </div>
+          <div className="sidebar__user">
+            <div className="sidebar__user--column">
+              <div className="sidebar__user--column-left">
+                <img src={userImage} alt="user" />
+                <span className="sidebar__user--column-state"> </span>
+              </div>
+              <div className="sidebar__user--column-right">
+                <span>손흥민</span>
+              </div>
+            </div>
+          </div>
+          <div className="sidebar__user">
+            <div className="sidebar__user--column">
+              <div className="sidebar__user--column-left">
+                <img src={userImage} alt="user" />
+                <span className="sidebar__user--column-state"> </span>
+              </div>
+              <div className="sidebar__user--column-right">
+                <span>손흥민</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="sidebar__footer">
+            <p>© 2022 Ohwunwan FROM TEAM GI-GO</p>
+          </div>
         </div>
 
       </div>
