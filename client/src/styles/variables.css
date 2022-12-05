@@ -1,4 +1,6 @@
 :root {
-  /* --yellow: #fae100; */
   --white: rgb(255, 255, 255);
+  --post-width: 60rem; /* 게시물 가로 길이 */
+  --black: rgb(38, 38, 38);
+  --border-color: rgb(219, 219, 219);
 }

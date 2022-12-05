@@ -1,0 +1,60 @@
+.main__post {
+  width: var(--post-width);
+  /* height: var(--post-width); 임시용 */
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+}
+
+.main__post--header {
+}
+
+.main__post--contents {
+}
+
+.main__post--contents img {
+  width: var(--post-width); /* inherit으로는 안될까? */
+}
+
+.main__post--buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+}
+
+.main__post--text {
+  padding: 0.8rem;
+}
+
+.main__post--text-like {
+  font-weight: 600;
+}
+
+.main__post--text-comments {
+  opacity: 0.7;
+}
+
+.main__post--comments {}
+
+.main__post--comments-bar {
+  padding: 0.8rem;
+}
+
+.main__post--comments-bar fieldset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main__post--comments-bar input {
+  width: 50rem;
+  padding: 0.4rem 0;
+}
+
+.main__post--comments-bar button {
+  color: #2fa8f7;
+}
+
+.main__post--comments-bar button:hover {
+  font-weight: 600;
+}
