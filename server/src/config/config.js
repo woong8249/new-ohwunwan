@@ -30,5 +30,11 @@ const config = {
     password: required("DB_PASSWORD"),
     connectionLimit: parseInt(required("DB_CONNETCION_POOL_LIMITE")),
   },
+  aws: {
+    accessKeyId: required("S3_ACCESS_KEY_ID"),
+    secretAccessKey: required("S3_SECRET_ACCESS_KEY"),
+    region: required("REGION"),
+    bucket: required("BUCKET"),
+  },
 };
 export default config;
