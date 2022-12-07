@@ -21,7 +21,7 @@ const multerS3_opts = {
     if (postType === "ohwunwan")
       return cb(
         null,
-        `post-ohwunwans/${Date.now()}_${path.basename(file.originalname)}`
+        `post-ohwunwan/${Date.now()}_${path.basename(file.originalname)}`
       );
     else if (postType === "feedback")
       return cb(
