@@ -1,11 +1,12 @@
 import pool from "../loaders/mysql.js";
 
-const makePostQuery = (postType, kind1rm, userId, number, limit) => {
-  let query = `SELECT
+const makeGetQuery = (postType, kind1rm, userId, number, limit, id) => {
+  let query = `
+  SELECT
     p_u.*,
     p_c_l.comments_count,
     p_c_l.likes_count
-FROM
+  FROM
     (SELECT
         p.id AS ${postType}_id,
         u.userId,
@@ -21,7 +22,7 @@ FROM
         users AS u
     ON p.user_id =u.id
     ) AS p_u
-LEFT JOIN
+  LEFT JOIN
     (SELECT
           p_c.${postType}_id,
           p_c.comments_count,
@@ -48,13 +49,14 @@ LEFT JOIN
     ) AS p_c_l
 ON  p_c_l.${postType}_id=p_u.${postType}_id
 order by p_u.createdAt desc `;
+
   if (postType === "1rm") {
-    query = query.replace("p.text,", "p.text,p.kind,p.ranking,p.kg,");
+    query = query.replace("p.text,", "p.text,p.kind1rm,p.ranking,p.kg,");
   }
   if (kind1rm) {
     query = query.replace(
       "order by p_u.createdAt desc",
-      `WHERE kind='${kind1rm}' order by p_u.createdAt desc`
+      `WHERE kind1rm='${kind1rm}' order by p_u.createdAt desc`
     );
   }
   if (userId) {
@@ -66,14 +68,53 @@ order by p_u.createdAt desc `;
   if (number && limit) {
     query += ` LIMIT ${number},${limit}`;
   }
-
-  console.log(query);
+  if (id) {
+    query = query.replace(
+      "ON p.user_id =u.id",
+      `ON p.user_id =u.id 
+      WHERE p.id=${id}`
+    );
+  }
+  // console.log(query);
   return query;
 };
 
-export async function getPosts(postType, kind1rm, userId, number, limit) {
+// To get Posts with user, comment, and like information.
+// And if you provide  only 'postTye,id', It can find that post.
+export async function getPost(postType, kind1rm, userId, number, limit, id) {
   return pool
-    .query(makePostQuery(postType, kind1rm, userId, number, limit))
+    .execute(makeGetQuery(postType, kind1rm, userId, number, limit, id))
     .then(result => result[0])
+    .catch(err => console.error(err));
+}
+
+//To create ohwunwan,feedback post.
+export async function createPost(postType, user_id, text, content) {
+  const query = `insert into posts_${postType}(user_id,content,text,createdAt,updatedAt) values(?,?,?,?,?)`;
+  return pool
+    .query(query, [user_id, content, text, new Date(), new Date()])
+    .then(result => {
+      const id = result[0].insertId;
+      return getPost(postType, null, null, null, null, id);
+    })
+    .catch(err => console.error(err));
+}
+
+//To create 1rm post.
+export async function createPost1rm(
+  postType,
+  user_id,
+  text,
+  content,
+  kg,
+  kind1rm
+) {
+  const query = `insert into posts_${postType}(user_id,kind1rm,content,text,kg) values(?,?,?,?,?)`;
+  return pool
+    .query(query, [user_id, kind1rm, content, text, kg])
+    .then(result => {
+      const id = result[0].insertId;
+      return getPost(postType, null, null, null, null, id);
+    })
     .catch(err => console.error(err));
 }
