@@ -1,58 +1,54 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import styled from "styled-components";
 
 // components
 import UserRowImage from "./UserRowImage";
 import UserRowName from "./UserRowName";
-import UserRowState from "./UserRowState";
-
-// dummy
-import userImage from "../assets/icons/circle-user-solid.svg";
+import UserRowButton from "./UserRowButton";
 
 function UserRow({...props}) {
-  const userLists = [
-    ["손흥민", userImage, 1],
-    ["이강인", userImage, 1],
-    ["조규성", userImage, 0],
-    ["황희찬", userImage, 1],
-    ["김민재", userImage, 0],
-  ]
+  const [onUserId, isOnUsersId] = useState({})
+
+  useEffect(() => {
+    isOnUsersId(props)
+  }, [])
+
+  // console.log(onUserId)
 
   return (
     <Fragment>
-      {userLists.map((arr, idx) =>
-        <UserRowWrap key={idx}>
+      {onUserId.articles && 
+        <UserRowWrap>
           <UserRowLeft>
-            <UserRowImage userImage={arr[1]} />
-            {props.sidebar ? <UserRowState userState={arr[2]} /> : null}
+            <UserRowImage userImage={props.articles[0].userImage.userImage} />
+            <UserRowName userName={props.articles[0].userId} />
           </UserRowLeft>
           <UserRowRight>
-            <UserRowName userName={arr[0]} />
+            <UserRowButton />
           </UserRowRight>
         </UserRowWrap>
-      )}
+      }
     </Fragment>
   )
 }
 
 const UserRowWrap = styled.div`
-  &:hover{
-    background-color: ${props => props.theme.elevatedSeparator};
-  }
   display: flex;
   align-items: center;
-  padding: 1rem;
-  cursor: pointer;
+  padding: ${props => props.theme.articlePadding};
+  justify-content: space-between;
 `
 
 const UserRowLeft = styled.div`
-  margin-left: 0.8rem;
-  margin-right: 1rem;
-  position: relative;
   height: 3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const UserRowRight = styled.div`
+  cursor: pointer;
 `
 
 

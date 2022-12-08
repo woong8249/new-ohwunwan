@@ -9,7 +9,7 @@ function UserRowImage({...props}) {
 const UserImage = styled.img`
   width: 3rem;
   height: 3rem;
-  border-radius: 3rem;
+  border-radius: 50%;
 `
 
 export default UserRowImage;
