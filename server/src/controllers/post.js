@@ -20,4 +20,14 @@ export const updatePost = async (req, res) => {
   if (data) return res.status(201).json(data);
   else return res.status(500).json({ message: "Something is wrong" });
 };
-export const removePost = async (req, res) => {};
+export const removePost = async (req, res) => {
+  const { params, query } = req;
+  services.post
+    .removePost(params, query) //
+    .then(result => {
+      return res.status(200).json({ message: "ok" });
+    })
+    .catch(err => {
+      if (err) return res.status(500).json({ message: "Something is wrong" });
+    });
+};

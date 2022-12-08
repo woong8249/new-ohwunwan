@@ -89,10 +89,10 @@ export async function getPost(postType, kind1rm, userId, number, limit, id) {
 }
 
 //To create ohwunwan,feedback post.
-export async function createPost(postType, user_id, text, content) {
-  const query = `insert into posts_${postType}(user_id,content,text,createdAt,updatedAt) values(?,?,?,?,?)`;
+export async function createPost(postType, user_id, text, content, infoS3) {
+  const query = `insert into posts_${postType}(user_id,content,text,infoS3) values(?,?,?,?)`;
   return pool
-    .query(query, [user_id, content, text, new Date(), new Date()])
+    .query(query, [user_id, content, text, infoS3])
     .then(result => {
       const id = result[0].insertId;
       return getPost(postType, null, null, null, null, id);
@@ -107,11 +107,12 @@ export async function createPost1rm(
   text,
   content,
   kg,
-  kind1rm
+  kind1rm,
+  infoS3
 ) {
-  const query = `insert into posts_${postType}(user_id,kind1rm,content,text,kg) values(?,?,?,?,?)`;
+  const query = `insert into posts_${postType}(user_id,kind1rm,content,text,kg,infoS3) values(?,?,?,?,?,?)`;
   return pool
-    .query(query, [user_id, kind1rm, content, text, kg])
+    .query(query, [user_id, kind1rm, content, text, kg, infoS3])
     .then(result => {
       const id = result[0].insertId;
       return getPost(postType, null, null, null, null, id);
@@ -136,4 +137,19 @@ export async function updatePost(postType, id, text, kg) {
   let info = data[0].info;
   if (info.includes("Rows matched: 0")) return [];
   return getPost(postType, null, null, null, null, id);
+}
+
+export async function removePost(postType, id) {
+  const query = `delete from posts_${postType} where id=?`;
+  await pool.query(query, [id]).catch(console.error);
+}
+
+export async function getinfoS3(postType, id) {
+  const query = `select infoS3 from posts_${postType} where id=?`;
+  return pool
+    .query(query, [id])
+    .then(result => result[0][0])
+    .catch(err => {
+      if (err) console.error;
+    });
 }

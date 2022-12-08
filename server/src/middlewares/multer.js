@@ -3,16 +3,11 @@ import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
 import config from "../config/config.js";
 import path from "path";
-
-AWS.config.update({
-  accessKeyId: config.aws.accessKeyId,
-  secretAccessKey: config.aws.secretAccessKey,
-  region: config.aws.region,
-});
+import s3 from "../utils/s3.js";
 
 //* AWS S3 multer 설정
 const multerS3_opts = {
-  s3: new AWS.S3(),
+  s3: s3,
   bucket: config.aws.bucket,
   contentType: multerS3.AUTO_CONTENT_TYPE,
   cacheControl: "max-age=31536000",
