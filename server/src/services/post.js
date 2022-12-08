@@ -44,3 +44,14 @@ export async function createPost(params, body, files) {
     return { ...item, content: JSON.parse(item.content) };
   });
 }
+
+export async function updatePost(params, body) {
+  const { id, text, kg } = body;
+  // const user_id = (await data.userReop.findByUserId(userId)).id;
+  // 로그인구현후 권한 확인 =>로그인정보와 게시물의 주인이 같은지 판별해야함
+  const { postType } = params;
+  const post = await data.postRepo.updatePost(postType, id, text, kg);
+  return post.map(item => {
+    return { ...item, content: JSON.parse(item.content) };
+  });
+}
