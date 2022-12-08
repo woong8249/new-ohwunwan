@@ -118,3 +118,22 @@ export async function createPost1rm(
     })
     .catch(err => console.error(err));
 }
+
+export async function updatePost(postType, id, text, kg) {
+  let data;
+  if (text && kg) {
+    const query = `update posts_${postType} set text=?,kg=? where id=?`;
+    data = await pool
+      .query(query, [text, kg, id])
+      .catch(err => console.error(err));
+  } else if (text) {
+    const query = `update posts_${postType} set text=? where id=?`;
+    data = await pool.query(query, [text, id]).catch(err => console.error(err));
+  } else if (kg) {
+    const query = `update posts_${postType} set kg=? where id=?`;
+    data = await pool.query(query, [kg, id]).catch(err => console.error(err));
+  }
+  let info = data[0].info;
+  if (info.includes("Rows matched: 0")) return [];
+  return getPost(postType, null, null, null, null, id);
+}
