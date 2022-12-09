@@ -36,7 +36,7 @@ const upload = multer({
   // s3에 저장
   storage: multerS3({ ...multerS3_opts }),
   //* 용량 제한
-  limits: { fileSize: 30 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 },
 }).array("content", 12);
 
 export default async function uploadeContent(req, res, next) {
