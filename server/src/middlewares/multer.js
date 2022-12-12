@@ -1,5 +1,4 @@
 import multer from "multer";
-import AWS from "aws-sdk";
 import multerS3 from "multer-s3";
 import config from "../config/config.js";
 import path from "path";
@@ -37,10 +36,24 @@ const upload = multer({
   storage: multerS3({ ...multerS3_opts }),
   //* 용량 제한
   limits: { fileSize: 100 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg" ||
+      file.mimetype == "video/mov" ||
+      file.mimetype == "video/quicktime"
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
+    }
+  },
 }).array("content", 12);
 
 export default async function uploadeContent(req, res, next) {
-  await upload(req, res, function (err) {
+  await upload(req, res, async function (err) {
     if (err) {
       console.error(err);
       return res.status(500).json({ message: err });
