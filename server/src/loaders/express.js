@@ -21,7 +21,7 @@ export default async ({ app }) => {
 
   //비동기 에러도 잡을 수 있음 ("express-async-errors";)
   app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500);
+    console.error("check@@@@@@@@@@@@@@@err", err);
+    res.status(500).json(err);
   });
 };
