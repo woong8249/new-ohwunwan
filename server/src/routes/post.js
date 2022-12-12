@@ -6,6 +6,7 @@ import {
   validateCreateBefore,
   validateCreateAfter,
   validateUpdate,
+  validateRemove,
 } from "../validator/post.js";
 
 const router = express.Router();
@@ -18,6 +19,6 @@ router.post(
   postController.createPost
 );
 router.put("/:postType", validateUpdate, postController.updatePost);
-router.delete("/:postType", postController.removePost);
+router.delete("/:postType", validateRemove, postController.removePost);
 
 export default router;
