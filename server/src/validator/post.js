@@ -62,3 +62,12 @@ export const validateUpdate = [
     }),
   validator,
 ];
+
+export const validateRemove = [
+  param(
+    "postType",
+    "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
+  ).isIn(["ohwunwan", "feedback", "1rm"]),
+  query("id", "please provide post_id").notEmpty(),
+  validator,
+];
