@@ -1,3 +1,4 @@
+import ValidationError from "../errors/validationError.js";
 import {} from "express-async-errors";
 import express from "express";
 import cors from "cors";
@@ -21,7 +22,8 @@ export default async ({ app }) => {
 
   //비동기 에러도 잡을 수 있음 ("express-async-errors";)
   app.use((err, req, res, next) => {
-    console.error("check@@@@@@@@@@@@@@@err", err);
-    res.status(500).json(err);
+    if (err instanceof ValidationError) {
+      return res.status(400).json({ message: err });
+    } else return res.status(500).json({ message: err.message });
   });
 };
