@@ -6,6 +6,11 @@ import Menu from "../components/Menu";
 import Main from "../components/Main"
 import Sidebar from "../components/Sidebar";
 
+// dummy
+import MenuModal from "../components/MenuModal";
+import SignupPage from "./SignupPage";
+import LoginPage from "./LoginPage";
+
 function Ohwunwan() {
   return (
     <Fragment>
@@ -14,6 +19,9 @@ function Ohwunwan() {
         <Main />
         <Sidebar />
       </OhwunwanWrap>
+      {/* <MenuModal /> */}
+      {/* <SignupPage /> */}
+      {/* <LoginPage /> */}
     </Fragment>
   )
 }
