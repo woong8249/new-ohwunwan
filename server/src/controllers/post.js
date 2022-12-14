@@ -1,7 +1,7 @@
 import * as postServices from "../services/post.js";
-export const getPost = async (req, res) => {
+export const getPost = (req, res) => {
   const { params, query } = req;
-  return await postServices
+  return postServices
     .getPost(params, query) //
     .then(data => {
       if (data.length == 0) return res.status(204).json("no content");
@@ -9,17 +9,17 @@ export const getPost = async (req, res) => {
     });
 };
 
-export const createPost = async (req, res) => {
+export const createPost = (req, res) => {
   const { params, body, files } = req;
-  return await postServices
+  return postServices
     .createPost(params, body, files) //
     .then(data => {
       return res.status(201).json(data);
     });
 };
-export const updatePost = async (req, res) => {
+export const updatePost = (req, res) => {
   const { params, body } = req;
-  return await postServices
+  return postServices
     .updatePost(params, body) //
     .then(data => {
       if (data.length == 0) return res.status(204).json("no content");
@@ -27,7 +27,7 @@ export const updatePost = async (req, res) => {
     });
 };
 
-export const removePost = async (req, res) => {
+export const removePost = (req, res) => {
   const { params, query } = req;
   return postServices
     .removePost(params, query) //
