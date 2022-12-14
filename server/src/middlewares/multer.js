@@ -1,4 +1,4 @@
-import multer from "multer";
+import multer, { MulterError } from "multer";
 import multerS3 from "multer-s3";
 import config from "../config/config.js";
 import path from "path";
@@ -30,34 +30,25 @@ const multerS3_opts = {
   },
 };
 
-// 이미지나 동영상을 s3로 저장하기위해 사용 (single,array)
-const upload = multer({
+const fileFilterOpt = (req, file, cb) => {
+  if (
+    file.mimetype == "image/png" ||
+    file.mimetype == "image/jpg" ||
+    file.mimetype == "image/jpeg" ||
+    file.mimetype == "video/mov" ||
+    file.mimetype == "video/quicktime"
+  ) {
+    cb(null, true);
+  } else {
+    cb(new MulterError("The file type is only png, jpg, jpeg, mov"), false);
+  }
+};
+
+// 게시물 업로드용
+export const upload_array = multer({
   // s3에 저장
   storage: multerS3({ ...multerS3_opts }),
   //* 용량 제한
   limits: { fileSize: 100 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg" ||
-      file.mimetype == "video/mov" ||
-      file.mimetype == "video/quicktime"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
-  },
+  fileFilter: fileFilterOpt,
 }).array("content", 12);
-
-export default async function uploadeContent(req, res, next) {
-  await upload(req, res, async function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: err });
-    }
-    next();
-  });
-}
