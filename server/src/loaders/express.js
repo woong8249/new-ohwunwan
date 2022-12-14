@@ -1,12 +1,13 @@
+import {} from "express-async-errors";
 import { ValidationError } from "../errors/validationError.js";
 import { MulterError } from "multer";
-import {} from "express-async-errors";
 import express from "express";
 import cors from "cors";
 import moran from "morgan";
 import helmet from "helmet";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
+import authRouter from "../routes/auth.js";
 
 export default async ({ app }) => {
   app.use(cors()); //cors set
@@ -16,6 +17,7 @@ export default async ({ app }) => {
   else app.use(moran("combined"));
 
   app.use("/post", postRouter);
+  app.use("/auth", authRouter);
 
   //잘못 된 경로입력시
   app.use((req, res, next) => {
@@ -30,7 +32,7 @@ export default async ({ app }) => {
       return res.status(400).json({ message: err.code });
     } else {
       console.error("!!!error!!!", err);
-      res.status(500).json({ message: err.message });
+      res.status(500).json({ message: "sorry. something is wrong" });
     }
   });
 };
