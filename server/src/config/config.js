@@ -36,5 +36,12 @@ const config = {
     region: required("REGION"),
     bucket: required("BUCKET"),
   },
+  jwt: {
+    secretKey: required("JWT_KEY"),
+    expires: parseInt(required("JWT_EXPIRES")),
+  },
+  bcrypt: {
+    saltRound: parseInt(required("BCRYPT_SALT_ROUNDS")),
+  },
 };
 export default config;
