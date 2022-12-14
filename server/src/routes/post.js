@@ -1,6 +1,6 @@
 import express from "express";
 import * as postController from "../controllers/post.js";
-import uploadeContent from "../middlewares/multer.js";
+import { upload_array } from "../middlewares/multer.js";
 import {
   validateGet,
   validateCreateBefore,
@@ -14,7 +14,7 @@ router.get("/:postType", validateGet, postController.getPost);
 router.post(
   "/:postType",
   validateCreateBefore,
-  uploadeContent,
+  upload_array,
   validateCreateAfter,
   postController.createPost
 );

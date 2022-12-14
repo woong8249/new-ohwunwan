@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import ValidationError from "../errors/validationError.js";
+import { ValidationError } from "../errors/validationError.js";
 
 export default function validator(req, res, next) {
   const errors = validationResult(req);
