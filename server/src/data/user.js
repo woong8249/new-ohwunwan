@@ -13,7 +13,7 @@ export async function findByUserId(userId) {
 export async function createUser(userId, password) {
   const query = `insert into users(userId,password) values(?,?)`;
   return pool
-    .execute(query, [userId, password, nickname])
+    .execute(query, [userId, password])
     .then(result => result)
     .catch(err => {
       throw err;
