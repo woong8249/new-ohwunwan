@@ -12,9 +12,14 @@ import ArticleComment from "./ArticleComment";
 import UserRowName from "./UserRowName";
 import ArticleCommentInput from "./ArticleCommentInput";
 import ArticleCommentButton from "./ArticleCommentButton";
+import ArticleVideo from "./ArticleVideo";
 
 function Article({...props}) {
   // console.log(props)
+
+  // * 확장자 찾기 - 3글자
+  const contentExtension = props.content[0].slice(props.content[0].length - 3 , props.content[0].length);
+
   return (
     <ArticleWrap>
       <ArticleHeader>
@@ -23,7 +28,17 @@ function Article({...props}) {
 
       {/* TODO: 사진 왼쪽, 오른쪽 버튼 이동 구현 */}
       <ArticleContents>
-        <ArticleImage {...props} />
+
+        {/* 사진 or 동영상 구분 */}
+        { contentExtension === "mov" ? <ArticleVideo {...props} /> :
+          contentExtension === "avi" ? <ArticleVideo {...props} /> :
+          contentExtension === "mp3" ? <ArticleVideo {...props} /> :
+          contentExtension === "mp4" ? <ArticleVideo {...props} /> :
+          
+          // * 사진
+          <ArticleImage {...props} />
+        }
+
       </ArticleContents>
 
       <ArticleSubWrap>
