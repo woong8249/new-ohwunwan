@@ -85,7 +85,9 @@ export async function getPost(postType, kind1rm, userId, number, limit, id) {
   return pool
     .execute(makeGetQuery(postType, kind1rm, userId, number, limit, id))
     .then(result => result[0])
-    .catch(err => console.error(err));
+    .catch(err => {
+      throw err;
+    });
 }
 
 //To create ohwunwan,feedback post.
@@ -97,7 +99,9 @@ export async function createPost(postType, user_id, text, content, infoS3) {
       const id = result[0].insertId;
       return getPost(postType, null, null, null, null, id);
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      throw err;
+    });
 }
 
 //To create 1rm post.
@@ -117,22 +121,28 @@ export async function createPost1rm(
       const id = result[0].insertId;
       return getPost(postType, null, null, null, null, id);
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      throw err;
+    });
 }
 
 export async function updatePost(postType, id, text, kg) {
   let data;
   if (text && kg) {
     const query = `update posts_${postType} set text=?,kg=? where id=?`;
-    data = await pool
-      .query(query, [text, kg, id])
-      .catch(err => console.error(err));
+    data = await pool.query(query, [text, kg, id]).catch(err => {
+      throw err;
+    });
   } else if (text) {
     const query = `update posts_${postType} set text=? where id=?`;
-    data = await pool.query(query, [text, id]).catch(err => console.error(err));
+    data = await pool.query(query, [text, id]).catch(err => {
+      throw err;
+    });
   } else if (kg) {
     const query = `update posts_${postType} set kg=? where id=?`;
-    data = await pool.query(query, [kg, id]).catch(err => console.error(err));
+    data = await pool.query(query, [kg, id]).catch(err => {
+      throw err;
+    });
   }
   let info = data[0].info;
   if (info.includes("Rows matched: 0")) return [];
@@ -141,7 +151,9 @@ export async function updatePost(postType, id, text, kg) {
 
 export async function removePost(postType, id) {
   const query = `delete from posts_${postType} where id=?`;
-  await pool.query(query, [id]).catch(console.error);
+  await pool.query(query, [id]).catch(err => {
+    throw err;
+  });
 }
 
 export async function getinfoS3(postType, id) {
@@ -150,6 +162,6 @@ export async function getinfoS3(postType, id) {
     .query(query, [id])
     .then(result => result[0][0])
     .catch(err => {
-      if (err) console.error;
+      throw err;
     });
 }
