@@ -4,21 +4,38 @@ import styled from "styled-components";
 import ArticleChevron from "./ArticleChevron";
 import ArticleIndex from "./ArticleIndex";
 
-// dummy
-import ArticlePicture1 from "../assets/images/workout1.jpeg";
-
 function ArticleImage({...props}) {
   return (
     <ArticleImageWrap>
-      <ArticleChevron left />
-      <ArticlePicture src={ArticlePicture1}></ArticlePicture>
-      <ArticleChevron right />
+      
+      {props.content.length === 1 ? 
+        null :
+        <ArticleChevron left />
+      }
+
+      {props.content.length === 1 ? 
+        <ArticlePicture src={props.content[0]}></ArticlePicture> :
+        <ArticlePicture src={props.content[0]}></ArticlePicture>
+      }
+
+      {props.content.length === 1 ? 
+        null :
+        <ArticleChevron right />
+      }
+
       <ArticleIndexWrap>
-        <ArticleIndex now />
-        <ArticleIndex />
-        <ArticleIndex />
-        <ArticleIndex />
-        <ArticleIndex />
+
+        {/* 사진 index 동그라미 */}
+        {props.content.length === 1 ?
+          null :
+          props.content.map((el, idx) => {
+            return(
+              <ArticleIndex key={idx} />
+              // <ArticleIndex now />
+            )
+          })
+        }
+
       </ArticleIndexWrap>
     </ArticleImageWrap>
   )

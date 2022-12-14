@@ -14,39 +14,46 @@ import ArticleCommentInput from "./ArticleCommentInput";
 import ArticleCommentButton from "./ArticleCommentButton";
 
 function Article({...props}) {
+  // console.log(props)
   return (
     <ArticleWrap>
       <ArticleHeader>
         <UserRow {...props} />
       </ArticleHeader>
+
+      {/* TODO: 사진 왼쪽, 오른쪽 버튼 이동 구현 */}
       <ArticleContents>
-        <ArticleImage />
+        <ArticleImage {...props} />
       </ArticleContents>
 
       <ArticleSubWrap>
         <ArticleButtons>
           <ArticleLikeButton liked />
-          <ArticleTime createdAt="2022-12-08 12:54:07" />
+          <ArticleTime {...props} />
         </ArticleButtons>
 
         <ArticleTextWrap>
-          <ArticleLikeCount like="164" />
+          <ArticleLikeCount {...props} />
           <br />
-          <ArticleText text="오운완" />
+          <ArticleText {...props} />
           <br />
-          <ArticleCommentCount comment="5" />
+          <ArticleCommentCount {...props} />
         </ArticleTextWrap>
-        <ArticleComments>
+
+        {/* TODO: 댓글 데이터 받아서 구현 (데이터 없음) */}
+        {/* <ArticleComments>
           <ArticleCommentRow>
             <UserRowName userName="hee" comment />
             <ArticleComment comment="운동하느라 고생했어" />
           </ArticleCommentRow>
-        </ArticleComments>
+        </ArticleComments> */}
+
         <ArticleCommentsForm action="" method="post">
           <ArticleCommentInput />
           <ArticleCommentButton />
         </ArticleCommentsForm>
       </ArticleSubWrap>
+
     </ArticleWrap>
   )
 }

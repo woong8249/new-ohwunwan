@@ -10,33 +10,14 @@ import userImage from "../assets/icons/circle-user-solid.svg";
 import articleImage from "../assets/images/workout1.jpeg";
 
 function Main() {
+  // 서버에서 받은 article 정보
   const [articleLists, setArticleLists] = useState([])
 
-  // const articleLists = {
-  //   articles: [
-  //     {
-  //       userId: "sonny",
-  //       userName: "손흥민",
-  //       userImage: {userImage},
-  //       articleImage: {articleImage},
-  //       text: "오늘의 운동 완료!",
-  //       comments: []
-  //     },
-  //     {
-  //       userId: "hee",
-  //       userName: "황희찬",
-  //       userImage: {userImage},
-  //       articleImage: {articleImage},
-  //       text: "나도 오운완!",
-  //       comments: []
-  //     }
-  //   ]
-  // }
-
+  // 서버에서 atricle 정보 받는 함수
   function getArticleLists() {
     axios.get("http://localhost:8080/post/ohwunwan")
     .then(response => {
-      console.log(response);
+      // console.log(response);
       setArticleLists(response.data)
     })
     .catch(error => {
@@ -44,6 +25,7 @@ function Main() {
     })
   }
 
+  // 무한 랜더링을 막기 위한 useEffect
   useEffect(() => {
     if(articleLists.length === 0) {
       getArticleLists()
@@ -52,10 +34,9 @@ function Main() {
 
   return (
     <MainWrap>
-      {/* <Article {...articleLists} /> */}
       {articleLists.map((obj, idx) => {
         return (
-          <p key={idx}>{obj.userId}</p>
+          <Article key={idx} {...obj} />
         )
       })}
     </MainWrap>
