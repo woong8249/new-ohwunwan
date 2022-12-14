@@ -4,7 +4,8 @@ export const getPost = (req, res) => {
   return postServices
     .getPost(params, query) //
     .then(data => {
-      if (data.length == 0) return res.status(204).json("no content");
+      if (data.length == 0)
+        return res.status(204).json({ message: "no content" });
       else if (data) return res.status(200).json(data);
     });
 };
@@ -22,7 +23,8 @@ export const updatePost = (req, res) => {
   return postServices
     .updatePost(params, body) //
     .then(data => {
-      if (data.length == 0) return res.status(204).json("no content");
+      if (data.length == 0)
+        return res.status(204).json({ message: "no content" });
       else if (data) return res.status(200).json(data);
     });
 };
