@@ -1,7 +1,7 @@
 import data from "../data/index.js";
 import bcrypt from "bcrypt";
 import config from "../config/config.js";
-
+import { setToken, createToken } from "../utils/jwt.js";
 export async function createUser(body) {
   const { userId, password } = body;
   const hashed_password = await bcrypt
@@ -10,6 +10,11 @@ export async function createUser(body) {
       throw err;
     });
   await data.userReop.createUser(userId, hashed_password);
+}
+
+export async function login(res, userId) {
+  const token = await createToken(userId);
+  setToken(res, token);
 }
 
 // 유효성검사
