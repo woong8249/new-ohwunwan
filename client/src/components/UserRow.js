@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 
 // components
@@ -7,6 +7,9 @@ import UserRowName from "./UserRowName";
 import UserRowButton from "./UserRowButton";
 
 function UserRow({...props}) {
+  // MenuModal state
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <Fragment>
       <UserRowWrap>
@@ -15,7 +18,7 @@ function UserRow({...props}) {
           <UserRowName userName={props.nickname} />
         </UserRowLeft>
         <UserRowRight>
-          <UserRowButton />
+          <UserRowButton modalOpen={modalOpen} setModalOpen={setModalOpen} />
         </UserRowRight>
       </UserRowWrap>
     </Fragment>

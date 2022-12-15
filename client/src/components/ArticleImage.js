@@ -1,26 +1,41 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 // components
 import ArticleChevron from "./ArticleChevron";
 import ArticleIndex from "./ArticleIndex";
 
 function ArticleImage({...props}) {
+  const [pictureOn, setPictureOn] = useState(0)
+
+  const selectLeft = () => setPictureOn(pictureOn - 1)
+  const selectRight = () => setPictureOn(pictureOn + 1)
+
   return (
     <ArticleImageWrap>
       
+      {/* 왼쪽 버튼 */}
       {props.content.length === 1 ? 
         null :
-        <ArticleChevron left />
+        // 처음 사진일 때는 왼쪽 버튼 x
+        pictureOn === 0 ? 
+        null : 
+        <ArticleChevron left onClick={() => selectLeft()} />
       }
 
       {props.content.length === 1 ? 
-        <ArticlePicture src={props.content[0]}></ArticlePicture> :
-        <ArticlePicture src={props.content[0]}></ArticlePicture>
+        <ArticlePicture src={props.content[pictureOn]}></ArticlePicture> :
+        <ArticlePicture src={props.content[pictureOn]}></ArticlePicture>
       }
-
+      
+      {/* 오른쪽 버튼 */}
       {props.content.length === 1 ? 
         null :
-        <ArticleChevron right />
+        //! TODO: 마지막 사진일 때는 오른쪽 버튼 x
+        // 사진이 넘어가고 카운트 되서, 동작이 원할하게 안먹네?
+        pictureOn === props.content.lenght - 1 ? 
+        null : 
+        <ArticleChevron right onClick={() => selectRight()} />
       }
 
       <ArticleIndexWrap>
@@ -29,9 +44,9 @@ function ArticleImage({...props}) {
         {props.content.length === 1 ?
           null :
           props.content.map((el, idx) => {
+            // * 선택한 동그라미에 색상 넣기
             return(
-              <ArticleIndex key={idx} />
-              // <ArticleIndex now />
+              idx === pictureOn ?  <ArticleIndex key={idx} now /> : <ArticleIndex key={idx}  />
             )
           })
         }
