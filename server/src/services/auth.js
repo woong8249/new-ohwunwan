@@ -4,12 +4,8 @@ import config from "../config/config.js";
 import { setToken, createToken } from "../utils/jwt.js";
 export async function createUser(body) {
   const { userId, password } = body;
-  const hashed_password = await bcrypt
-    .hash(password, config.bcrypt.saltRound)
-    .catch(err => {
-      throw err;
-    });
-  await data.userReop.createUser(userId, hashed_password);
+  const hashed_password = await bcrypt.hash(password, config.bcrypt.saltRound);
+  await data.user.createUser(userId, hashed_password);
 }
 
 export async function login(res, user) {

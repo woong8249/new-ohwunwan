@@ -6,7 +6,7 @@ import s3 from "../utils/s3.js";
 export async function getPost(params, query) {
   const { postType } = params;
   const { kind1rm, userId, number, limit } = query;
-  const posts = await data.postRepo.getPost(
+  const posts = await data.post.getPost(
     postType,
     kind1rm,
     userId,
@@ -29,13 +29,13 @@ export async function createPost(params, body, files) {
   });
   JSON.stringify(infos3);
   const { userId, text } = body;
-  const user_id = (await data.userReop.findByUserId(userId)).id;
+  const user_id = (await data.user.findByUserId(userId)).id;
   const { postType } = params;
   const location = files.map(file => file.location);
   const content = await JSON.stringify(location);
   let post;
   if (postType === "ohwunwan" || postType === "feedback") {
-    post = await data.postRepo.createPost(
+    post = await data.post.createPost(
       postType,
       user_id,
       text,
@@ -45,7 +45,7 @@ export async function createPost(params, body, files) {
   }
   if (postType === "1rm") {
     const { kg, kind1rm } = body;
-    post = await data.postRepo.createPost1rm(
+    post = await data.post.createPost1rm(
       postType,
       user_id,
       text,
@@ -64,7 +64,7 @@ export async function updatePost(params, body) {
   const { id, text, kg } = body;
   // 로그인구현후 권한 확인 =>로그인정보와 게시물의 주인이 같은지 판별해야함
   const { postType } = params;
-  const post = await data.postRepo.updatePost(postType, id, text, kg);
+  const post = await data.post.updatePost(postType, id, text, kg);
   return post.map(item => {
     return { ...item, content: JSON.parse(item.content) };
   });
@@ -72,10 +72,10 @@ export async function updatePost(params, body) {
 export async function removePost(params, query) {
   const { postType } = params;
   const { id } = query;
-  const infoS3 = (await data.postRepo.getinfoS3(postType, id)).infoS3;
+  const infoS3 = (await data.post.getinfoS3(postType, id)).infoS3;
   const parsed = JSON.parse(infoS3);
 
-  await data.postRepo.removePost(postType, id);
+  await data.post.removePost(postType, id);
 
   await parsed.forEach(async item => {
     await s3.deleteObject(

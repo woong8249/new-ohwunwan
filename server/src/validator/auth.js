@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 export const validateSignup = [
   body("userId", "Please provide at least 5 characters").isLength({ min: 5 }),
   body("userId", "already exists").custom(value => {
-    return data.userReop
+    return data.user
       .findByUserId(value) //
       .then(result => {
         if (result) return new Promise((res, rej) => rej());
@@ -18,7 +18,7 @@ export const validateSignup = [
 ];
 const isUser = async (value, { req }) => {
   const { password } = req.body;
-  const user = await data.userReop.findByUserId(value);
+  const user = await data.user.findByUserId(value);
   if (!user) {
     return new Promise((res, rej) => rej());
   } else {
