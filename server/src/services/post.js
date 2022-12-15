@@ -1,4 +1,4 @@
-import data from "../data/index.js";
+import * as data from "../data/index.js";
 import s3 from "../utils/s3.js";
 
 // get의 쿼리같은경우는 필드명만 살짝 수정해주면 되어서
