@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import validator from "../middlewares/validator.js";
-import data from "../data/index.js";
+import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
 
 export const validateSignup = [
@@ -24,6 +24,7 @@ const isUser = async (value, { req }) => {
   } else {
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) return new Promise((res, rej) => rej());
+    req.user = user;
   }
 };
 
