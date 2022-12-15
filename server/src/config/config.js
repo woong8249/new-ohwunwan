@@ -43,5 +43,6 @@ const config = {
   bcrypt: {
     saltRound: parseInt(required("BCRYPT_SALT_ROUNDS")),
   },
+  cors: { allowedOrigin: required("CORS_ALLOW_ORIGIN") },
 };
 export default config;
