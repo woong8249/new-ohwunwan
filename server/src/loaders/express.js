@@ -3,6 +3,7 @@ import {} from "express-async-errors";
 import { MulterError } from "multer";
 import cors from "cors";
 import moran from "morgan";
+import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
@@ -18,6 +19,7 @@ export default async ({ app }) => {
   };
   app.use(cors(corsOption)); //cors set
   app.use(helmet());
+  app.use(cookieParser());
   app.use(express.json()); // REST API의 body를 조회가능하게해줌 (내부미들웨어)
   if (config.env === "development") app.use(moran("dev")); // log set
   else app.use(moran("combined"));

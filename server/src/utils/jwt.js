@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
-export async function createToken(userId) {
+export async function createToken(useinfo) {
   return jwt.sign(
     {
-      userId,
+      ...useinfo,
     },
     config.jwt.secretKey,
     {
