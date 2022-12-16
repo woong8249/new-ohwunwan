@@ -1,5 +1,6 @@
 import { body, param, query } from "express-validator";
 import validator from "../middlewares/validator.js";
+import * as data from "../data/index.js";
 
 export const validateGet = [
   param(
@@ -44,12 +45,27 @@ export const validateCreateAfter = [
   validator,
 ];
 
+const isPost = async (value, { req }) => {
+  const id = value;
+  const { postType } = req.params;
+  return data.post
+    .getPost(postType, null, null, null, null, id) //
+    .then(post => {
+      console.log(post);
+      if (post.length === 0) return new Promise((res, rej) => rej());
+      req.post = post;
+      return new Promise((res, rej) => res());
+    });
+};
+
 export const validateUpdate = [
   param(
     "postType",
     "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   body("id", "please provide post_id").notEmpty(),
+  body("id", "not exist post") //
+    .custom(isPost),
   body("kg", "No data to change")
     .if((value, { req }) => req.params.postType === "1rm")
     .custom((value, { req }) => {

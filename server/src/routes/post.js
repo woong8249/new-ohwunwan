@@ -1,6 +1,7 @@
 import express from "express";
 import * as postController from "../controllers/post.js";
-import { isLogin } from "../middlewares/isLogin.js";
+import isAuth from "../middlewares/isAuth.js";
+import isLogin from "../middlewares/isLogin.js";
 import { upload_array } from "../middlewares/multer.js";
 import {
   validateGet,
@@ -20,7 +21,13 @@ router.post(
   validateCreateAfter,
   postController.createPost
 );
-router.put("/:postType", isLogin, validateUpdate, postController.updatePost);
+router.put(
+  "/:postType",
+  isLogin,
+  validateUpdate,
+  isAuth,
+  postController.updatePost
+);
 router.delete("/:postType", isLogin, validateRemove, postController.removePost);
 
 export default router;
