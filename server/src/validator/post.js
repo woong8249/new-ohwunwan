@@ -35,6 +35,10 @@ export const validateCreateAfter = [
         return true;
       } else return false;
     }),
+  body("files", "no content").custom((value, { req }) => {
+    if (req.files.length === 0) return false;
+    else return true;
+  }),
   body("text", "please enter the text").notEmpty(),
   body("userId", "please enter the userId").notEmpty(),
   validator,
