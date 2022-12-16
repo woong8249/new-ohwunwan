@@ -12,3 +12,12 @@ export function signin(req, res) {
     .login(res, user)
     .then(userinfo => res.status(200).json(userinfo));
 }
+
+export function me(req, res) {
+  const userinfo = {
+    userId: req.user.userId,
+    nickname: req.user.nickname,
+    picture: req.user.picture,
+  };
+  res.json(userinfo);
+}
