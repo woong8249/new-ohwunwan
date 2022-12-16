@@ -21,3 +21,8 @@ export function me(req, res) {
   };
   res.json(userinfo);
 }
+
+export function signout(req, res) {
+  res.clearCookie("token");
+  res.json({ message: "You are logged out" });
+}

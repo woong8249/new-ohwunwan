@@ -1,7 +1,7 @@
 import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
 import config from "../config/config.js";
-import { setToken, createToken } from "../utils/jwt.js";
+import { setToken, createToken } from "../utils/token.js";
 export async function createUser(body) {
   const { userId, password } = body;
   const hashed_password = await bcrypt.hash(password, config.bcrypt.saltRound);
