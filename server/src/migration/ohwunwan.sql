@@ -493,3 +493,6 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-12-09 12:58:48
+
+INSERT INTO `Users` (`userId`,`password`,`nickname`) 
+VALUES('jiwoong','$2b$10$nd4uKgEmPQjUBiUW7hSTee2T.4fR3.hNyXXZcTk0PmimgQT91xSj.','woonge_e')
