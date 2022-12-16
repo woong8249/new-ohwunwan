@@ -51,7 +51,6 @@ const isPost = async (value, { req }) => {
   return data.post
     .getPost(postType, null, null, null, null, id) //
     .then(post => {
-      console.log(post);
       if (post.length === 0) return new Promise((res, rej) => rej());
       req.post = post;
       return new Promise((res, rej) => res());
@@ -89,5 +88,7 @@ export const validateRemove = [
     "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   query("id", "please provide post_id").notEmpty(),
+  query("id", "not exist post") //
+    .custom(isPost),
   validator,
 ];

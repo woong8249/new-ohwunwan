@@ -28,6 +28,12 @@ router.put(
   isAuth,
   postController.updatePost
 );
-router.delete("/:postType", isLogin, validateRemove, postController.removePost);
+router.delete(
+  "/:postType",
+  isLogin,
+  validateRemove,
+  isAuth,
+  postController.removePost
+);
 
 export default router;
