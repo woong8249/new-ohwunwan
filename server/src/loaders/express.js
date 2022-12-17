@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
-import authRouter from "../routes/auth.js";
+import userRouter from "../routes/user.js";
 import { ValidationError } from "../errors/validationError.js";
 
 export default async ({ app }) => {
@@ -26,7 +26,7 @@ export default async ({ app }) => {
 
   // ----라우팅----
   app.use("/post", postRouter);
-  app.use("/auth", authRouter);
+  app.use("/user", userRouter);
 
   //----잘못 된 경로입력시----
   app.use((req, res, next) => {

@@ -1,19 +1,24 @@
-import * as authServices from "../services/auth.js";
+import * as userServices from "../services/user.js";
 export function signup(req, res) {
   const { body } = req;
-  return authServices //
+  return userServices //
     .createUser(body)
     .then(result => res.status(201).json({ message: "Signup has completed" }));
 }
 
 export function signin(req, res) {
   const { user } = req;
-  return authServices //
+  return userServices //
     .login(res, user)
     .then(userinfo => res.status(200).json(userinfo));
 }
 
-export function me(req, res) {
+export function signout(req, res) {
+  res.clearCookie("token");
+  res.status(200).json({ message: "You are logged out" });
+}
+
+export function getMe(req, res) {
   const userinfo = {
     userId: req.user.userId,
     nickname: req.user.nickname,
@@ -22,7 +27,6 @@ export function me(req, res) {
   res.json(userinfo);
 }
 
-export function signout(req, res) {
-  res.clearCookie("token");
-  res.json({ message: "You are logged out" });
-}
+export function updateMe(req, res) {}
+
+export function deleteMe(req, res) {}
