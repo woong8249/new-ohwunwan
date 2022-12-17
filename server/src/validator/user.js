@@ -35,3 +35,8 @@ export const validateLogin = [
     .custom(isUser),
   validator,
 ];
+
+export const validateUpdatePicture = [
+  body("file", "Please provide picture file").notEmpty(),
+  validator,
+];

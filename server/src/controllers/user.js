@@ -24,9 +24,12 @@ export function getMe(req, res) {
     nickname: req.user.nickname,
     picture: req.user.picture,
   };
-  res.json(userinfo);
+  res.status(200).json(userinfo);
 }
 
-export function updateMe(req, res) {}
-
-export function deleteMe(req, res) {}
+export function updatePicture(req, res) {
+  const { user, file } = req;
+  return userServices
+    .updatePicture(user, file)
+    .then(picture => res.status(200).json({ picture }));
+}

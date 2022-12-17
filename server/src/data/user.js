@@ -19,3 +19,13 @@ export async function createUser(userId, password) {
       throw err;
     });
 }
+
+export async function updatePicture(userId, location, key) {
+  const query = `update users set s3key=?,picture=? where userId=?`;
+  return pool
+    .execute(query, [key, location, userId])
+    .then(result => location)
+    .catch(err => {
+      throw err;
+    });
+}
