@@ -16,32 +16,34 @@ export const validateGet = [
   validator,
 ];
 
+// 쿼리로다받아오기
 export const validateCreateBefore = [
   param(
     "postType",
     "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
-  validator,
-];
-export const validateCreateAfter = [
+  query("text", "Please enter the text").notEmpty(),
+  query("userId", "Please enter the userId").notEmpty(),
   param(
     "postType",
     "If you selected 1rm as the post type, you have to provide kind1rm,kg, and there are only 3kind: bench, dead, squat "
   )
     .if(value => value === "1rm")
     .custom((value, { req }) => {
-      const { kind1rm, kg } = req.body;
-      if (kind1rm || kg) return false;
+      const { kind1rm, kg } = req.query;
+      if (!(kind1rm && kg)) return false;
       if (kind1rm === "bench" || kind1rm === "squat" || kind1rm === "dead") {
         return true;
       } else return false;
     }),
+  validator,
+];
+
+export const validateCreateAfter = [
   check("files", "No content").custom((value, { req }) => {
     if (req.files.length === 0) return false;
     else return true;
   }),
-  body("text", "Please enter the text").notEmpty(),
-  body("userId", "Please enter the userId").notEmpty(),
   validator,
 ];
 
