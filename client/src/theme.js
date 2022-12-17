@@ -25,6 +25,9 @@ const theme = {
   modalRowHeight: "5rem", // 모달창 세로 길이
   modalPadding: "2rem", // 모달창 패딩
   modalHeight: "70rem", // 회원가입 세로 길이
+
+  // 로그인
+  
 }
 
 export default theme;

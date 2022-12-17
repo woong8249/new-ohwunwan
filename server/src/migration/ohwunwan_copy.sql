@@ -153,6 +153,7 @@ UNLOCK TABLES;
 -- Table structure for table `likes_1rm`
 --
 
+
 DROP TABLE IF EXISTS `likes_1rm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -493,3 +494,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-12-09 12:58:48
+
+INSERT INTO `comments_ohwunwan` (`ohwunwan_id`,`user_id`,`text`) VALUES(12,1,'늦었습니다 죄송해요진짜 안늦을게요!')
