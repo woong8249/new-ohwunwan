@@ -6,6 +6,6 @@ export default function isAuth(req, res, next) {
   const { user, post /*comment,like*/ } = req;
   if (post[0]) {
     if (post[0].userId === user.userId) next();
-    else throw new ValidationError("no authorization", "no authorization");
+    else throw new ValidationError("No permission", "No permission", 403);
   }
 }

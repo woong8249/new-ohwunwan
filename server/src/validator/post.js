@@ -36,12 +36,12 @@ export const validateCreateAfter = [
         return true;
       } else return false;
     }),
-  check("files", "no content").custom((value, { req }) => {
+  check("files", "No content").custom((value, { req }) => {
     if (req.files.length === 0) return false;
     else return true;
   }),
-  body("text", "please enter the text").notEmpty(),
-  body("userId", "please enter the userId").notEmpty(),
+  body("text", "Please enter the text").notEmpty(),
+  body("userId", "Please enter the userId").notEmpty(),
   validator,
 ];
 
@@ -62,8 +62,8 @@ export const validateUpdate = [
     "postType",
     "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
-  body("id", "please provide post_id").notEmpty(),
-  body("id", "not exist post") //
+  body("id", "Please provide post_id").notEmpty(),
+  body("id", "No content") //
     .custom(isPost),
   body("kg", "No data to change")
     .if((value, { req }) => req.params.postType === "1rm")
@@ -88,7 +88,7 @@ export const validateRemove = [
     "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   query("id", "please provide post_id").notEmpty(),
-  query("id", "not exist post") //
+  query("id", "No content") //
     .custom(isPost),
   validator,
 ];

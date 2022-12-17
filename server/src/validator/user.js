@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 export const validateSignup = [
   body("userId", "Please provide at least 5 characters").isLength({ min: 5 }),
-  body("userId", "already exists").custom(value => {
+  body("userId", "Already exists").custom(value => {
     return data.user
       .findByUserId(value) //
       .then(result => {
@@ -37,7 +37,7 @@ export const validateLogin = [
 ];
 
 export const validateUpdatePicture = [
-  check("file", "no content").custom((value, { req }) => {
+  check("file", "please provide picture").custom((value, { req }) => {
     const file = req.file;
     if (file === undefined) return false;
     else return true;
@@ -45,7 +45,7 @@ export const validateUpdatePicture = [
   validator,
 ];
 export const validateDeletePicture = [
-  check("file", "no content").custom((value, { req }) => {
+  check("file", "No content").custom((value, { req }) => {
     const file = req.user.picture;
     if (file === null) return false;
     else return true;

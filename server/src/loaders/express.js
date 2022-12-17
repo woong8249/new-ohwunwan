@@ -36,7 +36,7 @@ export default async ({ app }) => {
   //----에러케치 (비동기 에러도 잡을 수 있음 )("express-async-errors";)----
   app.use((err, req, res, next) => {
     if (err instanceof ValidationError) {
-      return res.status(400).json({ message: err });
+      return res.status(err.status).json({ message: err });
     } else if (err instanceof MulterError) {
       return res.status(400).json({ message: err.code });
     } else {
