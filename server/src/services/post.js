@@ -83,7 +83,7 @@ export async function removePost(params, query) {
         Key: item.key,
       },
       function (err, data) {
-        throw err;
+        if (err) throw err;
       }
     );
   });

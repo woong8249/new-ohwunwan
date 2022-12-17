@@ -1,4 +1,4 @@
-import { body, param, query } from "express-validator";
+import { body, check, param, query } from "express-validator";
 import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 
@@ -36,7 +36,7 @@ export const validateCreateAfter = [
         return true;
       } else return false;
     }),
-  body("files", "no content").custom((value, { req }) => {
+  check("files", "no content").custom((value, { req }) => {
     if (req.files.length === 0) return false;
     else return true;
   }),

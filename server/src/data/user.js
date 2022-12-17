@@ -20,7 +20,7 @@ export async function createUser(userId, password) {
     });
 }
 
-export async function updatePicture(userId, location, key) {
+export async function updatePicture(userId, location = null, key = null) {
   const query = `update users set s3key=?,picture=? where userId=?`;
   return pool
     .execute(query, [key, location, userId])

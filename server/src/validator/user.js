@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, check } from "express-validator";
 import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
@@ -37,6 +37,18 @@ export const validateLogin = [
 ];
 
 export const validateUpdatePicture = [
-  body("file", "Please provide picture file").notEmpty(),
+  check("file", "no content").custom((value, { req }) => {
+    const file = req.file;
+    if (file === undefined) return false;
+    else return true;
+  }),
+  validator,
+];
+export const validateDeletePicture = [
+  check("file", "no content").custom((value, { req }) => {
+    const file = req.user.picture;
+    if (file === null) return false;
+    else return true;
+  }),
   validator,
 ];

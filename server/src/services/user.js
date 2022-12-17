@@ -22,7 +22,7 @@ export async function login(res, user) {
   return userinfo;
 }
 
-export async function updatePicture(user, file) {
+export async function updatePicture(user, file = undefined) {
   const { userId, s3key } = user;
   if (s3key) {
     await s3.deleteObject(
@@ -31,10 +31,16 @@ export async function updatePicture(user, file) {
         Key: s3key,
       },
       function (err, data) {
-        throw err;
+        if (err) throw err;
       }
     );
   }
-  const { location, key } = file;
-  return data.user.updatePicture(userId, location, key);
+  if (file) {
+    const { location, key } = file;
+    // to update
+    return data.user.updatePicture(userId, location, key);
+  } else {
+    // to delete
+    return data.user.updatePicture(userId);
+  }
 }

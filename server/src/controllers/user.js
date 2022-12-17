@@ -33,3 +33,12 @@ export function updatePicture(req, res) {
     .updatePicture(user, file)
     .then(picture => res.status(200).json({ picture }));
 }
+
+export function deletePicture(req, res) {
+  const { user } = req;
+  return userServices
+    .updatePicture(user)
+    .then(result =>
+      res.status(200).json({ message: "picture has been deleted" })
+    );
+}
