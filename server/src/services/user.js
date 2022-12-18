@@ -37,7 +37,8 @@ export async function updatePicture(user, file = undefined) {
   }
 }
 
-export async function updateProfile(res, newUserId, newNickname, user) {
+export async function updateProfile(res, body, user) {
+  let { newUserId, newNickname } = body;
   if (!newUserId) newUserId = user.userId;
   if (!newNickname) newNickname = user.nickname;
   // update user profile info
@@ -56,4 +57,14 @@ export async function updateProfile(res, newUserId, newNickname, user) {
   userInfo.picture = user.picture;
   setToken(res, token);
   return userInfo;
+}
+
+export async function updatePassword(body, user) {
+  const { newPassword } = body;
+  const { id } = user;
+  const hashed_password = await bcrypt.hash(
+    newPassword,
+    config.bcrypt.saltRound
+  );
+  return data.user.updatePassword(hashed_password, id);
 }

@@ -16,9 +16,12 @@ export const validateSignup = [
   body("password", "Please provide at least 5 characters").isLength({ min: 5 }),
   validator,
 ];
+
 const isUser = async (value, { req }) => {
   const { password } = req.body;
-  const user = await data.user.findByUserId(value);
+  let userId = req?.user?.userId || value;
+
+  const user = await data.user.findByUserId(userId);
   if (!user) {
     return new Promise((res, rej) => rej());
   } else {
@@ -44,6 +47,7 @@ export const validateUpdatePicture = [
   }),
   validator,
 ];
+
 export const validateDeletePicture = [
   check("file", "No content").custom((value, { req }) => {
     const file = req.user.picture;
@@ -52,6 +56,7 @@ export const validateDeletePicture = [
   }),
   validator,
 ];
+
 export const validateUpdateProfile = [
   oneOf([
     body("newUserId", "Please provide at least 5 characters") //
@@ -79,5 +84,22 @@ export const validateUpdateProfile = [
           else return new Promise((res, rej) => res());
         });
     }),
+  validator,
+];
+
+export const validateUpdatePassword = [
+  body("password", "Please provide at least 5 characters").isLength({
+    min: 5,
+  }),
+  body("newPassword", "Please provide at least 5 characters").isLength({
+    min: 5,
+  }),
+  body("passwordConfirmation", "Already exists").isLength({ min: 5 }),
+  check(
+    "passwordConfirmation",
+    "passwordConfirmation field must have the same value as the password field"
+  ).custom((value, { req }) => value === req.body.newPassword),
+  body("password", "password is incorrect") //
+    .custom(isUser),
   validator,
 ];

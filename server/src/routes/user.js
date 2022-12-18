@@ -8,6 +8,7 @@ import {
   validateUpdatePicture,
   validateDeletePicture,
   validateUpdateProfile,
+  validateUpdatePassword,
 } from "../validator/user.js";
 
 const router = express.Router();
@@ -35,5 +36,10 @@ router.put(
   validateUpdateProfile,
   userController.updateProfile
 );
-// router.put("/me/password", isLogin, userController.updatePasswrd);
+router.put(
+  "/me/password",
+  isLogin,
+  validateUpdatePassword,
+  userController.updatePassword
+);
 export default router;

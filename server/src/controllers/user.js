@@ -43,9 +43,16 @@ export function deletePicture(req, res) {
     );
 }
 export function updateProfile(req, res) {
-  const { newUserId, newNickname } = req.body;
-  const { user } = req;
+  const { user, body } = req;
   return userServices
-    .updateProfile(res, newUserId, newNickname, user)
+    .updateProfile(res, body, user)
     .then(user => res.status(200).json(user));
+}
+export function updatePassword(req, res) {
+  const { user, body } = req;
+  return userServices
+    .updatePassword(body, user)
+    .then(user =>
+      res.status(200).json({ massage: "Your password has been changed" })
+    );
 }

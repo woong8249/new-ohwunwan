@@ -48,3 +48,12 @@ export async function updateProfile(newUserId, newNickname, id) {
       throw err;
     });
 }
+
+export async function updatePassword(hashed_password, id) {
+  const query = `update users set password=? where id=?`;
+  return pool
+    .execute(query, [hashed_password, , id]) //
+    .catch(err => {
+      throw err;
+    });
+}
