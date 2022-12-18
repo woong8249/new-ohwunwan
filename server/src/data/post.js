@@ -83,7 +83,7 @@ order by p_u.createdAt desc `;
 // And if you provide  only 'postTye,id', It can find that post.
 export async function getPost(postType, kind1rm, userId, number, limit, id) {
   return pool
-    .execute(makeGetQuery(postType, kind1rm, userId, number, limit, id))
+    .query(makeGetQuery(postType, kind1rm, userId, number, limit, id))
     .then(result => result[0])
     .catch(err => {
       throw err;
