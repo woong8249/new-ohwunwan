@@ -42,3 +42,10 @@ export function deletePicture(req, res) {
       res.status(200).json({ message: "picture has been deleted" })
     );
 }
+export function updateProfile(req, res) {
+  const { newUserId, newNickname } = req.body;
+  const { user } = req;
+  return userServices
+    .updateProfile(res, newUserId, newNickname, user)
+    .then(user => res.status(200).json(user));
+}

@@ -1,4 +1,4 @@
-import { body, check } from "express-validator";
+import { body, check, oneOf } from "express-validator";
 import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
@@ -50,5 +50,34 @@ export const validateDeletePicture = [
     if (file === null) return false;
     else return true;
   }),
+  validator,
+];
+export const validateUpdateProfile = [
+  oneOf([
+    body("newUserId", "Please provide at least 5 characters") //
+      .isLength({ min: 5 }),
+    body("newNickname", "Please provide at least 5 characters") //
+      .isLength({ min: 5 }),
+  ]),
+  body("newUserId", "Already exists")
+    .if(body("newUserId").exists())
+    .custom(value => {
+      return data.user
+        .findByUserId(value) //
+        .then(result => {
+          if (result) return new Promise((res, rej) => rej());
+          else return new Promise((res, rej) => res());
+        });
+    }),
+  body("newNickname", "Already exists")
+    .if(body("newNickname").exists())
+    .custom(value => {
+      return data.user
+        .findByNickname(value) //
+        .then(result => {
+          if (result) return new Promise((res, rej) => rej());
+          else return new Promise((res, rej) => res());
+        });
+    }),
   validator,
 ];

@@ -2,7 +2,7 @@ import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
 import config from "../config/config.js";
 import { setToken, createToken } from "../utils/token.js";
-import s3 from "../utils/s3.js";
+import { s3Remove } from "../utils/s3.js";
 
 //
 export async function createUser(body) {
@@ -12,28 +12,20 @@ export async function createUser(body) {
 }
 
 export async function login(res, user) {
-  const userinfo = {
+  const userInfo = {
     userId: user.userId,
     nickname: user.nickname,
-    picture: user.picture,
   };
-  const token = await createToken(userinfo);
+  const token = await createToken(userInfo);
+  userInfo.picture = user.picture;
   setToken(res, token);
-  return userinfo;
+  return userInfo;
 }
 
 export async function updatePicture(user, file = undefined) {
   const { userId, s3key } = user;
   if (s3key) {
-    await s3.deleteObject(
-      {
-        Bucket: "project-ohwunwan",
-        Key: s3key,
-      },
-      function (err, data) {
-        if (err) throw err;
-      }
-    );
+    s3Remove("project-ohwunwan", s3key);
   }
   if (file) {
     const { location, key } = file;
@@ -43,4 +35,25 @@ export async function updatePicture(user, file = undefined) {
     // to delete
     return data.user.updatePicture(userId);
   }
+}
+
+export async function updateProfile(res, newUserId, newNickname, user) {
+  if (!newUserId) newUserId = user.userId;
+  if (!newNickname) newNickname = user.nickname;
+  // update user profile info
+  const updatedUser = await data.user.updateProfile(
+    newUserId,
+    newNickname,
+    user.id
+  );
+  // update token
+  const userInfo = {
+    userId: updatedUser.userId,
+    nickname: updatedUser.nickname,
+    picture: updatedUser.picture,
+  };
+  const token = await createToken(userInfo);
+  userInfo.picture = user.picture;
+  setToken(res, token);
+  return userInfo;
 }

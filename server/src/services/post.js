@@ -1,5 +1,5 @@
 import * as data from "../data/index.js";
-import s3 from "../utils/s3.js";
+import { s3Remove } from "../utils/s3.js";
 
 // get의 쿼리같은경우는 필드명만 살짝 수정해주면 되어서
 // 그냥 변수를 한꺼번에 넣는 방식으로 쿼리 설정을 함
@@ -87,15 +87,7 @@ export async function removePost(params, query) {
   await data.post.removePost(postType, id);
 
   // havetochage
-  await parsed.forEach(async item => {
-    await s3.deleteObject(
-      {
-        Bucket: item.bucket,
-        Key: item.key,
-      },
-      function (err, data) {
-        if (err) throw err;
-      }
-    );
+  parsed.forEach(item => {
+    s3Remove(item.bucket, item.key);
   });
 }
