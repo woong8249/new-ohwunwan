@@ -83,7 +83,7 @@ order by p_u.createdAt desc `;
 // And if you provide  only 'postTye,id', It can find that post.
 export async function getPost(postType, kind1rm, userId, number, limit, id) {
   return pool
-    .execute(makeGetQuery(postType, kind1rm, userId, number, limit, id))
+    .query(makeGetQuery(postType, kind1rm, userId, number, limit, id))
     .then(result => result[0])
     .catch(err => {
       throw err;
@@ -126,27 +126,28 @@ export async function createPost1rm(
     });
 }
 
-export async function updatePost(postType, id, text, kg) {
-  let data;
-  if (text && kg) {
-    const query = `update posts_${postType} set text=?,kg=? where id=?`;
-    data = await pool.query(query, [text, kg, id]).catch(err => {
+export async function updatePost(postType, id, text) {
+  const query = `update posts_${postType} set text=? where id=?`;
+  return pool
+    .query(query, [text, id])
+    .then(data => {
+      return getPost(postType, null, null, null, null, id);
+    })
+    .catch(err => {
       throw err;
     });
-  } else if (text) {
-    const query = `update posts_${postType} set text=? where id=?`;
-    data = await pool.query(query, [text, id]).catch(err => {
+}
+
+export async function updatePost1rm(postType, id, text, kg) {
+  const query = `update posts_${postType} set text=?,kg=? where id=?`;
+  return pool
+    .query(query, [text, kg, id])
+    .then(data => {
+      return getPost(postType, null, null, null, null, id);
+    })
+    .catch(err => {
       throw err;
     });
-  } else if (kg) {
-    const query = `update posts_${postType} set kg=? where id=?`;
-    data = await pool.query(query, [kg, id]).catch(err => {
-      throw err;
-    });
-  }
-  let info = data[0].info;
-  if (info.includes("Rows matched: 0")) return [];
-  return getPost(postType, null, null, null, null, id);
 }
 
 export async function removePost(postType, id) {

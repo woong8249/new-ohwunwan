@@ -6,4 +6,21 @@ AWS.config.update({
   secretAccessKey: config.aws.secretAccessKey,
   region: config.aws.region,
 });
-export default new AWS.S3();
+const s3 = new AWS.S3();
+export const s3Remove = (bucket, key) => {
+  try {
+    s3.deleteObject(
+      {
+        Bucket: bucket,
+        Key: key,
+      },
+      function (err, data) {
+        if (err) throw err;
+      }
+    );
+  } catch (err) {
+    throw err;
+  }
+};
+
+export default s3;

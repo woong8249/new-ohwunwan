@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
-import authRouter from "../routes/auth.js";
+import userRouter from "../routes/user.js";
 import { ValidationError } from "../errors/validationError.js";
 
 export default async ({ app }) => {
@@ -26,7 +26,7 @@ export default async ({ app }) => {
 
   // ----라우팅----
   app.use("/post", postRouter);
-  app.use("/auth", authRouter);
+  app.use("/user", userRouter);
 
   //----잘못 된 경로입력시----
   app.use((req, res, next) => {
@@ -35,10 +35,12 @@ export default async ({ app }) => {
 
   //----에러케치 (비동기 에러도 잡을 수 있음 )("express-async-errors";)----
   app.use((err, req, res, next) => {
-    if (err instanceof ValidationError) {
-      return res.status(400).json({ message: err });
-    } else if (err instanceof MulterError) {
+    if (err instanceof ValidationError)
+      return res.status(err.status).json({ message: err });
+    else if (err instanceof MulterError)
       return res.status(400).json({ message: err.code });
+    else if (err.status == 400) {
+      return res.status(400).json({ message: err });
     } else {
       console.error("!!!error!!!", err);
       res.status(500).json({ message: "sorry. something is wrong" });
