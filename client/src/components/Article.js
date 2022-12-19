@@ -12,41 +12,63 @@ import ArticleComment from "./ArticleComment";
 import UserRowName from "./UserRowName";
 import ArticleCommentInput from "./ArticleCommentInput";
 import ArticleCommentButton from "./ArticleCommentButton";
+import ArticleVideo from "./ArticleVideo";
 
 function Article({...props}) {
+  // console.log(props)
+
+  // * 확장자 찾기 - 3글자
+  const contentExtension = props.content[0].slice(props.content[0].length - 3 , props.content[0].length);
+
   return (
     <ArticleWrap>
       <ArticleHeader>
         <UserRow {...props} />
       </ArticleHeader>
+
+      {/* TODO: 사진 왼쪽, 오른쪽 버튼 이동 구현 */}
       <ArticleContents>
-        <ArticleImage />
+
+        {/* 사진 or 동영상 구분 */}
+        { contentExtension === "mov" ? <ArticleVideo {...props} /> :
+          contentExtension === "avi" ? <ArticleVideo {...props} /> :
+          contentExtension === "mp3" ? <ArticleVideo {...props} /> :
+          contentExtension === "mp4" ? <ArticleVideo {...props} /> :
+          
+          // * 사진
+          <ArticleImage {...props} />
+        }
+
       </ArticleContents>
 
       <ArticleSubWrap>
         <ArticleButtons>
           <ArticleLikeButton liked />
-          <ArticleTime createdAt="2022-12-08 12:54:07" />
+          <ArticleTime {...props} />
         </ArticleButtons>
 
         <ArticleTextWrap>
-          <ArticleLikeCount like="164" />
+          <ArticleLikeCount {...props} />
           <br />
-          <ArticleText text="오운완" />
+          <ArticleText {...props} />
           <br />
-          <ArticleCommentCount comment="5" />
+          <ArticleCommentCount {...props} />
         </ArticleTextWrap>
-        <ArticleComments>
+
+        {/* TODO: 댓글 데이터 받아서 구현 (데이터 없음) */}
+        {/* <ArticleComments>
           <ArticleCommentRow>
             <UserRowName userName="hee" comment />
             <ArticleComment comment="운동하느라 고생했어" />
           </ArticleCommentRow>
-        </ArticleComments>
+        </ArticleComments> */}
+
         <ArticleCommentsForm action="" method="post">
           <ArticleCommentInput />
           <ArticleCommentButton />
         </ArticleCommentsForm>
       </ArticleSubWrap>
+
     </ArticleWrap>
   )
 }

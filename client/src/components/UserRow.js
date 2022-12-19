@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 
 // components
@@ -7,27 +7,20 @@ import UserRowName from "./UserRowName";
 import UserRowButton from "./UserRowButton";
 
 function UserRow({...props}) {
-  const [onUserId, isOnUsersId] = useState({})
-
-  useEffect(() => {
-    isOnUsersId(props)
-  }, [])
-
-  // console.log(onUserId)
+  // MenuModal state
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <Fragment>
-      {onUserId.articles && 
-        <UserRowWrap>
-          <UserRowLeft>
-            <UserRowImage userImage={props.articles[0].userImage.userImage} />
-            <UserRowName userName={props.articles[0].userId} />
-          </UserRowLeft>
-          <UserRowRight>
-            <UserRowButton />
-          </UserRowRight>
-        </UserRowWrap>
-      }
+      <UserRowWrap>
+        <UserRowLeft>
+          <UserRowImage userImage={props.picture} />
+          <UserRowName userName={props.nickname} />
+        </UserRowLeft>
+        <UserRowRight>
+          <UserRowButton modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        </UserRowRight>
+      </UserRowWrap>
     </Fragment>
   )
 }
@@ -50,7 +43,5 @@ const UserRowLeft = styled.div`
 const UserRowRight = styled.div`
   cursor: pointer;
 `
-
-
 
 export default UserRow;

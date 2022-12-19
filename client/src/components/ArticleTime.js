@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 function ArticleTime({...props}) {
   return (
-    <Time {...props}>{props.createdAt.slice(0, 10)}</Time>
+    <Time {...props}>{props.updatedAt.slice(0, 10)}</Time>
   )
 }
 
