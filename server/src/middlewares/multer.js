@@ -13,25 +13,18 @@ const multerS3_opts = {
   key: function (req, file, cb) {
     const { postType } = req.params;
     const { path: userpath } = req;
+    let userId = req?.user?.userId;
+    userId || (userId = "test");
     if (postType === "ohwunwan")
-      return cb(
-        null,
-        `post-ohwunwan/${Date.now()}_${path.basename(file.originalname)}`
-      );
+      return cb(null, `post-ohwunwan/${Date.now()}_${path.basename(userId)}`);
     else if (postType === "feedback")
-      return cb(
-        null,
-        `post-feedback/${Date.now()}_${path.basename(file.originalname)}`
-      );
+      return cb(null, `post-feedback/${Date.now()}_${path.basename(userId)}`);
     else if (postType === "1rm")
-      return cb(
-        null,
-        `post-1rm/${Date.now()}_${path.basename(file.originalname)}`
-      );
+      return cb(null, `post-1rm/${Date.now()}_${path.basename(userId)}`);
     else if (userpath === "/me/picture")
       return cb(
         null,
-        `user-profile-picture/${Date.now()}_${path.basename(file.originalname)}`
+        `user-profile-picture/${Date.now()}_${path.basename(userId)}`
       );
   },
 };
