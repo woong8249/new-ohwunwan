@@ -127,9 +127,9 @@ export async function createPost1rm(
 }
 
 export async function updatePost(postType, id, text) {
-  const query = `update posts_${postType} set text=? where id=?`;
+  const query = `update posts_${postType} set text=?,updatedAt=? where id=?`;
   return pool
-    .query(query, [text, id])
+    .query(query, [text, new Date(), id])
     .then(data => {
       return getPost(postType, null, null, null, null, id);
     })
