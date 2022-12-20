@@ -10,16 +10,12 @@ export const comment = (value) => {
 };
 
 // reducer
-const initialState = {
-  comment: ''
-};
+const initialState = '';
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case ADD_COMMENT:
-      return {
-        comment: action.comment
-      };
+      return action.comment;
     default:
       return state;
   }

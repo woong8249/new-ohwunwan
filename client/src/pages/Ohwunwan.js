@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 // components
 import Menu from "../components/Menu";
@@ -12,6 +13,9 @@ import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage";
 
 function Ohwunwan() {
+  const state = useSelector(state => state)
+  // console.log(state)
+
   return (
     <Fragment>
       <OhwunwanWrap>
