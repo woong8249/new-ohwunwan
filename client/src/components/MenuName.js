@@ -7,7 +7,10 @@ function MenuName({children, ...props}) {
 }
 
 const MenuText = styled.span`
-  
+  height: 3rem;
+  display: inline-block;
+  line-height: 3rem;
+  /* font-weight: ${props => props.theme.fontBold}; */
 `
 
 export default MenuName;

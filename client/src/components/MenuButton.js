@@ -2,8 +2,13 @@ import styled from "styled-components";
 
 function MenuButton({...props}) {
   return(
-    <i className={`fa-solid ${props.menuName} fa-xl`}></i>
+    <Menu src={props.menuName} />
   )
 }
+
+const Menu = styled.img`
+  width: 3rem;
+  height: 3rem;
+`
 
 export default MenuButton;
