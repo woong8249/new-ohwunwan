@@ -1,9 +1,16 @@
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux"
+import { ADD_COMMENT } from "../store/modules/comment";
 
 function ArticleCommentInput({...props}) {
-  const commentValue = 2;
+  const comment = useSelector(state => state.comment)
+  const dispatch = useDispatch()
+  
   return (
-    <CommentInput {...props} placeholder="댓글 달기..." required></CommentInput>
+    <CommentInput {...props} placeholder="댓글 달기..." required onChange={(e) => {
+      dispatch({type: ADD_COMMENT, comment: e.target.value})
+      // console.log(comment)
+    }}></CommentInput>
   )
 }
 
