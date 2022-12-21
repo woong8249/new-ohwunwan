@@ -5,6 +5,7 @@ const theme = {
   secondaryText: "rgb(142, 142, 142)", // 시간, 이름
   tertiaryText: "rgb(199, 199, 199)", // footer, 모달 메뉴 구분선
   buttonColor: "#b3dbff", // 팔로우 버튼 - 비활성화 blue-2
+  buttonSubmitColor: "#47afff", // 로그인 페이지 - submit 버튼 blue-4
   buttonOnColor: "#0095f6", // 팔로우 버튼 - 활성화 blue-5
   errorColor: "rgb(237, 73, 86)", // error 컬러(red) --ig-error-or-destructive
   
@@ -24,10 +25,14 @@ const theme = {
   modalWidth: "40rem", // 모달창 가로 길이
   modalRowHeight: "5rem", // 모달창 세로 길이
   modalPadding: "2rem", // 모달창 패딩
-  modalHeight: "70rem", // 회원가입 세로 길이
 
-  // 로그인
-  
+  // 모달 로그인
+  modalLoginHeight: "40rem", // 모달 로그인 세로 길이
+  modalLoginSubject: "4rem", // 모달 로그인 제목 크기
+  modalLoginSubjectPadding: "3rem", // 모달 로그인 제목 패딩
+  modalLoginInputWidth: "30rem", // 모달 로그인 인풋 가로 길이
+  modalLoginInputPadding: "1rem", // 모달 로그인 인풋 가로 길이
+  modalLoginInputMargin: "0.5rem", // 모달 로그인 인풋 마진
 }
 
 export default theme;

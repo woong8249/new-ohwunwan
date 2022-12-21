@@ -61,8 +61,11 @@ export const GlobalStyle = createGlobalStyle`
     cursor: pointer
   }
 
-  input:focus {
-    outline: none;
+  input {
+    border: 1px solid rgb(133, 133, 133);
+    &:focus {
+      outline: none;
+    }
   }
 
   html, body {
