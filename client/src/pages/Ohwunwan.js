@@ -16,16 +16,19 @@ function Ohwunwan() {
   const state = useSelector(state => state)
   // console.log(state)
 
+  const loginModal = useSelector(state => state.loginModal)
+  // console.log(loginModal)
+
   return (
     <Fragment>
       <OhwunwanWrap>
         <Menu />
         <Main />
         <Sidebar />
+        {loginModal ? <LoginPage />: null}
       </OhwunwanWrap>
       {/* <MenuModal /> */}
       {/* <SignupPage /> */}
-      {/* <LoginPage /> */}
     </Fragment>
   )
 }

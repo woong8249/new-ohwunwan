@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from "react-redux";
 import MenuButton from "./MenuButton";
 import MenuName from "./MenuName";
 
+// actionTypes
+import { LOGIN_MODAL } from "../store/modules/loginModal";
+
 // icons
 import ohwunwan from "../assets/icons/arm-muscle.png"
 import onerm from "../assets/icons/ranking.png"
@@ -21,8 +24,12 @@ function Menu() {
     [profile, "프로필"],
   ]
 
-  const loginState = useSelector(state => state.loginState)
+  const loginState = useSelector(state => state.loginState);
+  const loginModal = useSelector(state => state.loginModal);
+  const dispatch = useDispatch();
 
+  // console.log(loginModal)
+  
   return(
     <MenuWrap>
         {menuLists.map((arr, idx) => 
@@ -30,7 +37,7 @@ function Menu() {
           <MenuRow key={idx} onClick={
             // * 프로필일 경우 && loginState가 false => onclick 작동
             arr[1] === "프로필" && loginState === false ?
-            () => console.log(loginState) :
+            () => {dispatch({type: LOGIN_MODAL, loginModal: true})}:
             null
           }>
             <MenuRowLeft>

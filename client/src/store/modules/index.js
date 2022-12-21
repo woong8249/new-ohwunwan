@@ -3,9 +3,11 @@ import { combineReducers } from "redux";
 import comment from "./comment";
 import loginState from "./loginState";
 import login from "./login"
+import loginModal from "./loginModal";
 
 export default combineReducers({
   comment,
   loginState,
-  login
+  login,
+  loginModal
 });
