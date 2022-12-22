@@ -34,16 +34,21 @@ function Menu() {
         {menuLists.map((arr, idx) => 
           
           <MenuRow key={idx} onClick={
-            // * 프로필일 경우 && loginState가 false => onclick 작동
-            arr[1] === "프로필" && loginState === false ?
+            // * 프로필일 경우 && 로그인 되어 있지 않은 경우 && loginState가 false => onclick 작동
+            arr[1] === "프로필" && loginState === false && user === undefined ?
             () => {dispatch({type: LOGIN_MODAL, loginModal: true})}:
-            null
+            // * 프로필일 경우 && 로그인 되어 있을 경우 && loginState가 false => onclick 작동시 마이페이지 이동
+            arr[1] === "프로필" && loginState === false && user !== undefined ?
+            () => console.log("마이페이지 이동, 수정목록")
+            // 그 외의 경우
+            :null
           }>
             <MenuRowLeft>
               {/* 로그인 되어 있을 때 사진 없는 경우 */}
               { arr[1] === "프로필" && user.length !== undefined && user.picture === null ?  <MenuButton menuName={arr[0]} /> : 
               // 사진 있는 경우
               arr[1] === "프로필" && user.length !== undefined ? <MenuButton menuName={user.picture} /> :
+              // 로그인 안되어 있을 경우
               <MenuButton menuName={arr[0]} />}
             </MenuRowLeft>
             <MenuName>{arr[1]}</MenuName>
