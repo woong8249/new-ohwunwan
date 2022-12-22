@@ -4,7 +4,9 @@ import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
 
 export const validateSignup = [
-  body("userId", "Please provide at least 5 characters").isLength({ min: 5 }),
+  body("userId", "Please provide userId at least 5 characters").isLength({
+    min: 5,
+  }),
   body("userId", "Already exists").custom(value => {
     return data.user
       .findByUserId(value) //
@@ -13,7 +15,19 @@ export const validateSignup = [
         else return new Promise((res, rej) => res());
       });
   }),
-  body("password", "Please provide at least 5 characters").isLength({ min: 5 }),
+  body("password", "Please provide password at least 5 characters").isLength({
+    min: 5,
+  }),
+  body(
+    "passwordConfirmation",
+    "Please provide passwordConfirmation at least 5 characters"
+  ) //
+    .isLength({ min: 5 }),
+  body(
+    "passwordConfirmation",
+    "passwordConfirmation field must have the same value as the password field"
+  ) //
+    .custom((value, { req }) => value === req.body.password),
   validator,
 ];
 
@@ -32,8 +46,12 @@ const isUser = async (value, { req }) => {
 };
 
 export const validateLogin = [
-  body("userId", "Please provide at least 5 characters").isLength({ min: 5 }),
-  body("password", "Please provide at least 5 characters").isLength({ min: 5 }),
+  body("userId", "Please provide userId at least 5 characters").isLength({
+    min: 5,
+  }),
+  body("password", "Please provide password at least 5 characters").isLength({
+    min: 5,
+  }),
   body("userId", "Does not exist or the password is incorrect") //
     .custom(isUser),
   validator,
@@ -59,12 +77,12 @@ export const validateDeletePicture = [
 
 export const validateUpdateProfile = [
   oneOf([
-    body("newUserId", "Please provide at least 5 characters") //
+    body("newUserId", "Please provide newUserId at least 5 characters") //
       .isLength({ min: 5 }),
-    body("newNickname", "Please provide at least 5 characters") //
+    body("newNickname", "Please provide newNickname at least 5 characters") //
       .isLength({ min: 5 }),
   ]),
-  body("newUserId", "Already exists")
+  body("newUserId", "This userId already exists")
     .if(body("newUserId").exists())
     .custom(value => {
       return data.user
@@ -74,7 +92,7 @@ export const validateUpdateProfile = [
           else return new Promise((res, rej) => res());
         });
     }),
-  body("newNickname", "Already exists")
+  body("newNickname", "This nickname already exists")
     .if(body("newNickname").exists())
     .custom(value => {
       return data.user
@@ -88,17 +106,17 @@ export const validateUpdateProfile = [
 ];
 
 export const validateUpdatePassword = [
-  body("password", "Please provide at least 5 characters").isLength({
-    min: 5,
-  }),
-  body("newPassword", "Please provide at least 5 characters").isLength({
-    min: 5,
-  }),
-  body("passwordConfirmation", "Already exists").isLength({ min: 5 }),
+  body("password", "Please provide at least 5 characters") //
+    .isLength({ min: 5 }),
+  body("newPassword", "Please provide at least 5 characters") //
+    .isLength({ min: 5 }),
+  body("passwordConfirmation", "Please provide at least 5 characters") //
+    .isLength({ min: 5 }),
   check(
     "passwordConfirmation",
     "passwordConfirmation field must have the same value as the password field"
-  ).custom((value, { req }) => value === req.body.newPassword),
+  ) //
+    .custom((value, { req }) => value === req.body.newPassword),
   body("password", "password is incorrect") //
     .custom(isUser),
   validator,

@@ -4,7 +4,13 @@ import * as data from "../data/index.js";
 import { ValidationError } from "../errors/validationError.js";
 
 export default async function (req, res, next) {
-  const token = req.cookies.token;
+  let token = req.cookies.token;
+  // Note for Swagger UI and Swagger Editor users:
+  //  Cookie authentication is currently not supported for "try it out" requests due to browser security restrictions.
+  // See this issue for more information. SwaggerHub does not have this limitation.
+  // https://swagger.io/docs/specification/authentication/cookie-authentication/
+  // For apidoc, check also req.headers once
+  if (!token) token = req.headers["token"];
   if (!token) {
     throw new ValidationError("No authorization", 401);
   }

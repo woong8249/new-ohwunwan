@@ -58,7 +58,7 @@ export async function createPost(params, query, files) {
   }
   return post.map(item => {
     return { ...item, content: JSON.parse(item.content) };
-  });
+  })[0];
 }
 
 export async function updatePost(params, body, post) {
