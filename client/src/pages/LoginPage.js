@@ -2,22 +2,28 @@ import { Fragment } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
+import axios from "axios";
+
 // redux
 import { ID, PASSWORD } from "../store/modules/login";
 import { LOGIN_MODAL } from "../store/modules/loginModal";
 import { SIGNUP_MODAL } from "../store/modules/signupModal";
+
+// actions
+import { USERINFO } from "../store/modules/user";
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
 
 function LoginPage({...props}) {
   // state
-  const state = useSelector(state => state);
+  const login = useSelector(state => state.login);
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch();
-  // console.log(state);
+  // console.log(login);
 
   // input invalid 메시지 숨기기
-  // hideInvalid();
+  hideInvalid();
 
   return (
     <Fragment>
@@ -50,7 +56,22 @@ function LoginPage({...props}) {
                 dispatch({type: PASSWORD, password: e.target.value})
               }}
             />
-            <LoginInput type="submit" value="로그인" />
+            <LoginInput 
+              type="submit" 
+              value="로그인"
+              onClick={() => {
+                axios.post(`${process.env.REACT_APP_DB_HOST}/user/signin`,
+                  {userId: login.id, password: login.password}
+                )
+                .then(response => {
+                  // console.log(response.data)
+                  dispatch({type: USERINFO, user: response.data})
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+              }} 
+            />
             <div>
               <LoginSpan>계정이 없으신가요?</LoginSpan>
               <LoginSpan singup 
