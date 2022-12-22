@@ -4,6 +4,7 @@ import { MulterError } from "multer";
 import cors from "cors";
 import moran from "morgan";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 import helmet from "helmet";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
@@ -20,7 +21,8 @@ export default async ({ app }) => {
   app.use(cors(corsOption)); //cors set
   app.use(helmet());
   app.use(cookieParser());
-  app.use(express.json()); // REST API의 body를 조회가능하게해줌 (내부미들웨어)
+  app.use(express.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
   if (config.env === "development") app.use(moran("dev")); // log set
   else app.use(moran("combined"));
 
@@ -35,12 +37,14 @@ export default async ({ app }) => {
 
   //----에러케치 (비동기 에러도 잡을 수 있음 )("express-async-errors";)----
   app.use((err, req, res, next) => {
-    if (err instanceof ValidationError)
-      return res.status(err.status).json({ message: err });
-    else if (err instanceof MulterError)
+    if (err instanceof ValidationError) {
+      return res.status(err.status).json({ message: err.message });
+    } else if (err instanceof MulterError) {
       return res.status(400).json({ message: err.code });
-    else if (err.status == 400) {
-      return res.status(400).json({ message: err });
+    } else if (err.status < 500) {
+      return res.status(err.status).json({ message: err.message });
+    } else if (err.message === "Multipart: Boundary not found") {
+      return res.status(406).json({ message: err.message });
     } else {
       console.error("!!!error!!!", err);
       res.status(500).json({ message: "sorry. something is wrong" });

@@ -16,7 +16,6 @@ export const validateGet = [
   validator,
 ];
 
-// 쿼리로다받아오기
 export const validateCreateBefore = [
   param(
     "postType",
@@ -41,8 +40,8 @@ export const validateCreateBefore = [
 
 export const validateCreateAfter = [
   check("files", "No content").custom((value, { req }) => {
-    if (req.files.length === 0) return false;
-    else return true;
+    if (req?.files?.length) return true;
+    else return false;
   }),
   validator,
 ];
