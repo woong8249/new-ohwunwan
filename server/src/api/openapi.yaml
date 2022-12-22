@@ -565,6 +565,30 @@ paths:
                 example:
                   - message: passwordConfirmation field must have the same value as the password field
                   - message: password is incorrect
+  /user/withdrawal:
+    delete:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: delete user
+      description: >
+        The user is withdrawn from the service and all information<br> 
+        such as related posts and photos is deleted.
+      responses:
+        "200":
+          description: Membership withdrawal is complete
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Membership withdrawal is complete"
 
 components:
   securitySchemes:
