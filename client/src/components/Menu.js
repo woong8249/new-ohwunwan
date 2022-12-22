@@ -35,10 +35,10 @@ function Menu() {
           
           <MenuRow key={idx} onClick={
             // * 프로필일 경우 && 로그인 되어 있지 않은 경우 && loginState가 false => onclick 작동
-            arr[1] === "프로필" && loginState === false && user === undefined ?
+            arr[1] === "프로필" && loginState === false && user.userId === undefined ?
             () => {dispatch({type: LOGIN_MODAL, loginModal: true})}:
             // * 프로필일 경우 && 로그인 되어 있을 경우 && loginState가 false => onclick 작동시 마이페이지 이동
-            arr[1] === "프로필" && loginState === false && user !== undefined ?
+            arr[1] === "프로필" && loginState === false && user.userId !== undefined ?
             () => console.log("마이페이지 이동, 수정목록")
             // 그 외의 경우
             :null
