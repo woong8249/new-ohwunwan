@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { ID, PASSWORD } from "../store/modules/login";
 
+// utils
+import hideInvalid from "../utils/hideInvalid";
+
 
 function LoginPage({...props}) {
   // state
@@ -10,22 +13,40 @@ function LoginPage({...props}) {
   const dispatch = useDispatch()
   // console.log(login)
 
+  // input invalid 메시지 숨기기
+  hideInvalid()
+
   return (
     <Fragment>
       <SignupBackground>
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
           <LoginForm>
-            <LoginInput type="text" placeholder="아이디" onChange={(e) => {
-              dispatch({type: ID, id: e.target.value})
-            }}/>
-            <LoginInput type="password" placeholder="패스워드" onChange={(e) => {
-              dispatch({type: PASSWORD, password: e.target.value})
-            }} />
-            <LoginInput type="submit" value="로그인" onClick={(e) => {
-              e.preventDefault()
-              console.log("로그인 작동")
-            }} />
+            <LoginInput
+              type="text" 
+              placeholder="아이디"
+              pattern="^([a-z0-9]){6,10}$" // 영문소문자, 숫자 6-10자리
+              autoFocus // 페이지가 열릴 때 처음으로 포커스가 이동하도록 세팅
+              required
+              onChange={(e) => {
+                dispatch({type: ID, id: e.target.value})
+              }}
+            />
+            <LoginInput 
+              type="password" 
+              placeholder="패스워드"
+              pattern="^[a-zA-Z0-9!@#$%^*+=-]{5,10}$" // 영문대소문자, 숫자, 특수문자, 5-10자리
+              required
+              onChange={(e) => {
+                dispatch({type: PASSWORD, password: e.target.value})
+              }}
+              
+            />
+            <LoginInput type="submit" value="로그인" 
+              // onClick={(e) => {
+              // console.log("로그인 작동")
+              // }} 
+            />
             <div>
               <LoginSpan>계정이 없으신가요?</LoginSpan>
               <LoginSpan singup onClick={() => {
