@@ -9,5 +9,5 @@ export default combineReducers({
   comment,
   loginState,
   login,
-  loginModal
+  loginModal,
 });

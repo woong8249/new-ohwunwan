@@ -1,15 +1,27 @@
 import { Fragment } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { ID, PASSWORD } from "../store/modules/login";
+
 
 function LoginPage({...props}) {
+  // state
+  const login = useSelector(state => state.login)
+  const dispatch = useDispatch()
+  // console.log(login)
+
   return (
     <Fragment>
       <SignupBackground>
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
           <LoginForm>
-            <LoginInput type="text" placeholder="아이디" />
-            <LoginInput type="password" placeholder="패스워드" />
+            <LoginInput type="text" placeholder="아이디" onChange={(e) => {
+              dispatch({type: ID, id: e.target.value})
+            }}/>
+            <LoginInput type="password" placeholder="패스워드" onChange={(e) => {
+              dispatch({type: PASSWORD, password: e.target.value})
+            }} />
             <LoginInput type="submit" value="로그인" onClick={(e) => {
               e.preventDefault()
               console.log("로그인 작동")

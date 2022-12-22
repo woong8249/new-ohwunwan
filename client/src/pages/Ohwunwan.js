@@ -13,11 +13,10 @@ import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage";
 
 function Ohwunwan() {
+  // state
   const state = useSelector(state => state)
-  // console.log(state)
-
   const loginModal = useSelector(state => state.loginModal)
-  // console.log(loginModal)
+  // console.log(state)
 
   return (
     <Fragment>
