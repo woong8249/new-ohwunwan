@@ -66,6 +66,7 @@ function LoginPage({...props}) {
                 .then(response => {
                   // console.log(response.data)
                   dispatch({type: USERINFO, user: response.data})
+                  dispatch({type: LOGIN_MODAL, loginModal: false})
                 })
                 .catch(error => {
                   console.log(error)

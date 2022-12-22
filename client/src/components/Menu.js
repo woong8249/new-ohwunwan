@@ -16,6 +16,11 @@ import post from "../assets/icons/add-button.png"
 import profile from "../assets/icons/circle-user-solid.svg"
 
 function Menu() {
+  // state
+  const user = useSelector(state => state.user);
+  const loginState = useSelector(state => state.loginState);
+  const dispatch = useDispatch();
+
   const menuLists = [
     [ohwunwan, "오운완"], 
     [onerm, "1RM"], 
@@ -24,12 +29,6 @@ function Menu() {
     [profile, "프로필"],
   ]
 
-  const loginState = useSelector(state => state.loginState);
-  const loginModal = useSelector(state => state.loginModal);
-  const dispatch = useDispatch();
-
-  // console.log(loginModal)
-  
   return(
     <MenuWrap>
         {menuLists.map((arr, idx) => 
@@ -41,7 +40,11 @@ function Menu() {
             null
           }>
             <MenuRowLeft>
-              <MenuButton menuName={arr[0]} />
+              {/* 로그인 되어 있을 때 사진 없는 경우 */}
+              { arr[1] === "프로필" && user.length !== undefined && user.picture === null ?  <MenuButton menuName={arr[0]} /> : 
+              // 사진 있는 경우
+              arr[1] === "프로필" && user.length !== undefined ? <MenuButton menuName={user.picture} /> :
+              <MenuButton menuName={arr[0]} />}
             </MenuRowLeft>
             <MenuName>{arr[1]}</MenuName>
           </MenuRow>
