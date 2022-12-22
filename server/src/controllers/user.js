@@ -56,3 +56,12 @@ export function updatePassword(req, res) {
       res.status(200).json({ massage: "Your password has been changed" })
     );
 }
+
+export function Withdrawal(req, res) {
+  const { user } = req;
+  return userServices
+    .withdrawal(user)
+    .then(() =>
+      res.status(200).json({ message: "Membership withdrawal is complete" })
+    );
+}

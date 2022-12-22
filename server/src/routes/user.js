@@ -42,4 +42,5 @@ router.put(
   validateUpdatePassword,
   userController.updatePassword
 );
+router.delete("/withdrawal", isLogin, userController.Withdrawal);
 export default router;

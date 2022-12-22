@@ -57,3 +57,22 @@ export async function updatePassword(hashed_password, id) {
       throw err;
     });
 }
+
+// 회원탈퇴시 사용함
+export async function getPost_idByuser_id(postType, id) {
+  const query = `select p.infoS3 from users as u left join posts_${postType} as p on p.user_id= u.id where u.id=?;`;
+  return pool
+    .query(query, [id])
+    .then(result => result[0])
+    .catch(err => {
+      throw err;
+    });
+}
+export async function deleteUser(id) {
+  const query = `delete from users where id=?`;
+  return pool
+    .query(query, [id]) //
+    .catch(err => {
+      throw err;
+    });
+}
