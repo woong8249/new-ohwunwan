@@ -541,7 +541,8 @@ INSERT INTO `Users` VALUES
 (7,'bestsim','bestsim1234','Besthip','https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%89%E1%85%B5%E1%86%B7%E1%84%8B%E1%85%B3%E1%84%84%E1%85%B3%E1%86%B7%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
 (8,'seongbin','seongbin1234','Ironman','https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%8B%E1%85%B2%E1%86%AB%E1%84%89%E1%85%A5%E1%86%BC%E1%84%87%E1%85%B5%E1%86%AB%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
 (9,'jigi','jigi1234',NULL,'https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
-(10,'jjangjae','jjangjae1234',NULL,'https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%8D%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),(11,'jiwoong','$2b$10$nd4uKgEmPQjUBiUW7hSTee2T.4fR3.hNyXXZcTk0PmimgQT91xSj.','woonge_e',NULL,NULL,'2022-12-19 13:59:41');
+(10,'jjangjae','jjangjae1234',NULL,'https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%8D%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
+(11,'jiwoong','$2b$10$7NWkXTiH4x8tV9yv/mZN9ulKpKk1d/gang/tK8qopTdt.4LlHyVWm','woonge_e',NULL,NULL,'2022-12-19 13:59:41');
 
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
