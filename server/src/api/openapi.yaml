@@ -1,0 +1,717 @@
+openapi: 3.0.0
+info:
+  description: This is Ohwunwan API service in development step.<br>
+    So for now,We are going to proceed in http protocol
+  version: 1.0.0
+  title: Ohwunwan  - mini project
+  contact:
+    email: hyae4924@gmail.com
+servers:
+  - url: "http://localhost:8080"
+tags:
+  - name: post
+    description: APIs to handle post
+  - name: user
+    description: APIs to handle users
+
+paths:
+  /post/{postType}:
+    get:
+      tags:
+        - post
+      summary: Get posts
+      description: >
+        Get a list of posts within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all posts.<br>
+        If userId is provided, the list contains
+        only posts by the given userId.
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: kind1rm
+          schema:
+            type: string
+          description: >
+            If you select 1rm post,<br>
+            you can additionally select the kind of 1rm post.<br>
+            There are 3 types.(bench, dead, squat)
+        - in: query
+          name: userId
+          required: false
+          schema:
+            type: string
+          description: >
+            If you use it to specify a user and provide this value,<br> you'll get posts written by that user.
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: This is ohwunwan post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_twice"
+        "204":
+          description: If there is no post, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - post
+      summary: create posts
+      description: >
+        Create a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: >
+            Please provide the author userId
+        - in: query
+          name: text
+          required: true
+          schema:
+            type: string
+          description: >
+            Please provide the text to be written in the post
+        - in: query
+          name: kind1rms
+          schema:
+            type: string
+          description: >
+            If you select 1rm post,<br>
+            <b>you have to additionally provide the kind of 1rm post</b>.<br>
+            There are 3 types.(bench, dead, squat)
+        - in: query
+          name: kg
+          schema:
+            type: integer
+          description: >
+            If you select 1rm post,<br>
+            <b>you have to additionally provide weight.</b><br>
+            unit of weight is kg
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "201":
+          description: Post created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_onlyOne"
+    put:
+      security:
+        - cookieAuth: []
+      tags:
+        - post
+      summary: Update posts
+      description: >
+        Update a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        description: >
+          <b>"If you select '1rm' in postType, you can give 'kg' value"</b>
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: post id
+                text:
+                  type: string
+                  description: If you want to fix text, provide it
+                kg:
+                  type: number
+                  description: >
+                    If you want to fix text, provide it.<br>
+                    but it can only when you select 1rm in postType
+              required:
+                - id
+              example:
+                id: 1
+                text: 알랑가몰라
+                kg: 100
+
+      responses:
+        "201":
+          description: Post created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_onlyOne"
+    delete:
+      security:
+        - cookieAuth: []
+      tags:
+        - post
+      summary: Delete posts
+      description: >
+        Delete a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: number
+          description: >
+            Please, provide post id
+
+      responses:
+        "201":
+          description: Post created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: ok
+  /user/signup:
+    post:
+      tags:
+        - user
+      summary: Sign up
+      description: >
+        sign up in service. Then you can additionally use api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  description: at least 5 characters
+                  type: string
+                password:
+                  type: string
+                  description: at least 5 characters
+                passwordConfirmation:
+                  type: string
+                  description: at least 5 characters. compare with password
+              required:
+                - userId
+                - password
+                - passwordConfirmation
+              example:
+                userId: jiwoong
+                password: jiwoong1234
+                passwordConfirmation: jiwoong1234
+      responses:
+        "201":
+          description: You have successfully registered as a member
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: Signup has completed
+        "400":
+          description: >
+            passwordConfirmation field must have the same value as the password field
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: passwordConfirmation field must have the same value as the password field
+        "409":
+          description: >
+            This userId is already taken
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: Already exists
+  /user/signin:
+    post:
+      tags:
+        - user
+      summary: Sign in
+      description: >
+        login the service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: at least 5 characters
+                password:
+                  type: string
+                  description: at least 5 characters
+              required:
+                - userId
+                - password
+              example:
+                userId: jiwoong
+                password: jiwoong1234
+      responses:
+        "201":
+          description: >
+            Login successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: token=abcde12345; Path=/; HttpOnly
+        "400":
+          description: >
+            Does not exist or the password is incorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: Does not exist or the password is incorrect
+  /user/signout:
+    post:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: Sign out
+      description: >
+        loout the service. You must be logged in and have permission
+      responses:
+        "200":
+          description: LogOut is completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: You are logged out
+  /user/me:
+    get:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: Check login status
+      description: >
+        Check if you are logged in
+      responses:
+        "200":
+          description: You are logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: token=abcde12345; Path=/; HttpOnl
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "No authorization"
+  /user/me/picture:
+    put:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: Update profile picture
+      description: >
+        update profile picture. You must be logged in and have permission
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                picture:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Profile image updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  picture:
+                    type: string
+                    format: ur;
+                required:
+                  - picture
+                example:
+                  picture: "https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/1671692681289_jiwoong"
+    delete:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: delete profile picture
+      description: >
+        Delete profile picture. You must be logged in and have permission
+      responses:
+        "200":
+          description: Profile image deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "picture has been deleted"
+  /user/me/profile:
+    put:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: update user's profile info
+      description: >
+        "Update user's profile info.
+        You must be logged in and have permission "
+      requestBody:
+        description: >
+          <b>"At least one of userId or nickname must be provided"</b>
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newUserId:
+                  type: string
+                  description: If you want to change userId, submit it
+                newNickname:
+                  type: string
+                  description: If you want to change nickname, submit it
+              example:
+                newUserId: jiwoong12
+                newNickname: woowoo
+      responses:
+        "200":
+          description: Profile info updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login"
+        "409":
+          description: >
+            already exists<br>
+            case1:) This userId already exists
+            case2:) This nickname already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  - message: This userId already exists
+                  - message: This nickname already exists
+  /user/me/password:
+    put:
+      security:
+        - cookieAuth: []
+      tags:
+        - user
+      summary: update user's password
+      description: >
+        "Update user's password.
+        You must be logged in and have permission "
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                newPassword:
+                  type: string
+                passwordConfirmation:
+                  type: string
+              example:
+                password: jiwoong1234
+                newpassword: woowoowo
+                passwordConfirmation: woowoowo
+      responses:
+        "200":
+          description: Profile info updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login"
+        "400":
+          description: >
+            case1:) passwordConfirmation field must have the same value as the password field<br>
+            case2:) password is incorrect
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  - message: passwordConfirmation field must have the same value as the password field
+                  - message: password is incorrect
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: header
+      name: token
+
+  schemas:
+    post_onlyOne:
+      type: object
+      properties:
+        ohwunwan_id:
+          type: integer
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+        content:
+          type: string
+          format: array
+        text:
+          type: string
+        createAt:
+          type: string
+          format: date-time
+          description: created date
+        updatedAt:
+          type: string
+          format: date-time
+          description: updated date
+        comments_count:
+          type: string
+        likes_count:
+          type: string
+      required:
+        - ohwunwan_id
+        - userId
+        - nickname
+        - picture
+        - content
+        - text
+        - createdAt
+        - updatedAt
+        - comments_count
+        - likes_count
+      example:
+        ohwunwan_id: 1
+        userId: jiwoong
+        nickname: woong_e
+        picture: null
+        content:
+          - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/pos  -ohwunwan/1670522341248_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B  -%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%1%E  1%86%AF.png
+          - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/pos  -ohwunwan/1670522341258_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B  -%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%1%E  1%86%AF2.png
+          - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/pos  -ohwunwan/1670522341277_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B  -%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%1%E  1%86%AF3.png
+        text: 할게조온나 많네용
+        createdAt: "2021-01-30T08:30:20.000Z"
+        updatedAt: "2021-01-30T08:30:20.000Z"
+        comments_count: 5
+        likes_count: 5
+    post_twice:
+      type: array
+      items:
+        type: object
+        properties:
+          ohwunwan_id:
+            type: integer
+          userId:
+            type: string
+          nickname:
+            type: string
+          picture:
+            type: string
+            format: url
+          content:
+            type: string
+            format: array
+          text:
+            type: string
+          createAt:
+            type: string
+            format: date-time
+            description: created date
+          updatedAt:
+            type: string
+            format: date-time
+            description: updated date
+          comments_count:
+            type: string
+          likes_count:
+            type: string
+      required:
+        - ohwunwan_id
+        - userId
+        - nickname
+        - picture
+        - content
+        - text
+        - createdAt
+        - updatedAt
+        - comments_count
+        - likes_count
+      example:
+        - ohwunwan_id: 1
+          userId: jiwoong
+          nickname: woong_e
+          picture: null
+          content:
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341248_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF.png
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341258_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF2.png
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341277_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF3.png
+          text: 할게조온나 많네용
+          createdAt: "2021-01-30T08:30:20.000Z"
+          updatedAt: "2021-01-30T08:30:20.000Z"
+          comments_count: 5
+          likes_count: 5
+        - ohwunwan_id: 2
+          userId: jigi
+          nickname: null
+          picture: null
+          content:
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341248_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF.png
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341258_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF2.png
+            - https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-ohwunwan/1670522341277_%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B5-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A1%E1%86%AF3.png
+          text: 할게조온나 많네용
+          createdAt: "2021-01-30T08:30:20.000Z"
+          updatedAt: "2021-01-30T08:30:20.000Z"
+          comments_count: 3
+          likes_count: 3
+    login:
+      type: object
+      properties:
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+      required:
+        - userId
+        - nickname
+        - picture
+      example:
+        userId: jiwoong
+        nickname: woonge_e
+        picture: null

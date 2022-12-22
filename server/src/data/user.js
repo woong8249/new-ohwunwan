@@ -50,7 +50,6 @@ export async function updateProfile(newUserId, newNickname, id) {
 }
 
 export async function updatePassword(hashed_password, id) {
-  console.log(hashed_password);
   const query = `update users set password=? where id=?`;
   return pool
     .query(query, [hashed_password, , id]) //

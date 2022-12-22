@@ -3,14 +3,14 @@ export function signup(req, res) {
   const { body } = req;
   return userServices //
     .createUser(body)
-    .then(result => res.status(201).json({ message: "Signup has completed" }));
+    .then(() => res.status(201).json({ message: "Signup has completed" }));
 }
 
 export function signin(req, res) {
   const { user } = req;
   return userServices //
     .login(res, user)
-    .then(userinfo => res.status(200).json(userinfo));
+    .then(userInfo => res.status(200).json(userInfo));
 }
 
 export function signout(req, res) {
@@ -19,12 +19,12 @@ export function signout(req, res) {
 }
 
 export function getMe(req, res) {
-  const userinfo = {
+  const userInfo = {
     userId: req.user.userId,
     nickname: req.user.nickname,
     picture: req.user.picture,
   };
-  res.status(200).json(userinfo);
+  res.status(200).json(userInfo);
 }
 
 export function updatePicture(req, res) {
@@ -46,13 +46,13 @@ export function updateProfile(req, res) {
   const { user, body } = req;
   return userServices
     .updateProfile(res, body, user)
-    .then(user => res.status(200).json(user));
+    .then(userInfo => res.status(200).json(userInfo));
 }
 export function updatePassword(req, res) {
   const { user, body } = req;
   return userServices
     .updatePassword(body, user)
-    .then(user =>
+    .then(() =>
       res.status(200).json({ massage: "Your password has been changed" })
     );
 }

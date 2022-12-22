@@ -17,8 +17,9 @@ export function setToken(res, token) {
   const option = {
     maxAge: config.jwt.expires * 1000,
     httpOnly: true,
-    sameSite: "none",
-    secure: true,
+    // sameSite: "none",
+    // secure: true,
+    // 배포시에 다시수정해야할수도 있음
   };
   res.cookie("token", token, option);
 }

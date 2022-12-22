@@ -6,18 +6,26 @@ import moran from "morgan";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import helmet from "helmet";
+import yaml from "yamljs";
+import swaggerUI from "swagger-ui-express";
 import config from "../config/config.js";
 import postRouter from "../routes/post.js";
 import userRouter from "../routes/user.js";
 import { ValidationError } from "../errors/validationError.js";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default async ({ app }) => {
-  // ----기본세팅----
   const corsOption = {
     origin: config.cors.allowedOrigin,
     optionsSuccessStatus: 200,
     credentials: true, // allow the Access-Control-Allow-Credentials 추가해줌
   };
+
+  const openApiDoc = yaml.load(path.join(__dirname, "../api/openapi.yaml"));
+
   app.use(cors(corsOption)); //cors set
   app.use(helmet());
   app.use(cookieParser());
@@ -27,6 +35,7 @@ export default async ({ app }) => {
   else app.use(moran("combined"));
 
   // ----라우팅----
+  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openApiDoc));
   app.use("/post", postRouter);
   app.use("/user", userRouter);
 

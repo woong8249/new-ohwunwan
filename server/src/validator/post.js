@@ -5,12 +5,12 @@ import * as data from "../data/index.js";
 export const validateGet = [
   param(
     "postType",
-    "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
+    "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
-  query("kind1rm", "It can provide when postType is 1rm")
+  query("kind1rm", "'kind1rm' can provide when postType is 1rm")
     .if(query("kind1rm").exists())
     .custom((value, { req }) => req.params.postType === "1rm"),
-  query("kind1rm", "There are only 3kind: bench, dead, squat ")
+  query("kind1rm", "There are only 3kind in 'kind1rm': bench, dead, squat")
     .if(query("kind1rm").exists())
     .isIn(["bench", "dead", "squat"]),
   validator,
@@ -19,7 +19,7 @@ export const validateGet = [
 export const validateCreateBefore = [
   param(
     "postType",
-    "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
+    "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   query("text", "Please enter the text").notEmpty(),
   query("userId", "Please enter the userId").notEmpty(),
@@ -61,7 +61,7 @@ const isPost = async (value, { req }) => {
 export const validateUpdate = [
   param(
     "postType",
-    "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
+    "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   body("id", "Please provide post_id").notEmpty(),
   body("id", "No content") //
@@ -86,7 +86,7 @@ export const validateUpdate = [
 export const validateRemove = [
   param(
     "postType",
-    "There are only 3Type: ohwunwan, feedback, 1rm . Please provide one of the following"
+    "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   query("id", "please provide post_id").notEmpty(),
   query("id", "No content") //
