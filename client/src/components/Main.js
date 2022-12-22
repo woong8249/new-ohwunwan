@@ -1,36 +1,23 @@
 import styled from "styled-components";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 // components
 import Article from "./Article";
 
-function Main() {
-  // 서버에서 받은 article 정보
-  const [articleLists, setArticleLists] = useState([])
+// utils
+import GetArticles from "../utils/getArticles";
+
+function Main({...props}) {
+  // state
+  const articles  = useSelector(state => state.articles);
+  // console.log(articles)
 
   // 서버에서 atricle 정보 받는 함수
-  function getArticleLists() {
-    axios.get(`${process.env.REACT_APP_DB_HOST}/post/ohwunwan`)
-    .then(response => {
-      // console.log(response);
-      setArticleLists(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
-
-  // 무한 랜더링을 막기 위한 useEffect
-  useEffect(() => {
-    if(articleLists.length === 0) {
-      getArticleLists()
-    }
-  },[articleLists])
+  GetArticles("ohwunwan")
 
   return (
     <MainWrap>
-      {articleLists.map((obj, idx) => {
+      {articles.map((obj, idx) => {
         return (
           <Article key={idx} {...obj} />
         )

@@ -12,8 +12,7 @@ function SignupPage({...props}) {
   // state
   const signup = useSelector(state => state.signup);
   const dispatch = useDispatch();
-  console.log(signup);
-
+  // console.log(signup);
 
   // input invalid 메시지 숨기기
   hideInvalid();
@@ -55,6 +54,7 @@ function SignupPage({...props}) {
             <SignupInput 
               type="submit"
               value="회원가입"
+              onClick={() => {console.log("회원가입")}}
             ></SignupInput>
           </SignupForm>
         </SignupModalWrap>

@@ -6,6 +6,7 @@ import login from "./login"
 import loginModal from "./loginModal";
 import signup from "./signup";
 import signupModal from "./signupModal";
+import articles from "./articles";
 
 
 export default combineReducers({
@@ -14,5 +15,6 @@ export default combineReducers({
   login,
   loginModal,
   signup,
-  signupModal
+  signupModal,
+  articles
 });

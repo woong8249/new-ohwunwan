@@ -27,7 +27,7 @@ function Ohwunwan() {
         {loginModal ? <LoginPage />: null}
         {signupModal ? <SignupPage /> : null}
       </OhwunwanWrap>
-      <SignupPage />
+      {/* <SignupPage /> */}
     </Fragment>
   )
 }

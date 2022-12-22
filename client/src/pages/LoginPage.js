@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 // redux
 import { ID, PASSWORD } from "../store/modules/login";
 import { LOGIN_MODAL } from "../store/modules/loginModal";
+import { SIGNUP_MODAL } from "../store/modules/signupModal";
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
@@ -16,20 +17,25 @@ function LoginPage({...props}) {
   // console.log(state);
 
   // input invalid 메시지 숨기기
-  hideInvalid();
+  // hideInvalid();
 
   return (
     <Fragment>
       <LoginBackground>
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
-          <LoginForm>
+          <LoginForm
+            action={process.env.REACT_APP_DB_HOST + "/user/login"}
+            method="post"
+            accept-charset="UTF-8"
+          >
             <LoginInput
               type="text" 
               placeholder="아이디"
               pattern="^([a-z0-9]){6,10}$" // 영문소문자, 숫자 6-10자리
               autoFocus // 페이지가 열릴 때 처음으로 포커스가 이동하도록 세팅
               required
+              name="userId"
               onChange={(e) => {
                 dispatch({type: ID, id: e.target.value})
               }}
@@ -39,20 +45,19 @@ function LoginPage({...props}) {
               placeholder="패스워드"
               pattern="^[a-zA-Z0-9!@#$%^*+=-]{5,10}$" // 영문대소문자, 숫자, 특수문자, 5-10자리
               required
+              name="password"
               onChange={(e) => {
                 dispatch({type: PASSWORD, password: e.target.value})
               }}
             />
-            <LoginInput type="submit" value="로그인" 
-              onClick={(e) => {
-              console.log("로그인 작동")
-              }} 
-            />
+            <LoginInput type="submit" value="로그인" />
             <div>
               <LoginSpan>계정이 없으신가요?</LoginSpan>
-              <LoginSpan singup onClick={() => {
+              <LoginSpan singup 
+                onClick={() => {
                 dispatch({type: LOGIN_MODAL, loginModal: false})
-              }}>가입하기</LoginSpan>
+                dispatch({type: SIGNUP_MODAL, signupModal: true})
+                }}>가입하기</LoginSpan>
             </div>
           </LoginForm>
         </LoginModalWrap>
