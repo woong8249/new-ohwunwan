@@ -7,16 +7,16 @@ import Menu from "../components/Menu";
 import Main from "../components/Main"
 import Sidebar from "../components/Sidebar";
 
-// dummy
-import MenuModal from "../components/MenuModal";
+// modal
 import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage";
 
 function Ohwunwan() {
   // state
-  const state = useSelector(state => state)
-  const loginModal = useSelector(state => state.loginModal)
-  // console.log(state)
+  const state = useSelector(state => state);
+  const loginModal = useSelector(state => state.loginModal);
+  const signupModal = useSelector(state => state.signupModal);
+  // console.log(state);
 
   return (
     <Fragment>
@@ -25,9 +25,9 @@ function Ohwunwan() {
         <Main />
         <Sidebar />
         {loginModal ? <LoginPage />: null}
+        {signupModal ? <SignupPage /> : null}
       </OhwunwanWrap>
-      {/* <MenuModal /> */}
-      {/* <SignupPage /> */}
+      <SignupPage />
     </Fragment>
   )
 }

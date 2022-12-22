@@ -1,24 +1,26 @@
 import { Fragment } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+
+// redux
 import { ID, PASSWORD } from "../store/modules/login";
+import { LOGIN_MODAL } from "../store/modules/loginModal";
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
 
-
 function LoginPage({...props}) {
   // state
-  const login = useSelector(state => state.login)
-  const dispatch = useDispatch()
-  // console.log(login)
+  const state = useSelector(state => state);
+  const dispatch = useDispatch();
+  // console.log(state);
 
   // input invalid 메시지 숨기기
-  hideInvalid()
+  hideInvalid();
 
   return (
     <Fragment>
-      <SignupBackground>
+      <LoginBackground>
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
           <LoginForm>
@@ -40,27 +42,26 @@ function LoginPage({...props}) {
               onChange={(e) => {
                 dispatch({type: PASSWORD, password: e.target.value})
               }}
-              
             />
             <LoginInput type="submit" value="로그인" 
-              // onClick={(e) => {
-              // console.log("로그인 작동")
-              // }} 
+              onClick={(e) => {
+              console.log("로그인 작동")
+              }} 
             />
             <div>
               <LoginSpan>계정이 없으신가요?</LoginSpan>
               <LoginSpan singup onClick={() => {
-                console.log("가입하기")
+                dispatch({type: LOGIN_MODAL, loginModal: false})
               }}>가입하기</LoginSpan>
             </div>
           </LoginForm>
         </LoginModalWrap>
-      </SignupBackground>
+      </LoginBackground>
     </Fragment>
   )
 }
 
-const SignupBackground = styled.div`
+const LoginBackground = styled.div`
   font-size: 1.6rem;
   width: 100vw;
   height: 100vh;
@@ -107,12 +108,13 @@ const LoginInput = styled.input`
     null
   };
   margin-bottom: ${props => props.theme.modalLoginInputMargin};
+  cursor: ${props => props.type === "submit" ? "pointer" : null}
 `
 
 const LoginSpan = styled.span`
   display: inline-block;
   margin-top: ${props => props.theme.modalLoginInputMargin};
-  color: ${props => props.singup ? "blue" : null};
+  color: ${props => props.singup ? props.theme.buttonOnColor : null};
   margin-left: ${props => props.singup ? props.theme.modalLoginInputMargin : null};
   font-weight: ${props => props.singup ? props.theme.fontBold : null};
   cursor: ${props => props.singup ? "pointer" : null};
