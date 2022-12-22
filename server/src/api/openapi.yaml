@@ -102,7 +102,7 @@ paths:
           description: >
             Please provide the text to be written in the post
         - in: query
-          name: kind1rms
+          name: kind1rm
           schema:
             type: string
           description: >

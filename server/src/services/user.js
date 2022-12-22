@@ -68,3 +68,21 @@ export async function updatePassword(body, user) {
   );
   return data.user.updatePassword(hashed_password, id);
 }
+
+export async function withdrawal(user) {
+  // user picture 삭제 in s3
+  if (user.picture) s3Remove("project-ohwunwan", user.s3key);
+  // 유저의 모든 포스트 사진 삭제 in s3
+  const ohwunwan = await data.user.getPost_idByuser_id("ohwunwan", user.id);
+  const _1rm = await data.user.getPost_idByuser_id("1rm", user.id);
+  const feedback = await data.user.getPost_idByuser_id("feedback", user.id);
+  const result = [...ohwunwan, ..._1rm, ...feedback];
+  const parsed = result.map(item => JSON.parse(item.infoS3));
+  for (let i = 0; i < parsed.length; i++) {
+    for (let j = 0; j < parsed[i]?.length; j++) {
+      s3Remove(parsed[i][j].bucket, parsed[i][j].key);
+    }
+  }
+  // 유저 삭제
+  await data.user.deleteUser(user.id);
+}
