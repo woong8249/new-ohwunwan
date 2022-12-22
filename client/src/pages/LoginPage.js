@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -22,12 +22,19 @@ function LoginPage({...props}) {
   const dispatch = useDispatch();
   // console.log(login);
 
+  // useRef
+  const outSection = useRef();
+
   // input invalid 메시지 숨기기
   hideInvalid();
 
   return (
     <Fragment>
-      <LoginBackground>
+      <LoginBackground ref={outSection} onClick={(e) => {
+        if(outSection.current === e.target) {
+          dispatch({type: LOGIN_MODAL, loginModal: false});
+        }
+      }}>
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
           <LoginForm
@@ -65,8 +72,8 @@ function LoginPage({...props}) {
                 )
                 .then(response => {
                   // console.log(response.data)
-                  dispatch({type: USERINFO, user: response.data})
-                  dispatch({type: LOGIN_MODAL, loginModal: false})
+                  dispatch({type: USERINFO, user: response.data});
+                  dispatch({type: LOGIN_MODAL, loginModal: false});
                 })
                 .catch(error => {
                   console.log(error)

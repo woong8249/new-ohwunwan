@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 // redux
 import { ID, PASSWORD, PASSWORD2 } from "../store/modules/signup"
+import { SIGNUP_MODAL } from "../store/modules/signupModal";
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
@@ -14,12 +15,19 @@ function SignupPage({...props}) {
   const dispatch = useDispatch();
   // console.log(signup);
 
+  // useRef
+  const outSection = useRef();
+
   // input invalid 메시지 숨기기
   hideInvalid();
 
   return (
     <Fragment>
-      <SignupBackground>
+      <SignupBackground ref={outSection} onClick={(e) => {
+        if(outSection.current === e.target) {
+          dispatch({type: SIGNUP_MODAL, signupModal: false});
+        }
+      }}>
         <SignupModalWrap>
           <SignupSubject>Sign Up</SignupSubject>
           <SignupForm>
