@@ -9,6 +9,7 @@ import { LOGIN_MODAL } from "../store/modules/loginModal";
 import { SIGNUP_MODAL } from "../store/modules/signupModal";
 import { USERINFO } from "../store/modules/user";
 import { ADD_LOGINERROR } from "../store/modules/loginError"; 
+import { ADD_SIGNUPERROR } from "../store/modules/signupError";
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
@@ -30,6 +31,8 @@ function LoginPage({...props}) {
       <LoginBackground ref={outSection} onClick={(e) => {
         if(outSection.current === e.target) {
           dispatch({type: LOGIN_MODAL, loginModal: false});
+          dispatch({type: ADD_LOGINERROR, loginError: null});
+          dispatch({type: ADD_SIGNUPERROR, signupError: null});
         }
       }}>
         <LoginModalWrap>
@@ -86,8 +89,11 @@ function LoginPage({...props}) {
               <LoginSpan>계정이 없으신가요?</LoginSpan>
               <LoginSpan singup 
                 onClick={() => {
-                  dispatch({type: LOGIN_MODAL, loginModal: false})
-                  dispatch({type: SIGNUP_MODAL, signupModal: true})
+                  dispatch({type: LOGIN_MODAL, loginModal: false});
+                  dispatch({type: SIGNUP_MODAL, signupModal: true});
+                  dispatch({type: ID, id: null});
+                  dispatch({type: PASSWORD, password: null});
+                  dispatch({type: ADD_LOGINERROR, loginError: null});
                 }}>가입하기</LoginSpan>
             </div>
             {loginError ? <LoginSpan error>🚫 아이디 혹은 비밀번호를 확인해주세요</LoginSpan> : null}          

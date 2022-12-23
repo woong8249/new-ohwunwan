@@ -8,6 +8,7 @@ import loginModal from "./loginModal";
 import loginError from "./loginError";
 import signup  from "./signup";
 import signupModal from "./signupModal";
+import signupError from "./signupError";
 import comment from "./comment";
 import articles from "./articles";
 import user from "./user";
@@ -21,5 +22,6 @@ export default combineReducers({
   signupModal,
   articles,
   user,
-  loginError
+  loginError,
+  signupError
 });
