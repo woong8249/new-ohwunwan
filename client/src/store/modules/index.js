@@ -1,14 +1,16 @@
 // module/index.js
 import { combineReducers } from "redux";
-import comment from "./comment";
+
+// redux
+import login  from "./login"
 import loginState from "./loginState";
-import login from "./login"
 import loginModal from "./loginModal";
-import signup from "./signup";
+import loginError from "./loginError";
+import signup  from "./signup";
 import signupModal from "./signupModal";
+import comment from "./comment";
 import articles from "./articles";
 import user from "./user";
-
 
 export default combineReducers({
   comment,
@@ -18,5 +20,6 @@ export default combineReducers({
   signup,
   signupModal,
   articles,
-  user
+  user,
+  loginError
 });

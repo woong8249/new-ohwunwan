@@ -1,11 +1,11 @@
 // actionTypes
-export const ADD_COMMENT = "comment/ADD_COMMENT";
+export const ADD_LOGINERROR = "articles/ADD_loginError";
 
 // actions
-export const comment = (value) => {
+export const loginError = (value) => {
   return {
-    type: ADD_COMMENT,
-    comment: value
+    type: ADD_LOGINERROR,
+    loginError: value
   };
 };
 
@@ -14,8 +14,8 @@ const initialState = null;
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case ADD_COMMENT:
-      return action.comment;
+    case ADD_LOGINERROR:
+      return action.loginError;
     default:
       return state;
   }

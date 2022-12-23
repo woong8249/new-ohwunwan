@@ -8,6 +8,7 @@ import { ID, PASSWORD } from "../store/modules/login";
 import { LOGIN_MODAL } from "../store/modules/loginModal";
 import { SIGNUP_MODAL } from "../store/modules/signupModal";
 import { USERINFO } from "../store/modules/user";
+import { ADD_LOGINERROR } from "../store/modules/loginError"; 
 
 // utils
 import hideInvalid from "../utils/hideInvalid";
@@ -15,9 +16,8 @@ import hideInvalid from "../utils/hideInvalid";
 function LoginPage({...props}) {
   // state
   const login = useSelector(state => state.login);
-  const user = useSelector(state => state.user);
+  const loginError = useSelector(state => state.loginError);
   const dispatch = useDispatch();
-  // console.log(login);
 
   // useRef
   const outSection = useRef();
@@ -72,9 +72,13 @@ function LoginPage({...props}) {
                   // console.log(response.data)
                   dispatch({type: USERINFO, user: response.data});
                   dispatch({type: LOGIN_MODAL, loginModal: false});
+                  dispatch({type: ADD_LOGINERROR, loginError: null});
+                  dispatch({type: ID, id: null});
+                  dispatch({type: PASSWORD, password: null});
                 })
                 .catch(error => {
-                  console.log(error)
+                  // console.log(error)
+                  dispatch({type: ADD_LOGINERROR, loginError: error.response.data.message});
                 })
               }} 
             />
@@ -86,6 +90,7 @@ function LoginPage({...props}) {
                   dispatch({type: SIGNUP_MODAL, signupModal: true})
                 }}>가입하기</LoginSpan>
             </div>
+            {loginError ? <LoginSpan error>🚫 아이디 혹은 비밀번호를 확인해주세요</LoginSpan> : null}          
           </LoginForm>
         </LoginModalWrap>
       </LoginBackground>
@@ -146,9 +151,9 @@ const LoginInput = styled.input`
 const LoginSpan = styled.span`
   display: inline-block;
   margin-top: ${props => props.theme.modalLoginInputMargin};
-  color: ${props => props.singup ? props.theme.buttonOnColor : null};
+  color: ${props => props.singup ? props.theme.buttonOnColor : props.error ? props.theme.errorColor : null};
   margin-left: ${props => props.singup ? props.theme.modalLoginInputMargin : null};
-  font-weight: ${props => props.singup ? props.theme.fontBold : null};
+  font-weight: ${props => props.singup || props.error ? props.theme.fontBold : null};
   cursor: ${props => props.singup ? "pointer" : null};
 `
 

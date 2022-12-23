@@ -18,7 +18,7 @@ export const password = (value) => {
 };
 
 // reducer
-const initialState = {id: '', password: ''};
+const initialState = {id: null, password: null};
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {

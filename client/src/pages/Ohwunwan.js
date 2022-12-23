@@ -16,7 +16,7 @@ function Ohwunwan() {
   const state = useSelector(state => state);
   const loginModal = useSelector(state => state.loginModal);
   const signupModal = useSelector(state => state.signupModal);
-  // console.log(state);
+  console.log(state);
 
   return (
     <Fragment>
