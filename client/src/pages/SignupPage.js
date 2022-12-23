@@ -1,6 +1,7 @@
 import { Fragment, useRef } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
 // redux
 import { ID, PASSWORD, PASSWORD2 } from "../store/modules/signup"
@@ -13,7 +14,7 @@ function SignupPage({...props}) {
   // state
   const signup = useSelector(state => state.signup);
   const dispatch = useDispatch();
-  // console.log(signup);
+  console.log(signup);
 
   // useRef
   const outSection = useRef();
@@ -30,7 +31,11 @@ function SignupPage({...props}) {
       }}>
         <SignupModalWrap>
           <SignupSubject>Sign Up</SignupSubject>
-          <SignupForm>
+          <SignupForm
+            action={process.env.REACT_APP_DB_HOST + "/user/signup"}
+            method="post"
+            accept-charset="UTF-8"
+          >
             <SignupInput 
               type="text"
               placeholder="아이디"
@@ -42,7 +47,7 @@ function SignupPage({...props}) {
               }}
             ></SignupInput>
             <SignupInput 
-              type="text"
+              type="password"
               placeholder="패스워드"
               pattern="^[a-zA-Z0-9!@#$%^*+=-]{5,10}$" // 영문대소문자, 숫자, 특수문자, 5-10자리
               required
@@ -51,7 +56,7 @@ function SignupPage({...props}) {
               }}
             ></SignupInput>
             <SignupInput 
-              type="text"
+              type="password"
               placeholder="패스워드 확인"
               pattern="^[a-zA-Z0-9!@#$%^*+=-]{5,10}$" // 영문대소문자, 숫자, 특수문자, 5-10자리
               required
@@ -62,7 +67,19 @@ function SignupPage({...props}) {
             <SignupInput 
               type="submit"
               value="회원가입"
-              onClick={() => {console.log("회원가입")}}
+              onClick={(e) => {
+                e.preventDefault(); // 새로고침 방지
+                axios.post(`${process.env.REACT_APP_DB_HOST}/user/signup`, 
+                  {userId: signup.id, password: signup.password, passwordConfirmation: signup.password2}
+                )
+                .then(response => {
+                  console.log(response.data)
+                  dispatch({type: SIGNUP_MODAL, signupModal: false})
+                })
+                .catch(error => {
+                  console.log(error)
+                })
+              }}
             ></SignupInput>
           </SignupForm>
         </SignupModalWrap>

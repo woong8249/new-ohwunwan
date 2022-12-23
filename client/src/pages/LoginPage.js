@@ -1,15 +1,12 @@
 import { Fragment, useRef } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-
 import axios from "axios";
 
 // redux
 import { ID, PASSWORD } from "../store/modules/login";
 import { LOGIN_MODAL } from "../store/modules/loginModal";
 import { SIGNUP_MODAL } from "../store/modules/signupModal";
-
-// actions
 import { USERINFO } from "../store/modules/user";
 
 // utils
@@ -38,7 +35,7 @@ function LoginPage({...props}) {
         <LoginModalWrap>
           <LoginSubject>Login</LoginSubject>
           <LoginForm
-            action={process.env.REACT_APP_DB_HOST + "/user/login"}
+            action={process.env.REACT_APP_DB_HOST + "/user/signin"}
             method="post"
             accept-charset="UTF-8"
           >
@@ -66,7 +63,8 @@ function LoginPage({...props}) {
             <LoginInput 
               type="submit" 
               value="로그인"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault(); // 새로고침 방지
                 axios.post(`${process.env.REACT_APP_DB_HOST}/user/signin`,
                   {userId: login.id, password: login.password}
                 )
@@ -84,8 +82,8 @@ function LoginPage({...props}) {
               <LoginSpan>계정이 없으신가요?</LoginSpan>
               <LoginSpan singup 
                 onClick={() => {
-                dispatch({type: LOGIN_MODAL, loginModal: false})
-                dispatch({type: SIGNUP_MODAL, signupModal: true})
+                  dispatch({type: LOGIN_MODAL, loginModal: false})
+                  dispatch({type: SIGNUP_MODAL, signupModal: true})
                 }}>가입하기</LoginSpan>
             </div>
           </LoginForm>

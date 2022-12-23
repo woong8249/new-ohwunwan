@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { ADD_COMMENT } from "../store/modules/comment";
 
 function ArticleCommentInput({...props}) {
-  const comment = useSelector(state => state.comment)
   const dispatch = useDispatch()
   
   return (

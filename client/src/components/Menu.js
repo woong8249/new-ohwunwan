@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 // components
 import MenuButton from "./MenuButton";
@@ -27,6 +28,7 @@ function Menu() {
     [feedback, "피드백"],
     [post, "만들기"],
     [profile, "프로필"],
+    [user.picture, user.userId] // 로그인 확인용
   ]
 
   return(

@@ -15,7 +15,6 @@ import ArticleCommentButton from "./ArticleCommentButton";
 import ArticleVideo from "./ArticleVideo";
 
 function Article({...props}) {
-  // console.log(props)
 
   // * 확장자 찾기 - 3글자
   const contentExtension = props.content[0].slice(props.content[0].length - 3 , props.content[0].length);
@@ -65,7 +64,7 @@ function Article({...props}) {
 
         <ArticleCommentsForm action="" method="post">
           <ArticleCommentInput />
-          <ArticleCommentButton />
+          <ArticleCommentButton {...props} />
         </ArticleCommentsForm>
       </ArticleSubWrap>
 
