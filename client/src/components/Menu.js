@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
+import axios from "axios";
 
 // components
 import MenuButton from "./MenuButton";
@@ -28,7 +29,8 @@ function Menu() {
     [feedback, "피드백"],
     [post, "만들기"],
     [profile, "프로필"],
-    [user.picture, user.userId] // 로그인 확인용
+    [user.picture, user.userId], // 로그인 확인용
+    [profile, "로그아웃"] // 로그아웃 확인용
   ]
 
   return(
@@ -38,17 +40,27 @@ function Menu() {
           <MenuRow key={idx} onClick={
             // * 프로필일 경우 && 로그인 되어 있지 않은 경우 && loginState가 false => onclick 작동
             arr[1] === "프로필" && loginState === false && user.userId === undefined ?
-            () => {dispatch({type: LOGIN_MODAL, loginModal: true})}:
+            () => {dispatch({type: LOGIN_MODAL, loginModal: true})} :
             // * 프로필일 경우 && 로그인 되어 있을 경우 && loginState가 false => onclick 작동시 마이페이지 이동
             arr[1] === "프로필" && loginState === false && user.userId !== undefined ?
-            () => console.log("마이페이지 이동, 수정목록")
+            () => console.log("마이페이지 이동, 수정목록") :
+            //! 로그아웃의 경우
+            arr[1] === "로그아웃" ? () => {
+              axios.post(`${process.env.REACT_APP_DB_HOST}/user/signout`)
+              .then(response => {
+                console.log(response.data)
+              })
+              .catch(error => {
+                console.log(error)
+              })
+            } :
             // 그 외의 경우
-            :null
+            null
           }>
             <MenuRowLeft>
               {/* 로그인 되어 있을 때 사진 없는 경우 */}
               { arr[1] === "프로필" && user.length !== undefined && user.picture === null ?  <MenuButton menuName={arr[0]} /> : 
-              // 사진 있는 경우
+              // 로그인 되어 있을 때 사진 있는 경우
               arr[1] === "프로필" && user.length !== undefined ? <MenuButton menuName={user.picture} /> :
               // 로그인 안되어 있을 경우
               <MenuButton menuName={arr[0]} />}
