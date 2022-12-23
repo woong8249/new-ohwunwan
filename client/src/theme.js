@@ -31,8 +31,12 @@ const theme = {
   modalLoginSubject: "4rem", // 모달 로그인 제목 크기
   modalLoginSubjectPadding: "3rem", // 모달 로그인 제목 패딩
   modalLoginInputWidth: "30rem", // 모달 로그인 인풋 가로 길이
-  modalLoginInputPadding: "1rem", // 모달 로그인 인풋 가로 길이
+  modalLoginInputPadding: "1rem", // 모달 로그인 인풋 패딩
   modalLoginInputMargin: "0.5rem", // 모달 로그인 인풋 마진
+
+  // 유효성 아이콘
+  invalidIconWidth: "2rem", // 유효성 아이콘 가로, 세로 길이
+  invalidIconMargin: "0.5rem", // 유효성 아이콘 오른쪽 마진
 }
 
 export default theme;
