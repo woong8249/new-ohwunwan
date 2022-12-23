@@ -86,3 +86,7 @@ export async function withdrawal(user) {
   // 유저 삭제
   await data.user.deleteUser(user.id);
 }
+
+export async function generateCSRFToken() {
+  return bcrypt.hash(config.csrf.plainToken, 1);
+}

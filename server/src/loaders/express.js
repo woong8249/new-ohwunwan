@@ -7,13 +7,14 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import yaml from "yamljs";
+import userRouter from "../routes/user.js";
 import swaggerUI from "swagger-ui-express";
 import config from "../config/config.js";
-import postRouter from "../routes/post.js";
-import userRouter from "../routes/user.js";
+import { csrfCheck } from "../middlewares/csrf.js";
 import { ValidationError } from "../errors/validationError.js";
-import path from "path";
 import { fileURLToPath } from "url";
+import path from "path";
+import postRouter from "../routes/post.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -35,6 +36,7 @@ export default async ({ app }) => {
   else app.use(moran("combined"));
 
   // ----라우팅----
+  app.use(csrfCheck);
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openApiDoc));
   app.use("/post", postRouter);
   app.use("/user", userRouter);
