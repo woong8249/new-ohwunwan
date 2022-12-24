@@ -239,14 +239,14 @@ paths:
               type: object
               properties:
                 userId:
-                  description: at least 5 characters
+                  description: The userId must be 4 ~ 16 chars long
                   type: string
                 password:
                   type: string
-                  description: at least 5 characters
+                  description: Tne password must be 4 ~ 16 chars long
                 passwordConfirmation:
                   type: string
-                  description: at least 5 characters. compare with password
+                  description: Compare with password
               required:
                 - userId
                 - password
@@ -271,7 +271,7 @@ paths:
                   message: Signup has completed
         "400":
           description: >
-            passwordConfirmation field must have the same value as the password field
+            Invalid input
           content:
             application/json:
               schema:
@@ -282,7 +282,9 @@ paths:
                 required:
                   - message
                 example:
-                  message: passwordConfirmation field must have the same value as the password field
+                  - message: The userId must be 4 ~ 16 chars long
+                  - message: The userId must be consist of alphanum strings
+                  - message: The passwordConfirmation field must have the same value as the password field
         "409":
           description: >
             This userId is already taken
@@ -296,7 +298,7 @@ paths:
                 required:
                   - message
                 example:
-                  message: Already exists
+                  message: This userId already exists
   /user/signin:
     post:
       tags:
@@ -313,10 +315,10 @@ paths:
               properties:
                 userId:
                   type: string
-                  description: at least 5 characters
+                  description: The userId must be 4 ~ 16 chars long
                 password:
                   type: string
-                  description: at least 5 characters
+                  description: The password must be 4 ~ 16 chars long
               required:
                 - userId
                 - password
@@ -338,7 +340,7 @@ paths:
                 example: token=abcde12345; Path=/; HttpOnly
         "400":
           description: >
-            Does not exist or the password is incorrect
+            Invalid input
           content:
             application/json:
               schema:
@@ -349,7 +351,9 @@ paths:
                 required:
                   - message
                 example:
-                  message: Does not exist or the password is incorrect
+                  - message: The userId must be 4 ~ 16 chars long
+                  - message: The password must be 4 ~ 16 chars long
+                  - message: Does not exist or the password is incorrect
   /user/signout:
     post:
       security:
@@ -406,7 +410,7 @@ paths:
                 required:
                   - message
                 example:
-                  message: "No authorization"
+                  message: No Authentication
   /user/me/picture:
     put:
       security:
@@ -498,6 +502,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/login"
+        "400":
+          description: >
+            Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  - message: The userId must be 4 ~ 16 chars long
+                  - message: The userId must be consist of alphanum strings
+                  - message: The nickname must be 4 ~ 16 chars long
         "409":
           description: >
             already exists<br>
@@ -589,7 +609,6 @@ paths:
                   - message
                 example:
                   message: "Membership withdrawal is complete"
-
 components:
   securitySchemes:
     cookieAuth:

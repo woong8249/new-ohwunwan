@@ -6,9 +6,9 @@ import bcrypt from "bcrypt";
 export const validateSignup = [
   body("userId") //
     .isLength({ min: 4, max: 16 })
-    .withMessage("userId must be 4 ~ 16 chars long")
+    .withMessage("The userId must be 4 ~ 16 chars long")
     .isAlphanumeric()
-    .withMessage("userId must be consist of alphanum strings"),
+    .withMessage("The userId must be consist of alphanum strings"),
   body("userId") //
     .custom(value => {
       return data.user
@@ -18,14 +18,14 @@ export const validateSignup = [
           else return new Promise((res, rej) => res());
         });
     })
-    .withMessage("Already exists"),
+    .withMessage("This userId already exists"),
   body("password") //
-    .isLength({ min: 8, max: 16 })
-    .withMessage("password must be 8 ~ 16 chars long"),
+    .isLength({ min: 4, max: 16 })
+    .withMessage("Tne password must be 4 ~ 16 chars long"),
   body("passwordConfirmation") //
     .custom((value, { req }) => value === req.body.password)
     .withMessage(
-      "passwordConfirmation field must have the same value as the password field"
+      "The passwordConfirmation field must have the same value as the password field"
     ),
   validator,
 ];
@@ -33,7 +33,6 @@ export const validateSignup = [
 const isUser = async (value, { req }) => {
   const { password } = req.body;
   let userId = req?.user?.userId || value;
-
   const user = await data.user.findByUserId(userId);
   if (!user) {
     return new Promise((res, rej) => rej());
@@ -45,41 +44,50 @@ const isUser = async (value, { req }) => {
 };
 
 export const validateLogin = [
-  body("userId", "Please provide userId at least 5 characters").isLength({
-    min: 5,
-  }),
-  body("password", "Please provide password at least 5 characters").isLength({
-    min: 5,
-  }),
-  body("userId", "Does not exist or the password is incorrect") //
-    .custom(isUser),
+  body("userId") //
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The userId must be 4 ~ 16 chars long"),
+  body("password") //
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The password must be 4 ~ 16 chars long"),
+  body("userId") //
+    .custom(isUser)
+    .withMessage("Does not exist or the password is incorrect"),
   validator,
 ];
 
 export const validateUpdatePicture = [
-  check("file", "please provide picture").custom((value, { req }) => {
-    const file = req.file;
-    if (file === undefined) return false;
-    else return true;
-  }),
+  check("file") //
+    .custom((value, { req }) => {
+      const file = req.file;
+      if (file === undefined) return false;
+      else return true;
+    })
+    .withMessage("Please provide picture"),
   validator,
 ];
 
 export const validateDeletePicture = [
-  check("file", "No content").custom((value, { req }) => {
-    const file = req.user.picture;
-    if (file === null) return false;
-    else return true;
-  }),
+  check("file") //
+    .custom((value, { req }) => {
+      const file = req.user.picture;
+      if (file === null) return false;
+      else return true;
+    })
+    .withMessage("No content"),
   validator,
 ];
 
 export const validateUpdateProfile = [
   oneOf([
-    body("newUserId", "Please provide newUserId at least 5 characters") //
-      .isLength({ min: 5 }),
-    body("newNickname", "Please provide newNickname at least 5 characters") //
-      .isLength({ min: 5 }),
+    body("newUserId") //
+      .isLength({ min: 4, max: 16 })
+      .withMessage("The userId must be 4 ~ 16 chars long")
+      .isAlphanumeric()
+      .withMessage("The userId must be consist of alphanum strings"),
+    body("newNickname") //
+      .isLength({ min: 4, max: 16 })
+      .withMessage("The nicnkname must be 4 ~ 16 chars long"),
   ]),
   body("newUserId", "This userId already exists")
     .if(body("newUserId").exists())
@@ -105,18 +113,18 @@ export const validateUpdateProfile = [
 ];
 
 export const validateUpdatePassword = [
-  body("password", "Please provide at least 5 characters") //
-    .isLength({ min: 5 }),
-  body("newPassword", "Please provide at least 5 characters") //
-    .isLength({ min: 5 }),
-  body("passwordConfirmation", "Please provide at least 5 characters") //
-    .isLength({ min: 5 }),
-  check(
-    "passwordConfirmation",
-    "passwordConfirmation field must have the same value as the password field"
-  ) //
-    .custom((value, { req }) => value === req.body.newPassword),
-  body("password", "password is incorrect") //
+  body("password") //
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The password must be 4 ~ 16 chars long"),
+  body("newPassword") //
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The password must be 4 ~ 16 chars long"),
+  check("passwordConfirmation") //
+    .custom((value, { req }) => value === req.body.newPassword)
+    .withMessage(
+      "The passwordConfirmation field must have the same value as the password field"
+    ),
+  body("password", "This password is incorrect") //
     .custom(isUser),
   validator,
 ];

@@ -1,5 +1,4 @@
 import { validationResult } from "express-validator";
-import { ValidationError } from "../errors/validationError.js";
 
 export default function validator(req, res, next) {
   const errors = validationResult(req);
@@ -8,8 +7,7 @@ export default function validator(req, res, next) {
     let status = 400;
     if (msg.includes("already exists")) status = 409;
     else if (msg === "No content") status = 404;
-    else if (msg === "No authorization") status = 401;
-    throw new ValidationError(msg, status);
+    res.status(status).json({ message: msg });
   }
   next();
 }

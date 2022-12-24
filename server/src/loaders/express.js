@@ -11,7 +11,7 @@ import userRouter from "../routes/user.js";
 import swaggerUI from "swagger-ui-express";
 import config from "../config/config.js";
 import { csrfCheck } from "../middlewares/csrf.js";
-import { ValidationError } from "../errors/validationError.js";
+
 import { fileURLToPath } from "url";
 import path from "path";
 import postRouter from "../routes/post.js";
@@ -48,9 +48,7 @@ export default async ({ app }) => {
 
   //----에러케치 (비동기 에러도 잡을 수 있음 )("express-async-errors";)----
   app.use((err, req, res, next) => {
-    if (err instanceof ValidationError) {
-      return res.status(err.status).json({ message: err.message });
-    } else if (err instanceof MulterError) {
+    if (err instanceof MulterError) {
       return res.status(400).json({ message: err.code });
     } else if (err.status < 500) {
       return res.status(err.status).json({ message: err.message });
