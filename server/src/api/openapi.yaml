@@ -74,6 +74,7 @@ paths:
     post:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - post
       summary: create posts
@@ -139,6 +140,7 @@ paths:
     put:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - post
       summary: Update posts
@@ -189,6 +191,7 @@ paths:
     delete:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - post
       summary: Delete posts
@@ -226,6 +229,8 @@ paths:
                   message: ok
   /user/signup:
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
         - user
       summary: Sign up
@@ -301,6 +306,8 @@ paths:
                   message: This userId already exists
   /user/signin:
     post:
+      security:
+        - ApiKeyAuth: []
       tags:
         - user
       summary: Sign in
@@ -358,6 +365,7 @@ paths:
     post:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: Sign out
@@ -415,6 +423,7 @@ paths:
     put:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: Update profile picture
@@ -448,6 +457,7 @@ paths:
     delete:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: delete profile picture
@@ -471,6 +481,7 @@ paths:
     put:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: update user's profile info
@@ -539,6 +550,7 @@ paths:
     put:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: update user's password
@@ -589,6 +601,7 @@ paths:
     delete:
       security:
         - cookieAuth: []
+        - ApiKeyAuth: []
       tags:
         - user
       summary: delete user
@@ -609,13 +622,17 @@ paths:
                   - message
                 example:
                   message: "Membership withdrawal is complete"
+
 components:
   securitySchemes:
     cookieAuth:
       type: apiKey
       in: header
       name: token
-
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: ohwunwan_csrf_token
   schemas:
     post_onlyOne:
       type: object
