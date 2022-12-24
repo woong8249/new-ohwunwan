@@ -4,30 +4,29 @@ import * as data from "../data/index.js";
 import bcrypt from "bcrypt";
 
 export const validateSignup = [
-  body("userId", "Please provide userId at least 5 characters").isLength({
-    min: 5,
-  }),
-  body("userId", "Already exists").custom(value => {
-    return data.user
-      .findByUserId(value) //
-      .then(result => {
-        if (result) return new Promise((res, rej) => rej());
-        else return new Promise((res, rej) => res());
-      });
-  }),
-  body("password", "Please provide password at least 5 characters").isLength({
-    min: 5,
-  }),
-  body(
-    "passwordConfirmation",
-    "Please provide passwordConfirmation at least 5 characters"
-  ) //
-    .isLength({ min: 5 }),
-  body(
-    "passwordConfirmation",
-    "passwordConfirmation field must have the same value as the password field"
-  ) //
-    .custom((value, { req }) => value === req.body.password),
+  body("userId") //
+    .isLength({ min: 4, max: 16 })
+    .withMessage("userId must be 4 ~ 16 chars long")
+    .isAlphanumeric()
+    .withMessage("userId must be consist of alphanum strings"),
+  body("userId") //
+    .custom(value => {
+      return data.user
+        .findByUserId(value) //
+        .then(result => {
+          if (result) return new Promise((res, rej) => rej());
+          else return new Promise((res, rej) => res());
+        });
+    })
+    .withMessage("Already exists"),
+  body("password") //
+    .isLength({ min: 8, max: 16 })
+    .withMessage("password must be 8 ~ 16 chars long"),
+  body("passwordConfirmation") //
+    .custom((value, { req }) => value === req.body.password)
+    .withMessage(
+      "passwordConfirmation field must have the same value as the password field"
+    ),
   validator,
 ];
 
