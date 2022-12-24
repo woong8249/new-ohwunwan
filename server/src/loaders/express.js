@@ -11,7 +11,6 @@ import userRouter from "../routes/user.js";
 import swaggerUI from "swagger-ui-express";
 import config from "../config/config.js";
 import { csrfCheck } from "../middlewares/csrf.js";
-
 import { fileURLToPath } from "url";
 import path from "path";
 import postRouter from "../routes/post.js";
@@ -36,7 +35,7 @@ export default async ({ app }) => {
   else app.use(moran("combined"));
 
   // ----라우팅----
-  app.use(csrfCheck);
+  // app.use(csrfCheck); for react dev
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openApiDoc));
   app.use("/post", postRouter);
   app.use("/user", userRouter);
