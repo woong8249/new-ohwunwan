@@ -7,7 +7,7 @@ export default function validator(req, res, next) {
     let status = 400;
     if (msg.includes("already exists")) status = 409;
     else if (msg === "No content") status = 404;
-    res.status(status).json({ message: msg });
+    return res.status(status).json({ message: msg });
   }
   next();
 }
