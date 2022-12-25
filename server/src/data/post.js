@@ -89,6 +89,15 @@ export async function getPost(postType, kind1rm, userId, number, limit, id) {
       throw err;
     });
 }
+export async function getpostById(postType, id) {
+  const query = `select * from posts_${postType} where id=?`;
+  return pool
+    .query(query, [id])
+    .then(result => result[0][0])
+    .catch(err => {
+      throw err;
+    });
+}
 
 //To create ohwunwan,feedback post.
 export async function createPost(postType, user_id, text, content, infoS3) {
