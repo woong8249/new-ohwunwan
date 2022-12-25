@@ -57,11 +57,17 @@ export function updatePassword(req, res) {
     );
 }
 
-export function Withdrawal(req, res) {
+export function withdrawal(req, res) {
   const { user } = req;
   return userServices
     .withdrawal(user)
     .then(() =>
       res.status(200).json({ message: "Membership withdrawal is complete" })
     );
+}
+
+export function csrfToken(req, res) {
+  return userServices
+    .generateCSRFToken()
+    .then(csrfToken => res.status(200).json({ csrfToken }));
 }

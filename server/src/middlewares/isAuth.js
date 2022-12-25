@@ -1,4 +1,3 @@
-import { ValidationError } from "../errors/validationError.js";
 // when update or delete  comment,like,post
 export default function isAuth(req, res, next) {
   //   useifo를 수정하는경우  자기자신의 정보를 수정하게끔 설계되어있기떄문에
@@ -6,6 +5,6 @@ export default function isAuth(req, res, next) {
   const { user, post /*comment,like*/ } = req;
   if (post[0]) {
     if (post[0].userId === user.userId) next();
-    else throw new ValidationError("No permission", 403);
+    else return res.status(403).json({ message: "No Authorization" });
   }
 }

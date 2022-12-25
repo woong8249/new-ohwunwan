@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import * as data from "../data/index.js";
-import { ValidationError } from "../errors/validationError.js";
 
+const message = "No Authentication";
 export default async function (req, res, next) {
   let token = req.cookies.token;
   // Note for Swagger UI and Swagger Editor users:
@@ -12,19 +12,17 @@ export default async function (req, res, next) {
   // For apidoc, check also req.headers once
   if (!token) token = req.headers["token"];
   if (!token) {
-    throw new ValidationError("No authorization", 401);
+    return res.status(401).json({ message });
   }
   let decoded;
   try {
     decoded = jwt.verify(token, config.jwt.secretKey);
   } catch (err) {
-    console.warn("!!!!!!!suspicious req!!!!!!!!", req);
-    throw new ValidationError("No authorization", 401);
+    return res.status(401).json({ message });
   }
   const user = await data.user.findByUserId(decoded.userId);
   if (!user) {
-    console.warn("!!!!!!!suspicious req!!!!!!!!", req);
-    throw new ValidationError("No authorization", 401);
+    return res.status(401).json({ message });
   }
   req.user = user; // req.customData
 

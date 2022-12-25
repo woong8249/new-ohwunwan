@@ -64,7 +64,7 @@ CREATE TABLE `comments_1rm` (
   KEY `user_id` (`user_id`),
   KEY `1rm_id` (`1rm_id`),
   CONSTRAINT `comments_1rm_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `comments_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comments_1rm_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comments_1rm_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_1rm_ibfk_3` FOREIGN KEY (`1rm_id`) REFERENCES `posts_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -100,7 +100,7 @@ CREATE TABLE `comments_feedback` (
   KEY `user_id` (`user_id`),
   KEY `feedback_id` (`feedback_id`),
   CONSTRAINT `comments_feedback_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `comments_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comments_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comments_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_feedback_ibfk_3` FOREIGN KEY (`feedback_id`) REFERENCES `posts_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -135,7 +135,7 @@ CREATE TABLE `comments_ohwunwan` (
   KEY `user_id` (`user_id`),
   KEY `ohwunwan_id` (`ohwunwan_id`),
   CONSTRAINT `comments_ohwunwan_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `comments_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comments_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comments_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_ohwunwan_ibfk_3` FOREIGN KEY (`ohwunwan_id`) REFERENCES `posts_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -165,7 +165,7 @@ CREATE TABLE `likes_1rm` (
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
   KEY `1rm_id` (`1rm_id`),
-  CONSTRAINT `likes_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `likes_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_1rm_ibfk_2` FOREIGN KEY (`1rm_id`) REFERENCES `posts_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -200,7 +200,7 @@ CREATE TABLE `likes_comment_1rm` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `likes_comment_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `likes_comment_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_1rm_ibfk_2` FOREIGN KEY (`id`) REFERENCES `comments_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -230,7 +230,7 @@ CREATE TABLE `likes_comment_feedback` (
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `likes_comment_feedback_ibfk_1` FOREIGN KEY (`id`) REFERENCES `comments_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `likes_comment_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `likes_comment_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -260,7 +260,7 @@ CREATE TABLE `likes_comment_ohwunwan` (
   KEY `comment_id` (`comment_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `likes_comment_ohwunwan_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `likes_comment_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `likes_comment_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -289,7 +289,7 @@ CREATE TABLE `likes_feedback` (
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
   KEY `feedback_id` (`feedback_id`),
-  CONSTRAINT `likes_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `likes_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_feedback_ibfk_2` FOREIGN KEY (`feedback_id`) REFERENCES `posts_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -319,7 +319,7 @@ CREATE TABLE `likes_ohwunwan` (
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
   KEY `ohwunwan_id` (`ohwunwan_id`),
-  CONSTRAINT `likes_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `likes_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_ohwunwan_ibfk_2` FOREIGN KEY (`ohwunwan_id`) REFERENCES `posts_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -354,7 +354,7 @@ CREATE TABLE `posts_1rm` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `posts_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `posts_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -420,7 +420,7 @@ CREATE TABLE `posts_feedback` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `posts_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `posts_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -451,7 +451,7 @@ CREATE TABLE `posts_ohwunwan` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `posts_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `posts_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -477,13 +477,13 @@ VALUES
 UNLOCK TABLES;
 
 --
--- Table structure for table `Repots`
+-- Table structure for table `repots`
 --
 
-DROP TABLE IF EXISTS `Repots`;
+DROP TABLE IF EXISTS `repots`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Repots` (
+CREATE TABLE `repots` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category` varchar(30) NOT NULL COMMENT 'There are 2categorys: post,comment',
   `type` varchar(30) NOT NULL COMMENT 'There are 3 types: ohwunwan,feedback,1rm',
@@ -495,22 +495,22 @@ CREATE TABLE `Repots` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Repots`
+-- Dumping data for table `repots`
 --
 
-LOCK TABLES `Repots` WRITE;
-/*!40000 ALTER TABLE `Repots` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Repots` ENABLE KEYS */;
+LOCK TABLES `repots` WRITE;
+/*!40000 ALTER TABLE `repots` DISABLE KEYS */;
+/*!40000 ALTER TABLE `repots` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Users`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `Users`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Users` (
+CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `userId` varchar(30) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -526,12 +526,12 @@ CREATE TABLE `Users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Users`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `Users` WRITE;
-/*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES 
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES 
 (1,'gamst','gamst1234','Gamest','https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%80%E1%85%A1%E1%86%B7%E1%84%89%E1%85%B3%E1%84%90%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
 (2,'kinggihun','kinggihun1234','Kingbug','https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%80%E1%85%B5%E1%86%B7%E1%84%80%E1%85%B5%E1%84%92%E1%85%AE%E1%86%AB%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
 (3,'namsun','namsun1234',NULL,'https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%82%E1%85%A1%E1%86%B7%E1%84%89%E1%85%AE%E1%86%AB%E1%84%8B%E1%85%B5%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
@@ -544,7 +544,7 @@ INSERT INTO `Users` VALUES
 (10,'jjangjae','jjangjae1234',NULL,'https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/user-profile-picture/%E1%84%8D%E1%85%A1%E1%86%BC%E1%84%8C%E1%85%A2%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%91%E1%85%B5%E1%86%AF.png',NULL,'2022-12-08 16:53:35'),
 (11,'jiwoong','$2b$10$7NWkXTiH4x8tV9yv/mZN9ulKpKk1d/gang/tK8qopTdt.4LlHyVWm','woonge_e',NULL,NULL,'2022-12-19 13:59:41');
 
-/*!40000 ALTER TABLE `Users` ENABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
