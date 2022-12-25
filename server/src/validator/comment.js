@@ -1,4 +1,4 @@
-import { param, query } from "express-validator";
+import { param, query, body } from "express-validator";
 import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 
@@ -22,5 +22,23 @@ export const validateGetComment = [
   query("post_id") //
     .custom(isPost)
     .withMessage("No content"),
+  validator,
+];
+
+export const validateCreateComment = [
+  param("postType")
+    .isIn(["ohwunwan", "feedback", "1rm"])
+    .withMessage(
+      "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
+    ),
+  body("post_id")
+    .custom((value, { req }) => !isNaN(value))
+    .withMessage("Please, provide post_id as a number"),
+  body("post_id") //
+    .custom(isPost)
+    .withMessage("No content"),
+  body("text") //
+    .notEmpty()
+    .withMessage("Please, provide the text"),
   validator,
 ];
