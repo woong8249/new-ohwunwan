@@ -105,7 +105,14 @@ function LoginPage({...props}) {
                   dispatch({type: ADD_LOGINERROR, loginError: null});
                 }}>가입하기</LoginSpan>
             </div>
-            {loginError ? <LoginSpan error>🚫 아이디 혹은 비밀번호를 확인해주세요</LoginSpan> : null}          
+            {
+              loginError === "The userId must be 4 ~ 16 chars long" ? 
+              <LoginSpan error>🚫 아이디를 확인해주세요(4~16자리)</LoginSpan> : 
+              loginError === "The password must be 4 ~ 16 chars long" ?
+              <LoginSpan error>🚫 비밀번호를 확인해주세요(4~16자리)</LoginSpan> : 
+              loginError === "Does not exist or the password is incorrect" ?
+              <LoginSpan error>🚫 아이디 혹은 비밀번호가 일치하지 않습니다</LoginSpan> : null
+            }          
           </LoginForm>
         </LoginModalWrap>
       </LoginBackground>
