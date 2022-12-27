@@ -91,7 +91,7 @@ CREATE TABLE `Comments_feedback` (
   `user_id` int NOT NULL,
   `parent` int DEFAULT NULL,
   `text` varchar(2083) NOT NULL,
-  `selection` tinyint NOT NULL,
+  `selection` tinyint DEFAULT (NULL),
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   `updatedAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),

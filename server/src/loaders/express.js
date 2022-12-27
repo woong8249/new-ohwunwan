@@ -4,16 +4,17 @@ import { MulterError } from "multer";
 import cors from "cors";
 import moran from "morgan";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
 import helmet from "helmet";
-import yaml from "yamljs";
-import userRouter from "../routes/user.js";
 import swaggerUI from "swagger-ui-express";
+import yaml from "yamljs";
+
+import userRouter from "../routes/user.js";
+import commentRouter from "../routes/comment.js";
+import postRouter from "../routes/post.js";
 import config from "../config/config.js";
 import { csrfCheck } from "../middlewares/csrf.js";
 import { fileURLToPath } from "url";
 import path from "path";
-import postRouter from "../routes/post.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -30,13 +31,13 @@ export default async ({ app }) => {
   app.use(helmet());
   app.use(cookieParser());
   app.use(express.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
   if (config.env === "development") app.use(moran("dev")); // log set
   else app.use(moran("combined"));
 
   // ----라우팅----
-  // app.use(csrfCheck); for react dev
+  app.use(csrfCheck); //for react dev
   app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(openApiDoc));
+  app.use("/comment", commentRouter);
   app.use("/post", postRouter);
   app.use("/user", userRouter);
 

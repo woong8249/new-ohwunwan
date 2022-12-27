@@ -20,7 +20,7 @@ export async function getPost(params, query) {
   });
 }
 
-export async function createPost(params, query, files) {
+export async function createPost(params, query, files, user) {
   const infos3 = files.map(file => {
     const info = {
       key: file.key,
@@ -28,9 +28,9 @@ export async function createPost(params, query, files) {
     };
     return info;
   });
+  const { id: user_Id } = user;
   JSON.stringify(infos3);
-  const { userId, text } = query;
-  const user_id = (await data.user.findByUserId(userId)).id;
+  const { text } = query;
   const { postType } = params;
   const location = files.map(file => file.location);
   const content = await JSON.stringify(location);
@@ -38,7 +38,7 @@ export async function createPost(params, query, files) {
   if (postType === "ohwunwan" || postType === "feedback") {
     post = await data.post.createPost(
       postType,
-      user_id,
+      user_Id,
       text,
       content,
       JSON.stringify(infos3)
@@ -86,7 +86,6 @@ export async function removePost(params, query) {
 
   await data.post.removePost(postType, id);
 
-  // havetochage
   parsed.forEach(item => {
     s3Remove(item.bucket, item.key);
   });

@@ -12,7 +12,9 @@ tags:
   - name: post
     description: APIs to handle post
   - name: user
-    description: APIs to handle users
+    description: APIs to handle user
+  - name: comment
+    description: APIs to handle comment
 
 paths:
   /post/{postType}:
@@ -88,13 +90,6 @@ paths:
             type: string
           description: >
             There are 3 post types (ohwunwan, feedback, 1rm)
-        - in: query
-          name: userId
-          required: true
-          schema:
-            type: string
-          description: >
-            Please provide the author userId
         - in: query
           name: text
           required: true
@@ -622,7 +617,361 @@ paths:
                   - message
                 example:
                   message: "Membership withdrawal is complete"
-
+  /user/csrf:
+    get:
+      tags:
+        - user
+      summary: get csrftoken
+      description: >
+        "Provides a csrf token to verify that it is a valid client"
+      responses:
+        "200":
+          description: >
+            csrf token request successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csrfToken:
+                    type: string
+                required:
+                  - csrfToken
+                example:
+                  csrfToken: "$2b$04$jqJ/hLh8cQe9mqWWgSwFE.sM.ppd3t08Q95nx8BF2AqWwAVH6vt."
+  /comment/{postType}:
+    get:
+      tags:
+        - comment
+      summary: Get comments of post
+      description: >
+        Get a list of comments of post within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all comments of posts.<br>
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: post_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide post_id
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: Comment request successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comments"
+        "204":
+          description: If there is no comment, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: create comment of post
+      description: >
+        create comment of post
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                post_id:
+                  type: string
+              required:
+                - text
+                - post_id
+              example:
+                text: fmaksmfkdmkfmasf
+                post_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/commentsShortForm"
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: update comment
+      description: >
+        update comment(include reply comment)
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                post_id:
+                  type: string
+              required:
+                - text
+                - comment_id
+              example:
+                text: fmaksmfkdmkfmasf
+                comment_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/commentsShortForm"
+    delete:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: delete comment(include reply comment)
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: comment_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide comment_id
+      responses:
+        "200":
+          description: Your comment has been successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully deleted"
+  /comment/reply/{postType}:
+    get:
+      tags:
+        - comment
+      summary: Get comments of comment
+      description: >
+        Get a list of comments of post within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all comments of posts.<br>
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: comment_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide comment_id
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: reply comment request successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reComments"
+        "204":
+          description: If there is no comment, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: create comment of comment
+      description: >
+        create reply comment of comment
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                comment_id:
+                  type: string
+              required:
+                - text
+                - comment_id
+              example:
+                text: fmaksmfkdmkfmasf
+                comment_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/commentsShortForm"
+  /comment/select:
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: select(accept) the comment
+      description: >
+        select(accept) the comment. (This function is only available for feedback posts)<br>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: number
+                comment_id:
+                  type: number
+              required:
+                - post_id
+                - comment_id
+              example:
+                post_id: 1
+                comment_id: 1
+      responses:
+        "200":
+          description: Your comment has been successfully selected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully selected"
+  /comment/unselect:
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: unselect(accept) the comment
+      description: >
+        unselect(accept) the comment. (This function is only available for feedback posts)<br>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: number
+                comment_id:
+                  type: number
+              required:
+                - post_id
+                - comment_id
+              example:
+                post_id: 1
+                comment_id: 1
+      responses:
+        "200":
+          description: Your comment has been successfully unselected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully unselected"
 components:
   securitySchemes:
     cookieAuth:
@@ -775,3 +1124,147 @@ components:
         userId: jiwoong
         nickname: woonge_e
         picture: null
+    comments:
+      type: object
+      properties:
+        comment_id:
+          type: number
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+        replyCount:
+          type: number
+      required:
+        - comment_id
+        - text
+        - createdAt
+        - updatedAt
+        - userId
+        - nickname
+        - picture
+        - replyCount
+      example:
+        - comment_id: 5
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: null
+        - comment_id: 4
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: null
+        - comment_id: 3
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: 3
+    reComments:
+      type: object
+      properties:
+        comment_id:
+          type: number
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+        replyCount:
+          type: number
+      required:
+        - comment_id
+        - text
+        - createdAt
+        - updatedAt
+        - userId
+        - nickname
+        - picture
+
+      example:
+        - comment_id: 5
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+        - comment_id: 4
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+        - comment_id: 3
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+    commentsShortForm:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        ohwunwan_id:
+          type: number
+        parent:
+          type: string
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+      required:
+        - id
+        - user_id
+        - ohwunwan_id
+        - parent
+        - text
+        - createdAt
+        - updatedAt
+      example:
+        id: 5
+        user_id: 11
+        ohwunwan_id: 2
+        parent: null
+        text: fmaksmfkdmkfmasf
+        createdAt: 2022-12-25T14:24:11.000Z
+        updatedAt: 2022-12-25T14:24:11.000

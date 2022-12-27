@@ -22,7 +22,6 @@ export const validateCreateBefore = [
     "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
   ).isIn(["ohwunwan", "feedback", "1rm"]),
   query("text", "Please enter the text").notEmpty(),
-  query("userId", "Please enter the userId").notEmpty(),
   param(
     "postType",
     "If you selected 1rm as the post type, you have to provide kind1rm,kg, and there are only 3kind: bench, dead, squat "
@@ -50,9 +49,9 @@ const isPost = async (value, { req }) => {
   const id = value;
   const { postType } = req.params;
   return data.post
-    .getPost(postType, null, null, null, null, id) //
+    .getpostById(postType, id) //
     .then(post => {
-      if (post.length === 0) return new Promise((res, rej) => rej());
+      if (!post) return new Promise((res, rej) => rej());
       req.post = post;
       return new Promise((res, rej) => res());
     });
