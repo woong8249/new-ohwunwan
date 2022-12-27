@@ -12,7 +12,9 @@ tags:
   - name: post
     description: APIs to handle post
   - name: user
-    description: APIs to handle users
+    description: APIs to handle user
+  - name: comment
+    description: APIs to handle comment
 
 paths:
   /post/{postType}:
@@ -622,6 +624,74 @@ paths:
                   - message
                 example:
                   message: "Membership withdrawal is complete"
+  /user/csrf:
+    get:
+      tags:
+        - user
+      summary: get csrftoken
+      description: >
+        "Provides a csrf token to verify that it is a valid client"
+      responses:
+        "200":
+          description: >
+            csrf token request successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csrfToken:
+                    type: string
+                required:
+                  - csrfToken
+                example:
+                  csrfToken: "$2b$04$jqJ/hLh8cQe9mqWWgSwFE.sM.ppd3t08Q95nx8BF2AqWwAVH6vt."
+  /comment/{postType}:
+    get:
+      tags:
+        - comment
+      summary: Get comments of post
+      description: >
+        Get a list of comments of post within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all comments of posts.<br>
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: post_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide post_id
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: This is ohwunwan post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_twice"
+        "204":
+          description: If there is no post, it responds with 204 code.
 
 components:
   securitySchemes:
