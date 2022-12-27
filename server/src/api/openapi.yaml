@@ -91,13 +91,6 @@ paths:
           description: >
             There are 3 post types (ohwunwan, feedback, 1rm)
         - in: query
-          name: userId
-          required: true
-          schema:
-            type: string
-          description: >
-            Please provide the author userId
-        - in: query
           name: text
           required: true
           schema:
@@ -685,13 +678,155 @@ paths:
             The numbers of items to return
       responses:
         "200":
-          description: This is ohwunwan post
+          description: Comment request successful
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/post_twice"
+                $ref: "#/components/schemas/comments"
         "204":
-          description: If there is no post, it responds with 204 code.
+          description: If there is no comment, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: create comment of post
+      description: >
+        create comment of post
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                post_id:
+                  type: string
+              required:
+                - text
+                - post_id
+              example:
+                text: fmaksmfkdmkfmasf
+                post_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: Your comment has been successfully written
+  /comment/reply/{postType}:
+    get:
+      tags:
+        - comment
+      summary: Get comments of comment
+      description: >
+        Get a list of comments of post within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all comments of posts.<br>
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: comment_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide comment_id
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: reply comment request successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reComments"
+        "204":
+          description: If there is no comment, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: create comment of comment
+      description: >
+        create reply comment of comment
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                comment_id:
+                  type: string
+              required:
+                - text
+                - comment_id
+              example:
+                text: fmaksmfkdmkfmasf
+                comment_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: Your reply comment  has been successfully written
 
 components:
   securitySchemes:
@@ -845,3 +980,112 @@ components:
         userId: jiwoong
         nickname: woonge_e
         picture: null
+    comments:
+      type: object
+      properties:
+        comment_id:
+          type: number
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+        replyCount:
+          type: number
+      required:
+        - comment_id
+        - text
+        - createdAt
+        - updatedAt
+        - userId
+        - nickname
+        - picture
+        - replyCount
+      example:
+        - comment_id: 5
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: null
+        - comment_id: 4
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: null
+        - comment_id: 3
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+          replyCount: 3
+    reComments:
+      type: object
+      properties:
+        comment_id:
+          type: number
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+        userId:
+          type: string
+        nickname:
+          type: string
+        picture:
+          type: string
+          format: url
+        replyCount:
+          type: number
+      required:
+        - comment_id
+        - text
+        - createdAt
+        - updatedAt
+        - userId
+        - nickname
+        - picture
+
+      example:
+        - comment_id: 5
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+        - comment_id: 4
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,
+        - comment_id: 3
+          text: testbnefjsgkwmefkm
+          createdAt: 2022-12-25T14:24:11.000Z
+          updatedAt: 2022-12-25T14:24:11.000Z
+          userId: jiwoong
+          nickname: woonge_e
+          picture: null,

@@ -13,8 +13,9 @@ export const getPost = (req, res) => {
 
 export const createPost = (req, res) => {
   const { params, query, files } = req;
+  const { user } = req;
   return postServices
-    .createPost(params, query, files) //
+    .createPost(params, query, files, user) //
     .then(post => {
       return res.status(201).json(post);
     });

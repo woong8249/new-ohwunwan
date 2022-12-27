@@ -1,7 +1,7 @@
 // when update or delete  comment,like,post
 export default function isAuth(req, res, next) {
-  //   useifo를 수정하는경우  자기자신의 정보를 수정하게끔 설계되어있기떄문에
-  //   해당미들웨어를 거칠 필요가 없다
+  //  post,comment,like를 수정 삭제하는경우만 권한검사
+  //  user의정보수정의 경우 1대1매칭이기때문에 권한검사 하지않겠음
   const { user, post /*comment,like*/ } = req;
   if (post[0]) {
     if (post[0].userId === user.userId) next();
