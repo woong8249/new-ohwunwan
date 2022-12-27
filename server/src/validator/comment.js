@@ -84,3 +84,21 @@ export const validateGetReComment = [
     .withMessage("No content"),
   validator,
 ];
+
+export const validateUpdateComment = [
+  param("postType")
+    .isIn(["ohwunwan", "feedback", "1rm"])
+    .withMessage(
+      "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
+    ),
+  body("comment_id")
+    .custom((value, { req }) => !isNaN(value))
+    .withMessage("Please, provide comment_id as a number"),
+  body("comment_id") //
+    .custom(isComment)
+    .withMessage("No content"),
+  body("text") //
+    .notEmpty()
+    .withMessage("Please, provide the text"),
+  validator,
+];

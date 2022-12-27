@@ -26,20 +26,19 @@ export function createComment(req, res) {
   const { body, params, user } = req;
   return commentServices
     .createComment(body, params, user) //
-    .then(() =>
-      res
-        .status(201)
-        .json({ message: "Your comment has been successfully written" })
-    );
+    .then(comment => res.status(201).json(comment));
 }
 
 export function createReComment(req, res) {
   const { body, user, comment, params } = req;
   return commentServices
     .createReComment(params, body, user, comment) //
-    .then(() =>
-      res
-        .status(201)
-        .json({ message: "Your reply comment  has been successfully written" })
-    );
+    .then(comment => res.status(201).json(comment));
+}
+
+export function updateComment(req, res) {
+  const { body, params } = req;
+  return commentServices
+    .updateComment(params, body) //
+    .then(comment => res.status(200).json(comment));
 }

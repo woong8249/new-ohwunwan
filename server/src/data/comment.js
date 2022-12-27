@@ -27,7 +27,7 @@ export async function getComments(postType, post_id, number, limit) {
       throw err;
     });
 }
-// to know to exist
+// to know to exist comment
 export async function getCommentById(postType, id) {
   const query = `select * from comments_${postType} where id=?`;
   return pool
@@ -37,13 +37,18 @@ export async function getCommentById(postType, id) {
       throw err;
     });
 }
-
+//
+// 댓글 , 대댓글 생성
 export async function createComment(postType, post_id, user_id, text, parent) {
   let query = `insert into comments_${postType}(${postType}_id,user_id,text) value(?,?,?) `;
   if (parent)
     query = `insert into comments_${postType}(${postType}_id,user_id,text,parent) value(?,?,?,?) `;
   return pool
-    .query(query, [post_id, user_id, text, parent]) //
+    .query(query, [post_id, user_id, text, parent])
+    .then(result => {
+      const id = result[0].insertId;
+      return getCommentById(postType, id);
+    })
     .catch(err => {
       throw err;
     });
@@ -57,6 +62,16 @@ export async function getReComments(postType, comment_id, number, limit) {
   return pool
     .query(query, [comment_id]) //
     .then(comments => comments[0])
+    .catch(err => {
+      throw err;
+    });
+}
+// 댓글,대댓글 수정
+export async function updateComment(postType, id, text) {
+  let query = `update comments_${postType} set text=?, updatedAt=? where id=?`;
+  return pool //
+    .query(query, [text, new Date(), id])
+    .then(() => getCommentById(postType, id))
     .catch(err => {
       throw err;
     });

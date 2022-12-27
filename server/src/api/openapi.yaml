@@ -725,14 +725,48 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-                example:
-                  message: Your comment has been successfully written
+                $ref: "#/components/schemas/commentsShortForm"
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: update comment
+      description: >
+        update comment
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                post_id:
+                  type: string
+              required:
+                - text
+                - comment_id
+              example:
+                text: fmaksmfkdmkfmasf
+                comment_id: 2
+      responses:
+        "201":
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/commentsShortForm"
   /comment/reply/{postType}:
     get:
       tags:
@@ -819,14 +853,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-                example:
-                  message: Your reply comment  has been successfully written
+                $ref: "#/components/schemas/commentsShortForm"
 
 components:
   securitySchemes:
@@ -1089,3 +1116,38 @@ components:
           userId: jiwoong
           nickname: woonge_e
           picture: null,
+    commentsShortForm:
+      type: object
+      properties:
+        id:
+          type: number
+        user_id:
+          type: number
+        ohwunwan_id:
+          type: number
+        parent:
+          type: string
+        text:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+      required:
+        - id
+        - user_id
+        - ohwunwan_id
+        - parent
+        - text
+        - createdAt
+        - updatedAt
+      example:
+        id: 5
+        user_id: 11
+        ohwunwan_id: 2
+        parent: null
+        text: fmaksmfkdmkfmasf
+        createdAt: 2022-12-25T14:24:11.000Z
+        updatedAt: 2022-12-25T14:24:11.000

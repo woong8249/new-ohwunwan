@@ -28,6 +28,7 @@ export async function createPost(params, query, files, user) {
     };
     return info;
   });
+  const { id: user_Id } = user;
   JSON.stringify(infos3);
   const { text } = query;
   const { postType } = params;
@@ -37,7 +38,7 @@ export async function createPost(params, query, files, user) {
   if (postType === "ohwunwan" || postType === "feedback") {
     post = await data.post.createPost(
       postType,
-      user.userId,
+      user_Id,
       text,
       content,
       JSON.stringify(infos3)
@@ -85,7 +86,6 @@ export async function removePost(params, query) {
 
   await data.post.removePost(postType, id);
 
-  // havetochage
   parsed.forEach(item => {
     s3Remove(item.bucket, item.key);
   });

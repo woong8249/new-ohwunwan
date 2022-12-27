@@ -7,6 +7,7 @@ import {
   validateCreateComment,
   validateCreateReComment,
   validateGetReComment,
+  validateUpdateComment,
 } from "../validator/comment.js";
 
 const router = express.Router();
@@ -34,5 +35,13 @@ router.post(
   isLogin,
   validateCreateReComment,
   commentController.createReComment
+);
+
+router.put(
+  "/:postType",
+  isLogin,
+  validateUpdateComment,
+  isAuth,
+  commentController.updateComment
 );
 export default router;
