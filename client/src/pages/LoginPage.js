@@ -103,7 +103,7 @@ function LoginPage({...props}) {
               value="로그인"
               onClick={() => {
                 axios.post(`${process.env.REACT_APP_DB_HOST}/user/signin`,
-                  {userId: login.id, password: login.password}
+                  {userId: login.id, password: login.password},
                 )
                 .then(response => {
                   // console.log(response.data)
