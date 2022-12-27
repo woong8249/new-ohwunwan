@@ -42,3 +42,14 @@ export function updateComment(req, res) {
     .updateComment(params, body) //
     .then(comment => res.status(200).json(comment));
 }
+
+export function deleteComment(req, res) {
+  const { query, params } = req;
+  return commentServices
+    .deleteComment(query, params)
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: "Your comment has been successfully deleted" })
+    );
+}

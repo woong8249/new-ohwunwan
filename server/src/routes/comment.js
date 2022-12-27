@@ -3,11 +3,10 @@ import * as commentController from "../controllers/comment.js";
 import isAuth from "../middlewares/isAuth.js";
 import isLogin from "../middlewares/isLogin.js";
 import {
+  validateCreateReComment_OR_UpdateComment,
+  validateGetReComment_OR_DeleteComment,
   validateGetComment,
   validateCreateComment,
-  validateCreateReComment,
-  validateGetReComment,
-  validateUpdateComment,
 } from "../validator/comment.js";
 
 const router = express.Router();
@@ -25,7 +24,7 @@ router.post(
 // get reply comment
 router.get(
   "/reply/:postType",
-  validateGetReComment,
+  validateGetReComment_OR_DeleteComment,
   commentController.getReComment
 );
 
@@ -33,15 +32,25 @@ router.get(
 router.post(
   "/reply/:postType",
   isLogin,
-  validateCreateReComment,
+  validateCreateReComment_OR_UpdateComment,
   commentController.createReComment
 );
 
+// updated comment (include reply comment)
 router.put(
   "/:postType",
   isLogin,
-  validateUpdateComment,
+  validateCreateReComment_OR_UpdateComment,
   isAuth,
   commentController.updateComment
+);
+
+// delete comment(include reply commnet)
+router.delete(
+  "/:postType",
+  isLogin,
+  validateGetReComment_OR_DeleteComment,
+  isAuth,
+  commentController.deleteComment
 );
 export default router;

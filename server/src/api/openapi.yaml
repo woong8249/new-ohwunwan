@@ -734,7 +734,7 @@ paths:
         - comment
       summary: update comment
       description: >
-        update comment
+        update comment(include reply comment)
       parameters:
         - in: path
           name: postType
@@ -767,6 +767,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/commentsShortForm"
+    delete:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: delete comment(include reply comment)
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: comment_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Provide comment_id
+      responses:
+        "200":
+          description: Your comment has been successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully deleted"
   /comment/reply/{postType}:
     get:
       tags:

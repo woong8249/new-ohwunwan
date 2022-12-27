@@ -37,5 +37,11 @@ export async function createReComment(params, body, user, comment) {
 export async function updateComment(params, body) {
   const { postType } = params;
   const { text, comment_id: id } = body;
-  return await data.comment.updateComment(postType, id, text);
+  return data.comment.updateComment(postType, id, text);
+}
+
+export function deleteComment(query, params) {
+  const { postType } = params;
+  const { comment_id: id } = query;
+  return data.comment.deleteComment(postType, id);
 }

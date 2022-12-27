@@ -52,7 +52,7 @@ const isComment = async (value, { req }) => {
     return new Promise((res, rej) => res());
   } else return new Promise((res, rej) => rej());
 };
-export const validateCreateReComment = [
+export const validateCreateReComment_OR_UpdateComment = [
   param("postType")
     .isIn(["ohwunwan", "feedback", "1rm"])
     .withMessage(
@@ -70,7 +70,7 @@ export const validateCreateReComment = [
   validator,
 ];
 
-export const validateGetReComment = [
+export const validateGetReComment_OR_DeleteComment = [
   param("postType")
     .isIn(["ohwunwan", "feedback", "1rm"])
     .withMessage(

@@ -76,3 +76,12 @@ export async function updateComment(postType, id, text) {
       throw err;
     });
 }
+
+export async function deleteComment(postType, id) {
+  let query = `delete from comments_${postType} where id=?`;
+  return pool //
+    .query(query, [id])
+    .catch(err => {
+      throw err;
+    });
+}
