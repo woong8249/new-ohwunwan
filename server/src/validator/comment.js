@@ -3,11 +3,25 @@ import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 
 const isPost = async (value, { req }) => {
-  const { postType } = req.params;
+  let { postType } = req.params;
+  if (!postType) postType = "feedback";
   const post_id = value;
   const post = await data.post.getpostById(postType, post_id);
-  if (post) return new Promise((res, rej) => res());
-  else return new Promise((res, rej) => rej());
+  if (post) {
+    req.post = post;
+    return new Promise((res, rej) => res());
+  } else return new Promise((res, rej) => rej());
+};
+
+const isComment = async (value, { req }) => {
+  let { postType } = req.params;
+  if (!postType) postType = "feedback";
+  const comment_id = value;
+  const comment = await data.comment.getCommentById(postType, comment_id);
+  if (comment) {
+    req.comment = comment;
+    return new Promise((res, rej) => res());
+  } else return new Promise((res, rej) => rej());
 };
 
 export const validateGetComment = [
@@ -43,15 +57,6 @@ export const validateCreateComment = [
   validator,
 ];
 
-const isComment = async (value, { req }) => {
-  const { postType } = req.params;
-  const comment_id = value;
-  const comment = await data.comment.getCommentById(postType, comment_id);
-  if (comment) {
-    req.comment = comment;
-    return new Promise((res, rej) => res());
-  } else return new Promise((res, rej) => rej());
-};
 export const validateCreateReComment_OR_UpdateComment = [
   param("postType")
     .isIn(["ohwunwan", "feedback", "1rm"])
@@ -100,5 +105,21 @@ export const validateUpdateComment = [
   body("text") //
     .notEmpty()
     .withMessage("Please, provide the text"),
+  validator,
+];
+
+export const validateSelectComment = [
+  body("post_id")
+    .custom((value, { req }) => !isNaN(value))
+    .withMessage("Please, provide post_id as a number"),
+  body("post_id") //
+    .custom(isPost)
+    .withMessage("No content"),
+  body("comment_id")
+    .custom((value, { req }) => !isNaN(value))
+    .withMessage("Please, provide comment_id as a number"),
+  body("comment_id") //
+    .custom(isComment)
+    .withMessage("No content"),
   validator,
 ];

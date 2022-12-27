@@ -40,8 +40,14 @@ export async function updateComment(params, body) {
   return data.comment.updateComment(postType, id, text);
 }
 
-export function deleteComment(query, params) {
+export async function deleteComment(query, params) {
   const { postType } = params;
   const { comment_id: id } = query;
   return data.comment.deleteComment(postType, id);
+}
+// select or un select
+export async function selectComment(body, comment) {
+  const { comment_id: id } = body;
+  const { selection } = comment;
+  await data.comment.selectComment(id, selection);
 }

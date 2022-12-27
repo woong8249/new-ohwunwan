@@ -890,7 +890,88 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/commentsShortForm"
-
+  /comment/select:
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: select(accept) the comment
+      description: >
+        select(accept) the comment. (This function is only available for feedback posts)<br>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: number
+                comment_id:
+                  type: number
+              required:
+                - post_id
+                - comment_id
+              example:
+                post_id: 1
+                comment_id: 1
+      responses:
+        "200":
+          description: Your comment has been successfully selected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully selected"
+  /comment/unselect:
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - comment
+      summary: unselect(accept) the comment
+      description: >
+        unselect(accept) the comment. (This function is only available for feedback posts)<br>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: number
+                comment_id:
+                  type: number
+              required:
+                - post_id
+                - comment_id
+              example:
+                post_id: 1
+                comment_id: 1
+      responses:
+        "200":
+          description: Your comment has been successfully unselected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: "Your comment has been successfully unselected"
 components:
   securitySchemes:
     cookieAuth:

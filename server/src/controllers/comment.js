@@ -53,3 +53,25 @@ export function deleteComment(req, res) {
         .json({ message: "Your comment has been successfully deleted" })
     );
 }
+
+export function selectComment(req, res) {
+  const { body, comment } = req;
+  return commentServices
+    .selectComment(body, comment)
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: "The comment has been successfully selected" })
+    );
+}
+
+export function unSelectComment(req, res) {
+  const { body, comment } = req;
+  return commentServices
+    .selectComment(body, comment)
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: "The comment has been successfully unselected" })
+    );
+}

@@ -16,6 +16,16 @@ export async function getComments(postType, post_id, number, limit) {
    on 
       ccc.user_id =u.id
    order by createdAt desc`;
+  if (postType === "feedback") {
+    query = query.replace(
+      "picture,replycount",
+      `picture,replycount,ccc.selection `
+    );
+    query = query.replace(
+      "c.updatedAt,cc.replyCount",
+      `c.updatedAt,cc.replyCount,c.selection `
+    );
+  }
 
   if (number && limit) {
     query += ` LIMIT ${number},${limit}`;
@@ -59,6 +69,9 @@ export async function getReComments(postType, comment_id, number, limit) {
   if (number && limit) {
     query += ` LIMIT ${number},${limit}`;
   }
+  if (postType === "feedback") {
+    query = query.replace("u.picture", `u.picture,c.selection `);
+  }
   return pool
     .query(query, [comment_id]) //
     .then(comments => comments[0])
@@ -79,6 +92,21 @@ export async function updateComment(postType, id, text) {
 
 export async function deleteComment(postType, id) {
   let query = `delete from comments_${postType} where id=?`;
+  return pool //
+    .query(query, [id])
+    .catch(err => {
+      throw err;
+    });
+}
+
+// select or unSelect
+export async function selectComment(id, selection) {
+  let query;
+  if (!selection) {
+    query = `update comments_feedback set selection=1  where id=?`;
+  } else {
+    query = `update comments_feedback set selection=null  where id=?`;
+  }
   return pool //
     .query(query, [id])
     .catch(err => {

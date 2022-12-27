@@ -7,18 +7,25 @@ import {
   validateGetReComment_OR_DeleteComment,
   validateGetComment,
   validateCreateComment,
+  validateSelectComment,
 } from "../validator/comment.js";
 
 const router = express.Router();
-// get comment
-router.get("/:postType", validateGetComment, commentController.getComment);
 
-// create comment
-router.post(
-  "/:postType",
+// delete comment(include reply commnet)
+router.put(
+  "/select",
   isLogin,
-  validateCreateComment,
-  commentController.createComment
+  validateSelectComment,
+  isAuth,
+  commentController.selectComment
+);
+router.put(
+  "/unSelect",
+  isLogin,
+  validateSelectComment,
+  isAuth,
+  commentController.unSelectComment
 );
 
 // get reply comment
@@ -34,6 +41,17 @@ router.post(
   isLogin,
   validateCreateReComment_OR_UpdateComment,
   commentController.createReComment
+);
+
+// get comment
+router.get("/:postType", validateGetComment, commentController.getComment);
+
+// create comment
+router.post(
+  "/:postType",
+  isLogin,
+  validateCreateComment,
+  commentController.createComment
 );
 
 // updated comment (include reply comment)
@@ -53,4 +71,5 @@ router.delete(
   isAuth,
   commentController.deleteComment
 );
+
 export default router;
