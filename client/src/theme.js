@@ -28,6 +28,7 @@ const theme = {
 
   // 모달 로그인
   modalLoginHeight: "40rem", // 모달 로그인 세로 길이
+  modalLoginHeight2: "45rem", // 모달 로그인 연장 길이
   modalLoginSubject: "4rem", // 모달 로그인 제목 크기
   modalLoginSubjectPadding: "3rem", // 모달 로그인 제목 패딩
   modalLoginInputWidth: "30rem", // 모달 로그인 인풋 가로 길이

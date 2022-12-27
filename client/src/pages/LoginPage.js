@@ -20,7 +20,7 @@ import hideInvalid from "../utils/hideInvalid"
 
 function LoginPage({...props}) {
   // useState
-  const [Validity, setValidity] = useState({
+  const [validity, setValidity] = useState({
     id: true,
     password: true
   });
@@ -63,40 +63,40 @@ function LoginPage({...props}) {
                 name="userId"
                 onBlur={(e) => {
                   if(e.target.validity.valid) {
-                    setValidity({...Validity, id: true})
+                    setValidity({...validity, id: true})
                   } else {
-                    setValidity({...Validity, id: false})
+                    setValidity({...validity, id: false})
                   }
                 }}
                 onChange={(e) => {
                   dispatch({type: ID, id: e.target.value})
                 }}
               />
-              {Validity.id ? <InvalidIcon check /> : <InvalidIcon invalid />}
+              {validity.id ? <InvalidIcon check /> : <InvalidIcon invalid />}
             </LoginFormRow>
-            { !Validity.id ? <LoginValidity>영문 소문자, 숫자(4~16자리)</LoginValidity> : null }
+            { !validity.id ? <LoginValidity>영문 소문자, 숫자(4~16자리)</LoginValidity> : null }
 
             <LoginFormRow>
               <LoginInput 
                 type="password" 
                 placeholder="패스워드"
-                pattern="^[a-zA-Z0-9!@#$%^*+=-]{4,16}$" // 영문대소문자, 숫자, 특수문자, 5-10자리
+                pattern="^[a-zA-Z0-9!@#$%^*+=-]{4,16}$" // 영문대소문자, 숫자, 특수문자, 4-16자리
                 required
                 name="password"
                 onBlur={(e) => {
                   if(e.target.validity.valid) {
-                    setValidity({...Validity, password: true})
+                    setValidity({...validity, password: true})
                   } else {
-                    setValidity({...Validity, password: false})
+                    setValidity({...validity, password: false})
                   }
                 }}
                 onChange={(e) => {
                   dispatch({type: PASSWORD, password: e.target.value})
                 }}
               />
-              {Validity.password ? <InvalidIcon check /> : <InvalidIcon invalid />}
+              {validity.password ? <InvalidIcon check /> : <InvalidIcon invalid />}
             </LoginFormRow>
-            { !Validity.password ? <LoginValidity>영문 대소문자, 숫자, !@#$%^*+=-(4~16자리)</LoginValidity> : null }
+            { !validity.password ? <LoginValidity>영문 대소문자, 숫자, !@#$%^*+=-(4~16자리)</LoginValidity> : null }
 
             <LoginInput 
               type="submit" 
