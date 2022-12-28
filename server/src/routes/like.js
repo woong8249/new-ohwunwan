@@ -3,6 +3,7 @@ import {
   validateCreatePostLike,
   validateCreateCommentLike,
   validateDeletePostLike,
+  validateDeleteCommentLike,
 } from "../validator/like.js";
 import * as likeController from "../controllers/like.js";
 import isAuth from "../middlewares/isAuth.js";
@@ -35,6 +36,11 @@ router.post(
 );
 
 // 댓글 좋아요 삭제
-router.delete("/comment/:commentType");
+router.delete(
+  "/comment/:commentType",
+  isLogin,
+  validateDeleteCommentLike,
+  likeController.deleteCommentLike
+);
 
 export default router;

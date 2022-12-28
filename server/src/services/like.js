@@ -17,3 +17,9 @@ export async function deletePostLike(params, query) {
   const { like_id } = query;
   return data.like.deletePostLike(postType, like_id);
 }
+
+export async function deleteCommentLike(params, query) {
+  const { commentType } = params;
+  const { like_id } = query;
+  return data.like.deleteCommentLike(commentType, like_id);
+}
