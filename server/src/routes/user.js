@@ -43,5 +43,5 @@ router.put(
   userController.updatePassword
 );
 router.delete("/withdrawal", isLogin, userController.withdrawal);
-router.get("/csrf-token", userController.csrfToken);
+router.get("/csrf", userController.csrfToken);
 export default router;
