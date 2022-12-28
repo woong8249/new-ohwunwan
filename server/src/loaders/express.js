@@ -8,6 +8,7 @@ import helmet from "helmet";
 import swaggerUI from "swagger-ui-express";
 import yaml from "yamljs";
 
+import likeRouter from "../routes/like.js";
 import userRouter from "../routes/user.js";
 import commentRouter from "../routes/comment.js";
 import postRouter from "../routes/post.js";
@@ -40,6 +41,7 @@ export default async ({ app }) => {
   app.use("/comment", commentRouter);
   app.use("/post", postRouter);
   app.use("/user", userRouter);
+  app.use("/like", likeRouter);
 
   //----잘못 된 경로입력시----
   app.use((req, res, next) => {
