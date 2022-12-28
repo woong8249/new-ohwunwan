@@ -28,6 +28,7 @@ function LoginPage({...props}) {
   // state
   const login = useSelector(state => state.login);
   const loginError = useSelector(state => state.loginError);
+  const csrfToken = useSelector(state => state.csrfToken);
   const dispatch = useDispatch();
 
   // useRef
@@ -104,7 +105,8 @@ function LoginPage({...props}) {
               onClick={() => {
                 axios.post(`${process.env.REACT_APP_DB_HOST}/user/signin`,
                   {userId: login.id, password: login.password}
-                  // { withCredentials: true }
+                  // ,{ withCredentials: true }
+                  ,{ headers: { ohwunwan_csrf_token: csrfToken } }
                 )
                 .then(response => {
                   // console.log(response.data)
@@ -114,6 +116,8 @@ function LoginPage({...props}) {
                   dispatch({type: ID, id: null});
                   dispatch({type: PASSWORD, password: null});
                 })
+                // .then(axios.get(`${process.env.REACT_APP_DB_HOST}/user/me`),{ withCredentials: true })
+                // .then(response => console.log(response))
                 .catch(error => {
                   // console.log(error)
                   dispatch({type: ADD_LOGINERROR, loginError: error.response.data.message});
