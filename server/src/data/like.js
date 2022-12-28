@@ -76,7 +76,7 @@ export async function createCommentLike(commentType, user_id, comment_id) {
     .query(query, [user_id, comment_id])
     .then(result => {
       const id = result[0].insertId;
-      return findPostLikebyId(commentType, id);
+      return findCommentLikebyId(commentType, id);
     })
     .catch(err => {
       throw err;

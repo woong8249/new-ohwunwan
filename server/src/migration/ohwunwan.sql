@@ -163,7 +163,7 @@ CREATE TABLE `Likes_1rm` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+  KEY `user_id` (`user_id`),
   KEY `1rm_id` (`1rm_id`),
   CONSTRAINT `likes_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_1rm_ibfk_2` FOREIGN KEY (`1rm_id`) REFERENCES `Posts_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -199,7 +199,7 @@ CREATE TABLE `Likes_comment_1rm` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+  KEY `user_id` (`user_id`),
   KEY `comment_1rm_id` (`comment_1rm_id`),
   CONSTRAINT `likes_comment_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_1rm_ibfk_2` FOREIGN KEY (`comment_1rm_id`) REFERENCES `Comments_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -229,7 +229,7 @@ CREATE TABLE `Likes_comment_feedback` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `comment_feedback_id` (`comment_feedback_id`),
   CONSTRAINT `likes_comment_feedback_ibfk_1` FOREIGN KEY (`comment_feedback_id`) REFERENCES `Comments_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -259,7 +259,7 @@ CREATE TABLE `Likes_comment_ohwunwan` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `comment_ohwunwan_id` (`comment_ohwunwan_id`),
   CONSTRAINT `likes_comment_ohwunwan_ibfk_1` FOREIGN KEY (`comment_ohwunwan_id`) REFERENCES `Comments_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -289,7 +289,7 @@ CREATE TABLE `Likes_feedback` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `feedback_id` (`feedback_id`),
   CONSTRAINT `likes_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_feedback_ibfk_2` FOREIGN KEY (`feedback_id`) REFERENCES `Posts_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -319,7 +319,7 @@ CREATE TABLE `Likes_ohwunwan` (
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `ohwunwan_id` (`ohwunwan_id`),
   CONSTRAINT `likes_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_ohwunwan_ibfk_2` FOREIGN KEY (`ohwunwan_id`) REFERENCES `Posts_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

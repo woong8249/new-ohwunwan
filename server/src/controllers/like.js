@@ -9,9 +9,10 @@ export async function createPostLike(req, res) {
 
 export async function createCommentLike(req, res) {
   const { user, params, body } = req;
-  return likeServices
-    .createCommentLike(user, params, body)
-    .then(like => res.status(201).json(like));
+  return likeServices.createCommentLike(user, params, body).then(like => {
+    console.log(like);
+    return res.status(201).json(like);
+  });
 }
 
 export async function deletePostLike(req, res) {

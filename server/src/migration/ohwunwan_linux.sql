@@ -158,7 +158,7 @@ DROP TABLE IF EXISTS `likes_1rm`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `likes_1rm` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
+  `user_id` int  NOT NULL,
   `1rm_id` int NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
@@ -194,14 +194,15 @@ DROP TABLE IF EXISTS `likes_comment_1rm`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `likes_comment_1rm` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `comment_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `comment_1rm_id` int NOT NULL,
+  `user_id` int  NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `user_id` (`user_id`),
+  KEY `comment_1rm_id` (`comment_1rm_id`),
   CONSTRAINT `likes_comment_1rm_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `likes_comment_1rm_ibfk_2` FOREIGN KEY (`id`) REFERENCES `comments_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `likes_comment_1rm_ibfk_2` FOREIGN KEY (`comment_1rm_id`) REFERENCES `comments_1rm` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -223,13 +224,14 @@ DROP TABLE IF EXISTS `likes_comment_feedback`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `likes_comment_feedback` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `comment_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `comment_feedback_id` int NOT NULL,
+  `user_id` int   NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `likes_comment_feedback_ibfk_1` FOREIGN KEY (`id`) REFERENCES `comments_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   KEY `user_id` (`user_id`),
+  KEY `comment_feedback_id` (`comment_feedback_id`),
+  CONSTRAINT `likes_comment_feedback_ibfk_1` FOREIGN KEY (`comment_feedback_id`) REFERENCES `comments_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_feedback_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -252,14 +254,14 @@ DROP TABLE IF EXISTS `likes_comment_ohwunwan`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `likes_comment_ohwunwan` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `comment_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `comment_ohwunwan_id` int NOT NULL,
+  `user_id` int  NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `comment_id` (`comment_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `likes_comment_ohwunwan_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   KEY `user_id` (`user_id`),
+  KEY `comment_ohwunwan_id` (`comment_ohwunwan_id`),
+  CONSTRAINT `likes_comment_ohwunwan_ibfk_1` FOREIGN KEY (`comment_ohwunwan_id`) REFERENCES `comments_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_comment_ohwunwan_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -283,11 +285,11 @@ DROP TABLE IF EXISTS `likes_feedback`;
 CREATE TABLE `likes_feedback` (
   `id` int NOT NULL AUTO_INCREMENT,
   `feedback_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `user_id` int  NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `feedback_id` (`feedback_id`),
   CONSTRAINT `likes_feedback_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_feedback_ibfk_2` FOREIGN KEY (`feedback_id`) REFERENCES `posts_feedback` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -313,11 +315,11 @@ DROP TABLE IF EXISTS `likes_ohwunwan`;
 CREATE TABLE `likes_ohwunwan` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ohwunwan_id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `user_id` int  NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `user_id` (`user_id`),
+   KEY `user_id` (`user_id`),
   KEY `ohwunwan_id` (`ohwunwan_id`),
   CONSTRAINT `likes_ohwunwan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `likes_ohwunwan_ibfk_2` FOREIGN KEY (`ohwunwan_id`) REFERENCES `posts_ohwunwan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
