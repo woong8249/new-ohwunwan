@@ -3,9 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 
-// redux
-import { GET_CSRF_TOKEN } from "../store/modules/csrfToken";
-
 // components
 import MenuButton from "./MenuButton";
 import MenuName from "./MenuName";
@@ -19,6 +16,8 @@ import onerm from "../assets/icons/ranking.png"
 import feedback from "../assets/icons/feedback.png"
 import post from "../assets/icons/add-button.png"
 import profile from "../assets/icons/circle-user-solid.svg"
+
+import { testLogin } from "../utils/testLogin";
 
 function Menu() {
   // state
@@ -43,23 +42,32 @@ function Menu() {
           <MenuRow key={idx} onClick={
             // * 프로필일 경우 && 로그인 되어 있지 않은 경우 && loginState가 false => onclick 작동
             arr[1] === "프로필" && loginState === false && user.userId === undefined ?
-            () => {
-              dispatch({type: LOGIN_MODAL, loginModal: true})
-              axios.get(`${process.env.REACT_APP_DB_HOST}/user/csrf-token`)
-              .then(response => dispatch({type: GET_CSRF_TOKEN, csrfToken: response.data.csrfToken}))
-            } :
+            () => {dispatch({type: LOGIN_MODAL, loginModal: true})} :
             // * 프로필일 경우 && 로그인 되어 있을 경우 && loginState가 false => onclick 작동시 마이페이지 이동
             arr[1] === "프로필" && loginState === false && user.userId !== undefined ?
             () => console.log("마이페이지 이동, 수정목록") :
             //! 로그아웃의 경우
             arr[1] === "로그아웃" ? () => {
-              axios.post(`${process.env.REACT_APP_DB_HOST}/user/signout`)
-              .then(response => {
-                console.log(response.data)
-              })
-              .catch(error => {
-                console.log(error)
-              })
+              testLogin()
+
+              // axios.get(`${process.env.REACT_APP_DB_HOST}/user/csrf-token`)
+              //   .then(response => {
+              //     // console.log(response.data.csrfToken)
+              //     axios.post(`${process.env.REACT_APP_DB_HOST}/user/signout`,
+              //     {user: "example"}
+              //     ,{ headers: { ohwunwan_csrf_token: response.data.csrfToken } }
+              //     ,{ withcredentials: true }
+              //     )
+              //     .then(response => {
+              //       console.log(response)
+              //     })
+              //     .catch(error => {
+              //       console.log(error.response.data)
+              //     })
+              //   })
+              //   .catch(error => {
+              //     console.log(error)
+              //   })
             } :
             // 그 외의 경우
             null

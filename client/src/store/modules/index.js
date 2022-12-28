@@ -12,7 +12,6 @@ import signupError from "./signupError";
 import comment from "./comment";
 import articles from "./articles";
 import user from "./user";
-import csrfToken from "./csrfToken";
 
 export default combineReducers({
   comment,
@@ -25,5 +24,4 @@ export default combineReducers({
   user,
   loginError,
   signupError,
-  csrfToken
 });
