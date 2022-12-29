@@ -23,11 +23,16 @@ const isComment = async (value, { req }) => {
   } else return new Promise((res, rej) => rej());
 };
 
-// 게시물좋아요 유뮤체크 by like_id
+// 게시물좋아요 유뮤체크 by like_id,user_id
 const isPostLike = async (value, { req }) => {
   const { postType } = req.params;
-  const like_id = value;
-  const like = await data.like.findPostLikebyId(postType, like_id);
+  const { id: user_id } = req.user;
+  const post_id = value;
+  const like = await data.like.findPostLikeByUser_id(
+    postType,
+    user_id,
+    post_id
+  );
   if (like) {
     req.like = like;
     return new Promise((res, rej) => res());
@@ -48,11 +53,17 @@ const existPostLike = async (value, { req }) => {
     return new Promise((res, rej) => rej());
   } else return new Promise((res, rej) => res());
 };
-// 댓글좋아요 유뮤체크 by like_id
+
+// 댓글좋아요 유뮤체크 by user_id,comment_id
 const isCommentLike = async (value, { req }) => {
   const { commentType } = req.params;
-  const like_id = value;
-  const like = await data.like.findCommentLikebyId(commentType, like_id);
+  const { id: user_id } = req.user;
+  const comment_id = value;
+  const like = await data.like.findCommentLikeByuser_id(
+    commentType,
+    user_id,
+    comment_id
+  );
   if (like) {
     req.like = like;
     return new Promise((res, rej) => res());
@@ -68,7 +79,6 @@ const existCommentLike = async (value, { req }) => {
     user_id,
     comment_id
   );
-
   if (like) return new Promise((res, rej) => rej());
   else return new Promise((res, rej) => res());
 };
@@ -115,10 +125,10 @@ export const validateDeletePostLike = [
     .withMessage(
       "There are only 3Type in postType: ohwunwan, feedback, 1rm . Please provide one of the following"
     ),
-  query("like_id")
+  query("post_id")
     .custom((value, { req }) => !isNaN(value))
-    .withMessage("Please, provide like_id as a number"),
-  query("like_id") //
+    .withMessage("Please, provide post_id as a number"),
+  query("post_id") //
     .custom(isPostLike)
     .withMessage("No content"),
   validator,
@@ -130,10 +140,10 @@ export const validateDeleteCommentLike = [
     .withMessage(
       "There are only 3Type in commentType: ohwunwan, feedback, 1rm . Please provide one of the following"
     ),
-  query("like_id")
+  query("comment_id")
     .custom((value, { req }) => !isNaN(value))
-    .withMessage("Please, provide like_id as a number"),
-  query("like_id") //
+    .withMessage("Please, provide comment_id as a number"),
+  query("comment_id") //
     .custom(isCommentLike)
     .withMessage("No content"),
   validator,

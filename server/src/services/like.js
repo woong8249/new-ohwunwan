@@ -12,10 +12,10 @@ export async function createCommentLike(user, params, body) {
   return data.like.createCommentLike(commentType, user_id, comment_id);
 }
 
-export async function deletePostLike(params, query) {
+export async function deletePostLike(params, like) {
   const { postType } = params;
-  const { like_id } = query;
-  return data.like.deletePostLike(postType, like_id);
+  const { id } = like;
+  return data.like.deletePostLike(postType, id);
 }
 
 export async function deleteCommentLike(params, query) {

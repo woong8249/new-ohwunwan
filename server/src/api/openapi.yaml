@@ -15,6 +15,8 @@ tags:
     description: APIs to handle user
   - name: comment
     description: APIs to handle comment
+  - name: like
+    description: APIs to handle like
 
 paths:
   /post/{postType}:
@@ -972,6 +974,155 @@ paths:
                   - message
                 example:
                   message: "Your comment has been successfully unselected"
+  /like/post/{postType}:
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - like
+      summary: create like of post
+      description: >
+        create like of post
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: string
+              required:
+                - post_id
+              example:
+                post_id: 2
+      responses:
+        "201":
+          description: Like successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 3
+                  user_id: 11
+                  1rm_id: 4
+                  createdAt: "2022-12-28T15:57:56.000Z"
+    delete:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - like
+      summary: delete like of post
+      description: >
+        delete like of post
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: post_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Please provide the id of the post you liked
+      responses:
+        "200":
+          description: Your comment has been successfully selected
+          content:
+            application/json:
+              example:
+                message: "ok"
+  /like/comment/{commentType}:
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - like
+      summary: create like of comment
+      description: >
+        create like of comment
+      parameters:
+        - in: path
+          name: commentType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 comment types (ohwunwan, feedback, 1rm)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment_id:
+                  type: string
+              required:
+                - comment_id
+              example:
+                comment_id: 2
+      responses:
+        "201":
+          description: Like successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 10,
+                  comment_ohwunwan_id: 3,
+                  user_id: 12
+                  createdAt: "2022-12-29T06:14:38.000Z"
+    delete:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - like
+      summary: delete like of comment
+      description: >
+        delete like of comment
+      parameters:
+        - in: path
+          name: commentType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 comment types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: comment_id
+          required: true
+          schema:
+            type: number
+          description: >
+            Please provide the id of the post you liked
+      responses:
+        "200":
+          description: Your like has been successfully selected
+          content:
+            application/json:
+              example:
+                message: "ok"
+
 components:
   securitySchemes:
     cookieAuth:
@@ -1164,6 +1315,7 @@ components:
           nickname: woonge_e
           picture: null,
           replyCount: null
+          likeCount: 2
         - comment_id: 4
           text: testbnefjsgkwmefkm
           createdAt: 2022-12-25T14:24:11.000Z
@@ -1172,6 +1324,7 @@ components:
           nickname: woonge_e
           picture: null,
           replyCount: null
+          likeCount: null
         - comment_id: 3
           text: testbnefjsgkwmefkm
           createdAt: 2022-12-25T14:24:11.000Z
@@ -1180,6 +1333,7 @@ components:
           nickname: woonge_e
           picture: null,
           replyCount: 3
+          likeCount: null
     reComments:
       type: object
       properties:
@@ -1219,6 +1373,7 @@ components:
           userId: jiwoong
           nickname: woonge_e
           picture: null,
+          likeCount: 2
         - comment_id: 4
           text: testbnefjsgkwmefkm
           createdAt: 2022-12-25T14:24:11.000Z
@@ -1226,6 +1381,7 @@ components:
           userId: jiwoong
           nickname: woonge_e
           picture: null,
+          likeCount: null
         - comment_id: 3
           text: testbnefjsgkwmefkm
           createdAt: 2022-12-25T14:24:11.000Z
@@ -1233,6 +1389,7 @@ components:
           userId: jiwoong
           nickname: woonge_e
           picture: null,
+          likeCount: null
     commentsShortForm:
       type: object
       properties:

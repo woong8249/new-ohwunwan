@@ -16,9 +16,9 @@ export async function createCommentLike(req, res) {
 }
 
 export async function deletePostLike(req, res) {
-  const { params, query } = req;
+  const { params, like } = req;
   return likeServices
-    .deletePostLike(params, query)
+    .deletePostLike(params, like)
     .then(() => res.status(200).json({ message: "ok" }));
 }
 
