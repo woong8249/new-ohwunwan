@@ -43,7 +43,7 @@ paths:
             type: string
           description: >
             If you select 1rm post,<br>
-            you can additionally select the kind of 1rm post.<br>
+            you have to additionally select the kind of 1rm post.<br>
             There are 3 types.(bench, dead, squat)
         - in: query
           name: userId

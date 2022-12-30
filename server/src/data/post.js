@@ -51,30 +51,34 @@ ON  p_c_l.${postType}_id=p_u.${postType}_id
 order by p_u.createdAt desc `;
 
   if (postType === "1rm") {
-    query = query.replace("p.text,", "p.text,p.kind1rm,p.ranking,p.kg,");
-  }
-  if (kind1rm) {
     query = query.replace(
-      "order by p_u.createdAt desc",
-      `WHERE kind1rm='${kind1rm}' order by p_u.createdAt desc`
+      "p.text,",
+      "p.text,p.kind1rm,p.kg,rank()over (order by kg desc) as ranking,"
     );
-  }
-  if (userId) {
     query = query.replace(
       "ON p.user_id =u.id",
-      `ON p.user_id =u.id WHERE userId='${userId}'`
+      `ON p.user_id =u.id where kind1rm='${kind1rm}' and ranking=1`
     );
   }
+
+  if (id) {
+    query = query.replace(
+      "order by p_u.createdAt desc",
+      `where p_u.${postType}_id=${id} order by p_u.createdAt desc`
+    );
+  }
+
+  if (userId) {
+    query = query.replace(
+      "order by p_u.createdAt desc",
+      `where p_u.userId='${userId}' order by p_u.createdAt desc`
+    );
+  }
+
   if (number && limit) {
     query += ` LIMIT ${number},${limit}`;
   }
-  if (id) {
-    query = query.replace(
-      "ON p.user_id =u.id",
-      `ON p.user_id =u.id 
-      WHERE p.id=${id}`
-    );
-  }
+
   // console.log(query);
   return query;
 };

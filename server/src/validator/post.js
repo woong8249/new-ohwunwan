@@ -10,9 +10,16 @@ export const validateGet = [
   query("kind1rm", "'kind1rm' can provide when postType is 1rm")
     .if(query("kind1rm").exists())
     .custom((value, { req }) => req.params.postType === "1rm"),
+  query("kind1rm", "Please provide kind1rm")
+    .if(param("postType").isIn(["1rm"]))
+    .custom((value, { req }) => {
+      if (!value) return false;
+      else return true;
+    }),
   query("kind1rm", "There are only 3kind in 'kind1rm': bench, dead, squat")
     .if(query("kind1rm").exists())
     .isIn(["bench", "dead", "squat"]),
+
   validator,
 ];
 
