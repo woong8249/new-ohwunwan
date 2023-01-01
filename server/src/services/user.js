@@ -11,17 +11,6 @@ export async function createUser(body) {
   await data.user.createUser(userId, hashed_password);
 }
 
-export async function login(res, user) {
-  const userInfo = {
-    userId: user.userId,
-    nickname: user.nickname,
-  };
-  const token = await createToken(userInfo);
-  userInfo.picture = user.picture;
-  setToken(res, token);
-  return userInfo;
-}
-
 export async function updatePicture(user, file = undefined) {
   const { userId, s3key } = user;
   if (s3key) {

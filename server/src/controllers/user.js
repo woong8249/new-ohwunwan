@@ -6,27 +6,6 @@ export function signup(req, res) {
     .then(() => res.status(201).json({ message: "Signup has completed" }));
 }
 
-export function signin(req, res) {
-  const { user } = req;
-  return userServices //
-    .login(res, user)
-    .then(userInfo => res.status(200).json(userInfo));
-}
-
-export function signout(req, res) {
-  res.clearCookie("token");
-  res.status(200).json({ message: "You are logged out" });
-}
-
-export function getMe(req, res) {
-  const userInfo = {
-    userId: req.user.userId,
-    nickname: req.user.nickname,
-    picture: req.user.picture,
-  };
-  res.status(200).json(userInfo);
-}
-
 export function updatePicture(req, res) {
   const { user, file } = req;
   return userServices
@@ -64,10 +43,4 @@ export function withdrawal(req, res) {
     .then(() =>
       res.status(200).json({ message: "Membership withdrawal is complete" })
     );
-}
-
-export function csrfToken(req, res) {
-  return userServices
-    .generateCSRFToken()
-    .then(csrfToken => res.status(200).json({ csrfToken }));
 }

@@ -43,19 +43,6 @@ const isUser = async (value, { req }) => {
   }
 };
 
-export const validateLogin = [
-  body("userId") //
-    .isLength({ min: 4, max: 16 })
-    .withMessage("The userId must be 4 ~ 16 chars long"),
-  body("password") //
-    .isLength({ min: 4, max: 16 })
-    .withMessage("The password must be 4 ~ 16 chars long"),
-  body("userId") //
-    .custom(isUser)
-    .withMessage("Does not exist or the password is incorrect"),
-  validator,
-];
-
 export const validateUpdatePicture = [
   check("file") //
     .custom((value, { req }) => {
