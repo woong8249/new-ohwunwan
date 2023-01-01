@@ -25,12 +25,12 @@ DROP TABLE IF EXISTS `Admins`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Admins` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `userId` varchar(30) NOT NULL,
+  `adminId` varchar(30) NOT NULL,
   `password` varchar(100) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT (now()),
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  UNIQUE KEY `userId` (`userId`)
+  UNIQUE KEY `adminId` (`adminId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,6 +42,8 @@ LOCK TABLES `Admins` WRITE;
 /*!40000 ALTER TABLE `Admins` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Admins` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
 
 --
 -- Table structure for table `Comments_1rm`
@@ -478,32 +480,7 @@ VALUES
 /*!40000 ALTER TABLE `Posts_ohwunwan` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `Repots`
---
 
-DROP TABLE IF EXISTS `Repots`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Repots` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `category` varchar(30) NOT NULL COMMENT 'There are 2categorys: post,comment',
-  `type` varchar(30) NOT NULL COMMENT 'There are 3 types: ohwunwan,feedback,1rm',
-  `typeId` int NOT NULL COMMENT 'Unique number of the specified item',
-  `createdAt` timestamp NOT NULL DEFAULT (now()),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Repots`
---
-
-LOCK TABLES `Repots` WRITE;
-/*!40000 ALTER TABLE `Repots` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Repots` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `Users`
@@ -559,3 +536,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-12-09 12:58:48
+
+INSERT INTO `Admins` VALUES(1,'admin','$2b$10$rI9c9R8z.4QZcKsi3lXTS.nYS6Cp/OITmaf8iym7KlIcRsiDCWatu',now())
