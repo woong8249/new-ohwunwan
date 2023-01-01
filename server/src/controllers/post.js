@@ -1,5 +1,20 @@
 import * as postServices from "../services/post.js";
 
+export const updateRanking = (req, res) => {
+  const { post } = req;
+  return postServices //
+    .updateRanking(post)
+    .then(message => res.json(message));
+};
+export const getRanking = (req, res) => {
+  const { query, params } = req;
+  return postServices //
+    .getRanking(params, query)
+    .then(list => {
+      if (list.length !== 0) return res.json(list);
+      else return res.status(204).json({ message: "no content" });
+    });
+};
 export const getPost = (req, res) => {
   const { params, query } = req;
   return postServices

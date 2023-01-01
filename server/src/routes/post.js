@@ -9,9 +9,25 @@ import {
   validateCreateAfter,
   validateUpdate,
   validateRemove,
+  validateGetRankingList,
+  validateUpdateRanking,
 } from "../validator/post.js";
 
 const router = express.Router();
+router.get(
+  "/ranking/:whether",
+  validateGetRankingList,
+  postController.getRanking
+);
+// 멱등성이 유지되지않게 만들었음
+router.put(
+  "/ranking",
+  isLogin,
+  isAuth,
+  validateUpdateRanking,
+  postController.updateRanking
+);
+
 router.get("/:postType", validateGet, postController.getPost);
 router.post(
   "/:postType",

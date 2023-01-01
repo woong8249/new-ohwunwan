@@ -2,6 +2,39 @@ import { body, check, param, query } from "express-validator";
 import validator from "../middlewares/validator.js";
 import * as data from "../data/index.js";
 
+const isPost = async (value, { req }) => {
+  const id = value;
+  let { postType } = req.params;
+  if (!postType) postType = "1rm";
+  return data.post
+    .getpostById(postType, id) //
+    .then(post => {
+      if (!post) return new Promise((res, rej) => rej());
+      req.post = post;
+      return new Promise((res, rej) => res());
+    });
+};
+export const validateUpdateRanking = [
+  body("post_id") //
+    .notEmpty()
+    .withMessage("Please Provide post_id")
+    .custom(isPost)
+    .withMessage("No content"),
+  validator,
+];
+export const validateGetRankingList = [
+  param("whether")
+    .isIn(["on", "off"])
+    .withMessage(
+      "There are only 2Type : on or off. Please provide 'wherther' in parma,  one of the following"
+    ),
+  query("kind1rm")
+    .isIn(["bench", "dead", "squat"])
+    .withMessage(
+      "There are only 3Type : bench,dead,squat. Please provide kind1rm in query,  one of the following"
+    ),
+  validator,
+];
 export const validateGet = [
   param(
     "postType",
@@ -51,18 +84,6 @@ export const validateCreateAfter = [
   }),
   validator,
 ];
-
-const isPost = async (value, { req }) => {
-  const id = value;
-  const { postType } = req.params;
-  return data.post
-    .getpostById(postType, id) //
-    .then(post => {
-      if (!post) return new Promise((res, rej) => rej());
-      req.post = post;
-      return new Promise((res, rej) => res());
-    });
-};
 
 export const validateUpdate = [
   param(

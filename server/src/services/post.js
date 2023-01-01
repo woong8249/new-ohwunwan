@@ -1,6 +1,26 @@
 import * as data from "../data/index.js";
 import { s3Remove } from "../utils/s3.js";
 
+export async function updateRanking(post) {
+  const { ranking, id } = post;
+  console.log(ranking);
+  if (ranking == 0) {
+    await data.post.updateRanking(id, 1);
+    return { message: "The post be included in the ranking list" };
+  } else if (ranking == 1) {
+    await data.post.updateRanking(id, 0);
+    return { message: "The post be excluded in the ranking list" };
+  }
+}
+
+export async function getRanking(params, query) {
+  let { whether } = params;
+  if (whether === "on") whether = 1;
+  else if (whether === "off") whether = 0;
+  const { kind1rm, number, limit } = query;
+  const ranking = await data.post.getRanking(whether, kind1rm, number, limit);
+  return ranking;
+}
 // get의 쿼리같은경우는 필드명만 살짝 수정해주면 되어서
 // 그냥 변수를 한꺼번에 넣는 방식으로 쿼리 설정을 함
 export async function getPost(params, query) {

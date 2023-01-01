@@ -79,9 +79,29 @@ order by p_u.createdAt desc `;
     query += ` LIMIT ${number},${limit}`;
   }
 
-  // console.log(query);
+  console.log(query);
   return query;
 };
+export async function updateRanking(id, value) {
+  const query = `update posts_1rm set ranking=? where id=?`;
+  return pool //
+    .query(query, [value, id])
+    .catch(err => {
+      throw err;
+    });
+}
+
+export async function getRanking(whether, kind1rm, number, limit) {
+  let query = `select id,kind1rm,kg,content,text,createdAt from posts_1rm where kind1rm=? and ranking=?`;
+  if (number && limit) query += ` LIMIT ${number},${limit}`;
+
+  return pool
+    .query(query, [kind1rm, whether])
+    .then(result => result[0])
+    .catch(err => {
+      throw err;
+    });
+}
 
 // To get Posts with user, comment, and like information.
 // And if you provide  only 'postTye,id', It can find that post.
