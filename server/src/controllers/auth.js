@@ -1,19 +1,20 @@
 import * as authServices from "../services/auth.js";
 export function signin(req, res) {
-  const { user } = req;
-  return userServices //
-    .login(res, user)
-    .then(userInfo => res.status(200).json(userInfo));
+  const { user, admin } = req;
+  return authServices //
+    .login(res, user, admin)
+    .then(result => res.status(200).json(result));
 }
 
 export function signout(req, res) {
-  res.clearCookie("token");
+  authServices.logout(res);
   res.status(200).json({ message: "You are logged out" });
 }
 
 export function getMe(req, res) {
   const { user, admin } = req;
   const result = authServices.getMe(user, admin);
+  console.log(result);
   res.status(200).json(result);
 }
 export function csrfToken(req, res) {

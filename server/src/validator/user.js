@@ -68,16 +68,16 @@ export const validateDeletePicture = [
 export const validateUpdateProfile = [
   oneOf([
     body("newUserId") //
-      .isLength({ min: 4, max: 16 })
-      .withMessage("The userId must be 4 ~ 16 chars long")
-      .isAlphanumeric()
-      .withMessage("The userId must be consist of alphanum strings"),
+      .notEmpty(),
     body("newNickname") //
-      .isLength({ min: 4, max: 16 })
-      .withMessage("The nicnkname must be 4 ~ 16 chars long"),
+      .notEmpty(),
   ]),
   body("newUserId", "This userId already exists")
     .if(body("newUserId").exists())
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The userId must be 4 ~ 16 chars long")
+    .isAlphanumeric()
+    .withMessage("The userId must be consist of alphanum strings")
     .custom(value => {
       return data.user
         .findByUserId(value) //
@@ -88,6 +88,8 @@ export const validateUpdateProfile = [
     }),
   body("newNickname", "This nickname already exists")
     .if(body("newNickname").exists())
+    .isLength({ min: 4, max: 16 })
+    .withMessage("The nicnkname must be 4 ~ 16 chars long")
     .custom(value => {
       return data.user
         .findByNickname(value) //

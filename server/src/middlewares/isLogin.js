@@ -20,11 +20,21 @@ export default async function (req, res, next) {
   } catch (err) {
     return res.status(401).json({ message });
   }
-  const user = await data.user.findByUserId(decoded.userId);
-  if (!user) {
-    return res.status(401).json({ message });
-  }
-  req.user = user; // req.customData
+  if (decoded.userId) {
+    const user = await data.user.findByUserId(decoded.userId);
+    if (!user) {
+      return res.status(401).json({ message });
+    }
+    req.user = user; // req.customData
 
-  next();
+    next();
+  } else if (decoded.adminId) {
+    const admin = await data.admin.findByAdminId(decoded.adminId);
+    if (!admin) {
+      return res.status(401).json({ message });
+    }
+    req.admin = admin; // req.customData
+
+    next();
+  }
 }
