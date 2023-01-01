@@ -9,210 +9,41 @@ info:
 servers:
   - url: "http://localhost:8080"
 tags:
-  - name: post
-    description: APIs to handle post
+  - name: auth
+    description: APIs to handle auth
   - name: user
     description: APIs to handle user
+  - name: post
+    description: APIs to handle post
   - name: comment
     description: APIs to handle comment
   - name: like
     description: APIs to handle like
 
 paths:
-  /post/{postType}:
+  /auth/me:
     get:
+      security:
+        - cookieAuth: []
       tags:
-        - post
-      summary: Get posts
+        - auth
+      summary: Check login status(user,admin)
       description: >
-        Get a list of posts within the range you set by newest.<br>
-        If "number" and "limit" are not provide, get all posts.<br>
-        If userId is provided, the list contains
-        only posts by the given userId.
-      parameters:
-        - in: path
-          name: postType
-          required: true
-          schema:
-            type: string
-          description: >
-            There are 3 post types (ohwunwan, feedback, 1rm)
-        - in: query
-          name: kind1rm
-          schema:
-            type: string
-          description: >
-            If you select 1rm post,<br>
-            you have to additionally select the kind of 1rm post.<br>
-            There are 3 types.(bench, dead, squat)
-        - in: query
-          name: userId
-          required: false
-          schema:
-            type: string
-          description: >
-            If you use it to specify a user and provide this value,<br> you'll get posts written by that user.
-        - in: query
-          name: number
-          required: false
-          schema:
-            type: integer
-          description: >
-            This is used to indicate the number of requests.
-        - in: query
-          name: limit
-          required: false
-          schema:
-            type: integer
-          description: >
-            The numbers of items to return
+        Check if you are logged in
       responses:
         "200":
-          description: This is ohwunwan post
+          description: You are logged in
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/post_twice"
-        "204":
-          description: If there is no post, it responds with 204 code.
-    post:
-      security:
-        - cookieAuth: []
-        - ApiKeyAuth: []
-      tags:
-        - post
-      summary: create posts
-      description: >
-        Create a post. You must be logged in and have permission
-      parameters:
-        - in: path
-          name: postType
-          required: true
-          schema:
-            type: string
-          description: >
-            There are 3 post types (ohwunwan, feedback, 1rm)
-        - in: query
-          name: text
-          required: true
-          schema:
-            type: string
-          description: >
-            Please provide the text to be written in the post
-        - in: query
-          name: kind1rm
-          schema:
-            type: string
-          description: >
-            If you select 1rm post,<br>
-            <b>you have to additionally provide the kind of 1rm post</b>.<br>
-            There are 3 types.(bench, dead, squat)
-        - in: query
-          name: kg
-          schema:
-            type: integer
-          description: >
-            If you select 1rm post,<br>
-            <b>you have to additionally provide weight.</b><br>
-            unit of weight is kg
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                content:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-      responses:
-        "201":
-          description: Post created successfully.
-          content:
-            application/json:
+                $ref: "#/components/schemas/login_include_admin"
+          headers:
+            Set-Cookie:
               schema:
-                $ref: "#/components/schemas/post_onlyOne"
-    put:
-      security:
-        - cookieAuth: []
-        - ApiKeyAuth: []
-      tags:
-        - post
-      summary: Update posts
-      description: >
-        Update a post. You must be logged in and have permission
-      parameters:
-        - in: path
-          name: postType
-          required: true
-          schema:
-            type: string
-          description: >
-            There are 3 post types (ohwunwan, feedback, 1rm)
-      requestBody:
-        description: >
-          <b>"If you select '1rm' in postType, you can give 'kg' value"</b>
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  description: post id
-                text:
-                  type: string
-                  description: If you want to fix text, provide it
-                kg:
-                  type: number
-                  description: >
-                    If you want to fix text, provide it.<br>
-                    but it can only when you select 1rm in postType
-              required:
-                - id
-              example:
-                id: 1
-                text: 알랑가몰라
-                kg: 100
-
-      responses:
-        "201":
-          description: Post created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/post_onlyOne"
-    delete:
-      security:
-        - cookieAuth: []
-        - ApiKeyAuth: []
-      tags:
-        - post
-      summary: Delete posts
-      description: >
-        Delete a post. You must be logged in and have permission
-      parameters:
-        - in: path
-          name: postType
-          required: true
-          schema:
-            type: string
-          description: >
-            There are 3 post types (ohwunwan, feedback, 1rm)
-        - in: query
-          name: id
-          required: true
-          schema:
-            type: number
-          description: >
-            Please, provide post id
-
-      responses:
-        "201":
-          description: Post created successfully.
+                type: string
+                example: token=abcde12345; Path=/; HttpOnl
+        "401":
+          description: Not logged in
           content:
             application/json:
               schema:
@@ -223,7 +54,123 @@ paths:
                 required:
                   - message
                 example:
-                  message: ok
+                  message: No Authentication
+  /auth/csrf:
+    get:
+      tags:
+        - auth
+      summary: get csrftoken
+      description: >
+        "Provides a csrf token to verify that it is a valid client"
+      responses:
+        "200":
+          description: >
+            csrf token request successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  csrfToken:
+                    type: string
+                required:
+                  - csrfToken
+                example:
+                  csrfToken: "$2b$04$jqJ/hLh8cQe9mqWWgSwFE.sM.ppd3t08Q95nx8BF2AqWwAVH6vt."
+  /auth/signin/{who}:
+    post:
+      security:
+        - ApiKeyAuth: []
+      tags:
+        - auth
+      summary: Sign in
+      description: >
+        login the service.
+      parameters:
+        - in: path
+          name: who
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 types (user,admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: The userId must be 4 ~ 16 chars long
+                password:
+                  type: string
+                  description: The password must be 4 ~ 16 chars long
+              required:
+                - userId
+                - password
+              example:
+                - userId: jiwoong
+                  password: jiwoong1234
+                - adminId:
+                  password:
+      responses:
+        "201":
+          description: >
+            Login successful.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/login_include_admin"
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: token=abcde12345; Path=/; HttpOnly
+        "400":
+          description: >
+            Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  - message: The userId must be 4 ~ 16 chars long
+                  - message: The password must be 4 ~ 16 chars long
+                  - message: Does not exist or the password is incorrect
+                  - message: The adminId must be 4 ~ 16 chars long
+                  - message: The adminId must be consist of alphanum strings
+  /auth/signout:
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - auth
+      summary: Sign out(include admin)
+      description: >
+        loout the service. You must be logged in and have permission
+      responses:
+        "200":
+          description: LogOut is completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+                example:
+                  message: You are logged out
+
   /user/signup:
     post:
       security:
@@ -301,121 +248,6 @@ paths:
                   - message
                 example:
                   message: This userId already exists
-  /user/signin:
-    post:
-      security:
-        - ApiKeyAuth: []
-      tags:
-        - user
-      summary: Sign in
-      description: >
-        login the service.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: string
-                  description: The userId must be 4 ~ 16 chars long
-                password:
-                  type: string
-                  description: The password must be 4 ~ 16 chars long
-              required:
-                - userId
-                - password
-              example:
-                userId: jiwoong
-                password: jiwoong1234
-      responses:
-        "201":
-          description: >
-            Login successful.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/login"
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                example: token=abcde12345; Path=/; HttpOnly
-        "400":
-          description: >
-            Invalid input
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-                example:
-                  - message: The userId must be 4 ~ 16 chars long
-                  - message: The password must be 4 ~ 16 chars long
-                  - message: Does not exist or the password is incorrect
-  /user/signout:
-    post:
-      security:
-        - cookieAuth: []
-        - ApiKeyAuth: []
-      tags:
-        - user
-      summary: Sign out
-      description: >
-        loout the service. You must be logged in and have permission
-      responses:
-        "200":
-          description: LogOut is completed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-                example:
-                  message: You are logged out
-  /user/me:
-    get:
-      security:
-        - cookieAuth: []
-      tags:
-        - user
-      summary: Check login status
-      description: >
-        Check if you are logged in
-      responses:
-        "200":
-          description: You are logged in
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/login"
-          headers:
-            Set-Cookie:
-              schema:
-                type: string
-                example: token=abcde12345; Path=/; HttpOnl
-        "401":
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                  - message
-                example:
-                  message: No Authentication
   /user/me/picture:
     put:
       security:
@@ -619,28 +451,312 @@ paths:
                   - message
                 example:
                   message: "Membership withdrawal is complete"
-  /user/csrf:
+
+  /post/{postType}:
     get:
       tags:
-        - user
-      summary: get csrftoken
+        - post
+      summary: Get posts
       description: >
-        "Provides a csrf token to verify that it is a valid client"
+        Get a list of posts within the range you set by newest.<br>
+        If "number" and "limit" are not provide, get all posts.<br>
+        If userId is provided, the list contains
+        only posts by the given userId.
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: kind1rm
+          schema:
+            type: string
+          description: >
+            If you select 1rm post,<br>
+            you have to additionally select the kind of 1rm post.<br>
+            There are 3 types.(bench, dead, squat)
+        - in: query
+          name: userId
+          required: false
+          schema:
+            type: string
+          description: >
+            If you use it to specify a user and provide this value,<br> you'll get posts written by that user.
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
       responses:
         "200":
+          description: This is ohwunwan post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_twice"
+        "204":
+          description: If there is no post, it responds with 204 code.
+    post:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - post
+      summary: create posts
+      description: >
+        Create a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
           description: >
-            csrf token request successful
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: text
+          required: true
+          schema:
+            type: string
+          description: >
+            Please provide the text to be written in the post
+        - in: query
+          name: kind1rm
+          schema:
+            type: string
+          description: >
+            If you select 1rm post,<br>
+            <b>you have to additionally provide the kind of 1rm post</b>.<br>
+            There are 3 types.(bench, dead, squat)
+        - in: query
+          name: kg
+          schema:
+            type: integer
+          description: >
+            If you select 1rm post,<br>
+            <b>you have to additionally provide weight.</b><br>
+            unit of weight is kg
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "201":
+          description: Post created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_onlyOne"
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - post
+      summary: Update posts
+      description: >
+        Update a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+      requestBody:
+        description: >
+          <b>"If you select '1rm' in postType, you can give 'kg' value"</b>
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: post id
+                text:
+                  type: string
+                  description: If you want to fix text, provide it
+                kg:
+                  type: number
+                  description: >
+                    If you want to fix text, provide it.<br>
+                    but it can only when you select 1rm in postType
+              required:
+                - id
+              example:
+                id: 1
+                text: 알랑가몰라
+                kg: 100
+
+      responses:
+        "200":
+          description: Post updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/post_onlyOne"
+    delete:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - post
+      summary: Delete posts
+      description: >
+        Delete a post. You must be logged in and have permission
+      parameters:
+        - in: path
+          name: postType
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 post types (ohwunwan, feedback, 1rm)
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: number
+          description: >
+            Please, provide post id
+
+      responses:
+        "201":
+          description: Post created successfully.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  csrfToken:
+                  message:
                     type: string
                 required:
-                  - csrfToken
+                  - message
                 example:
-                  csrfToken: "$2b$04$jqJ/hLh8cQe9mqWWgSwFE.sM.ppd3t08Q95nx8BF2AqWwAVH6vt."
+                  message: ok
+  /post/ranking/{whether}:
+    get:
+      tags:
+        - post
+      summary: Get ranking of 1rm post
+      description: >
+        This is an admin-only API.
+        If ‘whether’ is ‘on’, the list of posts that reflect the ranking is loaded.
+        If ‘whether’ is ‘off’, the list of posts that unreflect the ranking is loaded.
+      parameters:
+        - in: path
+          name: whether
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 2 types ('on' or 'off')
+        - in: query
+          name: kind1rm
+          required: true
+          schema:
+            type: string
+          description: >
+            There are 3 types ('bench' or 'dead' or 'squat')
+        - in: query
+          name: number
+          required: false
+          schema:
+            type: integer
+          description: >
+            This is used to indicate the number of requests.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          description: >
+            The numbers of items to return
+      responses:
+        "200":
+          description: This is ohwunwan post
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  - id: 24,
+                    kind1rm: "squat"
+                    kg: 220
+                    content: '["https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-1rm/1671461174538_test"]'
+                    text: "fafmkamskfmakdmvkfkejrn gkvjena bkjeakbjf akefjnbv jkaefnb kajef, vkjaf vkjaenrfkjanerkjvnaekja ekjv aekfjkjdnkwjenfkjnqekjnfjkwnfkjqnwkjfn"
+                    createdAt: "2022-12-19T14:46:19.000Z"
+                  - id: 21,
+                    kind1rm: "squat"
+                    kg: 220
+                    content: '["https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-1rm/1671461174538_test"]'
+                    text: "fafmkamskfmakdmvkfkejrn gkvjena bkjeakbjf akefjnbv jkaefnb kajef, vkjaf vkjaenrfkjanerkjvnaekja ekjv aekfjkjdnkwjenfkjnqekjnfjkwnfkjqnwkjfn"
+                    createdAt: "2022-12-19T14:46:19.000Z"
+                  - id: 20,
+                    kind1rm: "squat"
+                    kg: 220
+                    content: '["https://project-ohwunwan.s3.ap-northeast-2.amazonaws.com/post-1rm/1671461174538_test"]'
+                    text: "fafmkamskfmakdmvkfkejrn gkvjena bkjeakbjf akefjnbv jkaefnb kajef, vkjaf vkjaenrfkjanerkjvnaekja ekjv aekfjkjdnkwjenfkjnqekjnfjkwnfkjqnwkjfn"
+                    createdAt: "2022-12-19T14:46:19.000Z"
+        "204":
+          description: If there is no post, it responds with 204 code.
+  /post/ranking:
+    put:
+      security:
+        - cookieAuth: []
+        - ApiKeyAuth: []
+      tags:
+        - post
+      summary: Update raking
+      description: >
+        This is an admin-only API.
+        if posts that are not included in the ranking list are included, and posts that are included are excluded.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                post_id:
+                  type: integer
+                  description: post id
+              required:
+                - post_id
+              example:
+                post_id: 1
+      responses:
+        "200":
+          description: Post created successfully.
+          content:
+            application/json:
+              example:
+                - message: "The post be included in the ranking list"
+                - message: "The post be excluded in the ranking list"
+
   /comment/{postType}:
     get:
       tags:
@@ -974,6 +1090,7 @@ paths:
                   - message
                 example:
                   message: "Your comment has been successfully unselected"
+
   /like/post/{postType}:
     post:
       security:
@@ -1275,6 +1392,13 @@ components:
         userId: jiwoong
         nickname: woonge_e
         picture: null
+    login_include_admin:
+      type: object
+      example:
+        - userId: jiwoong
+          nickname: woonge_e
+          picture: null
+        - adminId: admin
     comments:
       type: object
       properties:
