@@ -11,8 +11,13 @@ export const getRanking = (req, res) => {
   return postServices //
     .getRanking(params, query)
     .then(list => {
-      if (list.length !== 0) return res.json(list);
-      else return res.status(204).json({ message: "no content" });
+      if (list.length !== 0) {
+        const maping = list.map(item => {
+          const content = JSON.parse(item.content);
+          return { ...item, content };
+        });
+        return res.json(maping);
+      } else return res.status(204).json({ message: "no content" });
     });
 };
 export const getPost = (req, res) => {
