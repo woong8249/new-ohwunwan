@@ -1,7 +1,38 @@
 # New-Ohwunwan
+## Overview
+1. Description
+2. Improvements
 
 ## Description
+코드 스테이츠 파이널 프로젝트 ohwunwan에서 많은 아쉬움을 느껴, 당시 팀원과 함께 프런트, 백을 분담하여 처음부터 다시 리팩토링해보았습니다.<br>
+현재 서버 API 개발과 테스트가 완료되었고, 프런트 개발과 테스트가 완료되면 배포 할 예정입니다.
+<br>
+<br>
+### Directory Structure(only server)
+``` bash
+server
+    ├── node_modules
+    └── src 
+        ├── api  
+        ├── config
+        ├── controllers 
+        ├── data 
+        ├── loders
+        ├── middlewares
+        ├── migration 
+        ├── services 
+        ├── validator 
+        └── utils 
+```
 
+### API doc
+[API doc Link](https://app.swaggerhub.com/apis/hyae4924/Ohwunwan_APIS/1.0.0)
+### Schema
+[Schema Link](https://dbdiagram.io/d/6290caa2f040f104c1ac8f3b)
+<br>
+<br>
+
+## Improvements
 아래는 코드스테이츠 파이널 프로젝트 코드리뷰 이후 제가 느낀 문제점과 개선 사항을 기술했습니다 .
 
 1.  **잘못된 요청에 대한 유효성 검사가 매우 부족함**<br><br>
@@ -13,9 +44,9 @@
 
 2.  **에러 처리가 매우 부족함 (잘못된 라우트 접근 시, 예기치 못한 에러 발생 시)**
 
-- 만약 에러 발생이 되었을 때 최후의 보루로 응답해 줄 수 있는 코드가 없음
+- 예기치 못한 에러 발생시 처리하지 못함
 - 비동기적 에러 발생에 대한 처리가 없음
-- 예기치 못한 에러로 앱이 터졌을 때 처리가 없음(앱을 재시작하는 코드 작성 예정중)
+- 예기치 못한 에러로 app crashed겨우 처리가 없음(앱을 재시작하는 코드 작성 예정중)
   <br>
   <br>
   <b><span style="color:red">개선사항</span></b><br>
@@ -79,7 +110,9 @@
 
 4. **개발 환경 분리가 되어있지 않음**<br><br>
    <b><span style="color:red">개선사항</span></b><br>
- - <b>cross-env libray</b> 이용해 개발환경을 분리함<br><br>
+ - <b>cross-env libray</b> 이용해 개발환경을 분리함
+ - env, config.js 이용(오타방지 & 미입력 방지)
+ <br><br>
 5. **controller계층의 복잡함**
 
    유효성 검사부터 비즈니스 로직까지 한꺼번에 담고 있다 보니 가독성이 매우 떨어짐
