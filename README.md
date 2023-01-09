@@ -29,6 +29,8 @@ server
 [API doc Link](https://app.swaggerhub.com/apis/hyae4924/Ohwunwan_APIS/1.0.0)
 ### Schema
 [Schema Link](https://dbdiagram.io/d/6290caa2f040f104c1ac8f3b)
+### DevLog
+[DevLog Link](https://hypnotic-geography-1af.notion.site/fc2947a399d34284a3f7600f39cc6d57)
 <br>
 <br>
 
