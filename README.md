@@ -138,6 +138,6 @@ server
    <br>
 
   <b><span style="color:red">개선사항</span></b><br>
-- CSRFCHEK. <br>
+- CSRF token check. <br>
    데이터를 생성,변경,삭제하는 경우
    CSRF토큰을 이용해 검증함
