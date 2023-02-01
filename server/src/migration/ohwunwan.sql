@@ -17,9 +17,9 @@
 
 --
 -- Table structure for table `Admins`
-DROP DATABASE IF EXISTS ohwunwan;
-CREATE DATABASE ohwunwan;
-USE ohwunwan
+DROP DATABASE IF EXISTS new_ohwunwan;
+CREATE DATABASE new_ohwunwan;
+USE new_ohwunwan
 DROP TABLE IF EXISTS `Admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;

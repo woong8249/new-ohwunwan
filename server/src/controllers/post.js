@@ -1,4 +1,5 @@
 import * as postServices from "../services/post.js";
+import UsersService from "../services/usersService.js";
 
 export const updateRanking = (req, res) => {
   const { post } = req;
@@ -47,11 +48,8 @@ export const updatePost = (req, res) => {
     .then(post => res.status(200).json(post));
 };
 
-export const removePost = (req, res) => {
+export const removePost = async (req, res) => {
   const { params, query } = req;
-  return postServices
-    .removePost(params, query) //
-    .then(result => {
-      return res.status(200).json({ message: "ok" });
-    });
+  await UsersService.removePost(params, query);
+  return res.status(200).json({ message: "ok" });
 };
