@@ -75,7 +75,7 @@ server
 
 ### DevLog
 
-[DevLog Link](https://hypnotic-geography-1af.notion.site/fc2947a399d34284a3f7600f39cc6d57)
+[DevLog Link](https://hypnotic-geography-1af.notion.site/new-ohwunwan-11137c909f2849399b587f09371d76e9)
 <br>
 <br>
 
