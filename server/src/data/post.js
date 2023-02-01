@@ -79,7 +79,7 @@ order by p_u.createdAt desc `;
     query += ` LIMIT ${number},${limit}`;
   }
 
-  console.log(query);
+  // console.log(query);
   return query;
 };
 export async function updateRanking(id, value) {
