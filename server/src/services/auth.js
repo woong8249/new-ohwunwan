@@ -28,13 +28,13 @@ export function logout(res) {
 export function getMe(user, admin) {
   if (user) {
     const userInfo = {
-      userId: req.user.userId,
-      nickname: req.user.nickname,
-      picture: req.user.picture,
+      userId: user.userId,
+      nickname: user.nickname,
+      picture: user.picture,
     };
     return userInfo;
   } else if (admin) {
-    console.log(admin);
+    // console.log(admin);
     const adminInfo = {
       adminId: admin.adminId,
     };
