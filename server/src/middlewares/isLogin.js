@@ -10,7 +10,10 @@ export default async function (req, res, next) {
   // See this issue for more information. SwaggerHub does not have this limitation.
   // https://swagger.io/docs/specification/authentication/cookie-authentication/
   // For apidoc, check also req.headers once
-  if (!token) token = req.headers["token"];
+  if (config.env === "development") {
+    if (!token) token = req.headers["token"];
+  }
+
   if (!token) {
     return res.status(401).json({ message });
   }
