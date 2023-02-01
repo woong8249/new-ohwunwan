@@ -1,5 +1,5 @@
 import * as data from "../data/index.js";
-import { s3Remove } from "../utils/s3.js";
+// import { s3Remove } from "../utils/s3.js";
 import { usersEmitter } from "../subscribers/users.js";
 export default class UsersService {
   static async removePost(params, query) {
