@@ -26,8 +26,10 @@ export default async ({ app }) => {
     optionsSuccessStatus: 200,
     credentials: true, // allow the Access-Control-Allow-Credentials 추가해줌
   };
-
-  const openApiDoc = yaml.load(path.join(__dirname, "../api/openapi.yaml"));
+  let openApiDoc;
+  if (config.env === "development") {
+    openApiDoc = yaml.load(path.join(__dirname, "../api/openapi.yaml"));
+  }
 
   app.use(cors(corsOption)); //cors set
   app.use(helmet());
